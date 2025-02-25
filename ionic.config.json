@@ -1,0 +1,7 @@
+{
+  "name": "riot-raccoon",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
