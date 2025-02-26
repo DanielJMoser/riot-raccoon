@@ -1,0 +1,117 @@
+/* Catppuccin Mocha Color Palette */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+// Main theme variables
+$primary-color: $mauve;
+$text-color: $text;
+$bg-color: $base;
+$header-bg: $mantle;
+$link-color: $lavender;
+$link-hover-color: $blue;
+
+.shop-page {
+  --ion-background-color: #{$bg-color};
+  --ion-text-color: #{$text-color};
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.025em;
+  color: $text-color;
+
+  ion-header {
+    --ion-toolbar-background: #{$header-bg};
+    --ion-toolbar-color: #{$text-color};
+  }
+
+  &::part(content) {
+    --background: #{$bg-color};
+  }
+}
+
+/* Header Styles */
+.site-header {
+  position: relative;
+  padding: 10px 0;
+  border-bottom: 1px solid $surface0;
+  background-color: $mantle;
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    height: 50px;
+  }
+
+  .nav-back {
+    width: 24px;
+    height: 24px;
+
+    .caret-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $text;
+
+      .caret-icon {
+        transform: rotate(180deg);
+        font-size: 12px;
+      }
+    }
+  }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+
+    .logo-link {
+      text-decoration: none;
+
+      .logo {
+        width: 144px;
+        height: 43.5px;
+        background-color: $surface1;
+        color: $mauve;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 24px;
+        border: 1px solid $mauve;
+      }
+    }
+  }
+
+  .date-time {
+    h2 {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0;
+      color: $subtext1;
+    }
+  }
+}

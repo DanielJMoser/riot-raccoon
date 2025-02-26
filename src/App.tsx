@@ -33,21 +33,114 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 
+/* Catppuccin Mocha Theme */
+import './theme/catppuccin.scss';
+import ProductList from "./pages/ProductList";
+import ProductDetails from "./pages/ProductDetails";
+
+// Import placeholder pages
+// These will be replaced with actual implementations later
+const PlaceholderPage: React.FC<{ title: string }> = ({ title }) => (
+    <div style={{
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100vh',
+      backgroundColor: '#1e1e2e', // Catppuccin base
+      color: '#cdd6f4' // Catppuccin text
+    }}>
+      <h1>{title} Page</h1>
+      <p>This is a placeholder for the {title.toLowerCase()} page.</p>
+      <a
+          href="/"
+          style={{
+            marginTop: '20px',
+            color: '#cba6f7', // Catppuccin mauve
+            textDecoration: 'none'
+          }}
+      >
+        Return to Home
+      </a>
+    </div>
+);
+
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          {/* Main routes */}
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/home">
+            <Redirect to="/" />
+          </Route>
+
+          {/* Shop section */}
+          <Route exact path="/shop">
+            <ProductList />
+          </Route>
+          <Route exact path="/product/:slug">
+            <ProductDetails />
+          </Route>
+
+            {/* News section */}
+          <Route exact path="/news">
+            <PlaceholderPage title="News" />
+          </Route>
+
+          {/* Collection previews */}
+          <Route exact path="/previews/newcollection">
+            <PlaceholderPage title="New Collection Preview" />
+          </Route>
+          <Route exact path="/previews/previouscollection">
+            <PlaceholderPage title="Previous Collection" />
+          </Route>
+
+          {/* Lookbook */}
+          <Route exact path="/lookbook">
+            <PlaceholderPage title="Lookbook" />
+          </Route>
+
+          {/* Information pages */}
+          <Route exact path="/random">
+            <PlaceholderPage title="Random" />
+          </Route>
+          <Route exact path="/about">
+            <PlaceholderPage title="About" />
+          </Route>
+          <Route exact path="/contact">
+            <PlaceholderPage title="Contact" />
+          </Route>
+
+          {/* Support pages */}
+          <Route exact path="/faq">
+            <PlaceholderPage title="FAQ" />
+          </Route>
+          <Route exact path="/sizing">
+            <PlaceholderPage title="Sizing" />
+          </Route>
+          <Route exact path="/terms">
+            <PlaceholderPage title="Terms" />
+          </Route>
+          <Route exact path="/privacy">
+            <PlaceholderPage title="Privacy" />
+          </Route>
+          <Route exact path="/shipping">
+            <PlaceholderPage title="Shipping" />
+          </Route>
+
+          {/* Catch all undefined routes */}
+          <Route>
+            <Redirect to="/" />
+          </Route>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
 );
 
 export default App;

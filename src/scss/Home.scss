@@ -1,0 +1,257 @@
+/* Catppuccin Mocha Color Palette */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+// Main theme variables
+$primary-color: $mauve;
+$text-color: $text;
+$bg-color: $base;
+$header-bg: $mantle;
+$link-color: $lavender;
+$link-hover-color: $blue;
+
+.shop-page {
+  --ion-background-color: #{$bg-color};
+  --ion-text-color: #{$text-color};
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.025em;
+  color: $text-color;
+
+  ion-header {
+    --ion-toolbar-background: #{$header-bg};
+    --ion-toolbar-color: #{$text-color};
+  }
+
+  &::part(content) {
+    --background: #{$bg-color};
+  }
+}
+
+/* Header Styles */
+.site-header {
+  position: relative;
+  padding: 10px 0;
+  border-bottom: 1px solid $surface0;
+  background-color: $mantle;
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    height: 50px;
+  }
+
+  .nav-back {
+    width: 24px;
+    height: 24px;
+
+    .caret-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $text;
+
+      .caret-icon {
+        transform: rotate(180deg);
+        font-size: 12px;
+      }
+    }
+  }
+
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+
+    .logo-link {
+      text-decoration: none;
+
+      .logo {
+        width: 144px;
+        height: 43.5px;
+        background-color: $surface1;
+        color: $mauve;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 24px;
+        border: 1px solid $mauve;
+      }
+    }
+  }
+
+  .date-time {
+    h2 {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0;
+      color: $subtext1;
+    }
+  }
+}
+
+/* Main Content Styles */
+.main-content-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: calc(100vh - 70px); /* Ensure content takes at least full height minus header */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $base;
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.main-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+  text-align: center;
+
+  .menu-item {
+    margin-bottom: 12px;
+
+    a {
+      text-decoration: none;
+      color: $text;
+      font-size: 16px;
+      text-transform: lowercase;
+      padding: 5px 0;
+      display: inline-block;
+      position: relative;
+      transition: color 0.2s ease-in-out;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: $primary-color;
+        transition: width 0.3s ease-in-out;
+      }
+
+      &:hover {
+        color: $link-hover-color;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.social-links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  gap: 20px;
+  margin-top: 30px;
+
+  .social-link-item {
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .social-icon {
+        width: 18px;
+        height: 18px;
+        background-color: $overlay2;
+        opacity: 0.8;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          opacity: 1;
+          background-color: $mauve;
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+}
+
+/* Adjust for mobile */
+@media (max-width: 768px) {
+  .main-menu {
+    .menu-item a {
+      font-size: 14px;
+    }
+  }
+
+  .site-header {
+    .date-time h2 {
+      font-size: 12px;
+    }
+  }
+}
+
+/* Skip to content link for accessibility */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+
+  &:focus {
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    background-color: $mantle;
+    z-index: 999;
+    color: $text;
+    text-decoration: none;
+    border: 2px solid $mauve;
+  }
+}

@@ -1,0 +1,320 @@
+// Catppuccin Mocha Colors
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+// Define Custom Ionic Colors
+:root {
+  // Custom color classes
+  .ion-color-rosewater {
+    --ion-color-base: #{$rosewater};
+    --ion-color-base-rgb: 245, 224, 220;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #d8c5c2;
+    --ion-color-tint: #f6e3df;
+  }
+
+  .ion-color-flamingo {
+    --ion-color-base: #{$flamingo};
+    --ion-color-base-rgb: 242, 205, 205;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #d5b4b4;
+    --ion-color-tint: #f3d2d2;
+  }
+
+  .ion-color-pink {
+    --ion-color-base: #{$pink};
+    --ion-color-base-rgb: 245, 194, 231;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #d8abc9;
+    --ion-color-tint: #f6c8e9;
+  }
+
+  .ion-color-mauve {
+    --ion-color-base: #{$mauve};
+    --ion-color-base-rgb: 203, 166, 247;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #b292d9;
+    --ion-color-tint: #d0b0f8;
+  }
+
+  .ion-color-red {
+    --ion-color-base: #{$red};
+    --ion-color-base-rgb: 243, 139, 168;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #d67a94;
+    --ion-color-tint: #f497b1;
+  }
+
+  .ion-color-peach {
+    --ion-color-base: #{$peach};
+    --ion-color-base-rgb: 250, 179, 135;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #dc9d77;
+    --ion-color-tint: #fbbb93;
+  }
+
+  .ion-color-lavender {
+    --ion-color-base: #{$lavender};
+    --ion-color-base-rgb: 180, 190, 254;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #9ea7df;
+    --ion-color-tint: #bcc5fe;
+  }
+
+  .ion-color-sky {
+    --ion-color-base: #{$sky};
+    --ion-color-base-rgb: 137, 220, 235;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #78c2cf;
+    --ion-color-tint: #95e0ed;
+  }
+
+  .ion-color-teal {
+    --ion-color-base: #{$teal};
+    --ion-color-base-rgb: 148, 226, 213;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #82c7bc;
+    --ion-color-tint: #9fe5d9;
+  }
+
+  .ion-color-sapphire {
+    --ion-color-base: #{$sapphire};
+    --ion-color-base-rgb: 116, 199, 236;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #66afd0;
+    --ion-color-tint: #82cdee;
+  }
+
+  .ion-color-blue {
+    --ion-color-base: #{$blue};
+    --ion-color-base-rgb: 137, 180, 250;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #789edc;
+    --ion-color-tint: #95bcfb;
+  }
+
+  .ion-color-green {
+    --ion-color-base: #{$green};
+    --ion-color-base-rgb: 166, 227, 161;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #92c88d;
+    --ion-color-tint: #afe6aa;
+  }
+
+  .ion-color-yellow {
+    --ion-color-base: #{$yellow};
+    --ion-color-base-rgb: 249, 226, 175;
+    --ion-color-contrast: #{$base};
+    --ion-color-contrast-rgb: 30, 30, 46;
+    --ion-color-shade: #dbc79a;
+    --ion-color-tint: #fae5b7;
+  }
+
+  .ion-color-surface {
+    --ion-color-base: #{$surface0};
+    --ion-color-base-rgb: 49, 50, 68;
+    --ion-color-contrast: #{$text};
+    --ion-color-contrast-rgb: 205, 214, 244;
+    --ion-color-shade: #2b2c3c;
+    --ion-color-tint: #464757;
+  }
+
+  .ion-color-crust {
+    --ion-color-base: #{$crust};
+    --ion-color-base-rgb: 17, 17, 27;
+    --ion-color-contrast: #{$text};
+    --ion-color-contrast-rgb: 205, 214, 244;
+    --ion-color-shade: #0f0f18;
+    --ion-color-tint: #292932;
+  }
+}
+
+// Create CSS Variables for Custom Colors
+// Add these classes to any element to apply the Catppuccin colors
+.ion-color-rosewater { --ion-color-primary: var(--ion-color-rosewater); }
+.ion-color-flamingo { --ion-color-primary: var(--ion-color-flamingo); }
+.ion-color-pink { --ion-color-primary: var(--ion-color-pink); }
+.ion-color-mauve { --ion-color-primary: var(--ion-color-mauve); }
+.ion-color-red { --ion-color-primary: var(--ion-color-red); }
+.ion-color-peach { --ion-color-primary: var(--ion-color-peach); }
+.ion-color-lavender { --ion-color-primary: var(--ion-color-lavender); }
+.ion-color-sky { --ion-color-primary: var(--ion-color-sky); }
+.ion-color-teal { --ion-color-primary: var(--ion-color-teal); }
+.ion-color-sapphire { --ion-color-primary: var(--ion-color-sapphire); }
+.ion-color-blue { --ion-color-primary: var(--ion-color-blue); }
+.ion-color-green { --ion-color-primary: var(--ion-color-green); }
+.ion-color-yellow { --ion-color-primary: var(--ion-color-yellow); }
+.ion-color-surface { --ion-color-primary: var(--ion-color-surface); }
+.ion-color-crust { --ion-color-primary: var(--ion-color-crust); }
+
+// Additional global styles for the Catppuccin theme
+body {
+  background-color: $base;
+  color: $text;
+}
+
+ion-content {
+  --background: #{$base};
+  --color: #{$text};
+}
+
+ion-item {
+  --background: #{$surface0};
+  --color: #{$text};
+  --border-color: #{$surface1};
+}
+
+ion-card {
+  --background: #{$surface0};
+  --color: #{$text};
+}
+
+ion-list {
+  background-color: $base;
+}
+
+ion-button {
+  --background: #{$mauve};
+  --background-activated: #{$pink};
+  --background-focused: #{$lavender};
+  --background-hover: #{$lavender};
+  --color: #{$base};
+}
+
+ion-button.button-outline {
+  --border-color: #{$mauve};
+  --border-width: 1px;
+  --border-style: solid;
+  --color: #{$mauve};
+  --background: transparent;
+  --background-activated: rgba(203, 166, 247, 0.1);
+  --background-focused: rgba(203, 166, 247, 0.2);
+  --background-hover: rgba(203, 166, 247, 0.1);
+}
+
+ion-toolbar {
+  --background: #{$mantle};
+  --color: #{$text};
+  --border-color: #{$crust};
+}
+
+ion-tab-bar {
+  --background: #{$mantle};
+  --color: #{$subtext0};
+  --color-selected: #{$mauve};
+}
+
+ion-searchbar {
+  --background: #{$surface0};
+  --color: #{$text};
+  --placeholder-color: #{$subtext0};
+  --icon-color: #{$overlay1};
+  --clear-button-color: #{$overlay1};
+}
+
+ion-segment {
+  --background: #{$surface0};
+}
+
+ion-segment-button {
+  --background: #{$surface0};
+  --background-checked: #{$surface1};
+  --background-focused: #{$surface2};
+  --background-hover: #{$surface1};
+  --color: #{$subtext1};
+  --color-checked: #{$mauve};
+  --indicator-color: #{$mauve};
+}
+
+ion-alert {
+  --background: #{$surface0};
+  --backdrop-opacity: 0.6;
+
+  .alert-title {
+    color: $text;
+  }
+
+  .alert-message {
+    color: $subtext1;
+  }
+
+  .alert-button {
+    color: $mauve;
+  }
+}
+
+ion-toast {
+  --background: #{$surface0};
+  --color: #{$text};
+  --button-color: #{$mauve};
+}
+
+ion-popover {
+  --background: #{$surface0};
+  --color: #{$text};
+  --backdrop-opacity: 0.6;
+}
+
+ion-modal {
+  --background: #{$surface0};
+  --color: #{$text};
+}
+
+ion-backdrop {
+  --backdrop-opacity: 0.6;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $mantle;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $surface2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $overlay0;
+}
