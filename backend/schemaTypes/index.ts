@@ -5,6 +5,8 @@ import category from "./category";
 import collection from "./collection";
 import seo from "./seo";
 import order from "./order";
+import paypalSettings from "./paypalSettings";
+import cart from "./cart";
 
 export const schemaTypes = [
     homepage,
@@ -13,5 +15,7 @@ export const schemaTypes = [
     category,
     collection,
     seo,
-    order
+    cart,
+    order,
+    paypalSettings
 ]
