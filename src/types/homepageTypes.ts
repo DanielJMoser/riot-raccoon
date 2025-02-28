@@ -1,4 +1,3 @@
-// types.ts
 export interface MenuItem {
     _id: string;
     title: string;
@@ -94,4 +93,33 @@ export interface HomepageData {
     socialLinks: SocialLink[];
     featuredProducts?: Product[];
     featuredCollections?: Collection[];
+}
+
+export interface CartOption {
+    name: string;
+    value: string;
+}
+
+export interface CartItem {
+    productId: string;
+    productName: string;
+    productSlug: string;
+    variantId?: string;
+    quantity: number;
+    price: number;
+    image?: any;
+    options?: CartOption[];
+}
+
+export interface CartMetadata {
+    couponCode?: string;
+    notes?: string;
+}
+
+export interface Cart {
+    id: string;
+    items: CartItem[];
+    totalItems: number;
+    totalPrice: number;
+    metadata?: CartMetadata;
 }

@@ -1,9 +1,11 @@
+// src/components/SiteHeader.tsx
 import React, { useEffect, useState } from 'react';
 import {
     IonHeader,
     IonRouterLink,
     IonSkeletonText
 } from '@ionic/react';
+import CartButton from '../components/cart/CartButton';
 import '../scss/components/SiteHeader.scss';
 
 interface HeaderProps {
@@ -42,6 +44,7 @@ const SiteHeader: React.FC<HeaderProps> = ({ brandTitle = 'BRAND', loading = fal
                         <span className="caret-icon">▲</span>
                     </IonRouterLink>
                 </div>
+
                 <div className="logo-container">
                     <IonRouterLink routerLink="/" className="logo-link">
                         <div className="logo">
@@ -53,8 +56,12 @@ const SiteHeader: React.FC<HeaderProps> = ({ brandTitle = 'BRAND', loading = fal
                         </div>
                     </IonRouterLink>
                 </div>
-                <div className="date-time">
-                    <h2>{dateTime}</h2>
+
+                <div className="header-actions">
+                    <CartButton />
+                    <div className="date-time">
+                        <h2>{dateTime}</h2>
+                    </div>
                 </div>
             </div>
         </IonHeader>

@@ -10,6 +10,7 @@ import { urlFor } from '../../backend/services/sanityClient';
 import { PortableText } from '@portabletext/react';
 import '../scss/ProductDetails.scss'; // Import the Supreme-style SCSS
 import { Product, Category } from "../types/homepageTypes";
+import { useCart } from "../context/CartContext";
 
 interface ProductDetailParams {
     slug: string;
@@ -24,6 +25,8 @@ const ProductDetails: React.FC = () => {
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
     const [quantity, setQuantity] = useState<number>(1);
     const [mainImage, setMainImage] = useState<any | null>(null);
+    const { addToCart, isInCart } = useCart();
+
 
     // Format date in Supreme style: DD/MM/YYYY
     const formattedDate = new Date().toLocaleDateString('en-GB', {
@@ -156,20 +159,28 @@ const ProductDetails: React.FC = () => {
         return `€${amount.toFixed(2)}`;
     };
 
-    // Handle add to cart
     const handleAddToCart = () => {
-        // Implement your cart functionality here
-        console.log('Adding to cart:', {
-            product,
-            variant: selectedVariant,
-            quantity,
-            options: selectedOptions
-        });
+        if (!product || !isCurrentVariantInStock()) return;
 
-        // For now, just show an alert
-        alert(`Added ${quantity} of ${product?.name} to cart`);
+        // Create the cart item object
+        const cartItem = {
+            productId: product._id,
+            productName: product.name,
+            productSlug: product.slug.current,
+            variantId: selectedVariant?._id,
+            quantity: quantity,
+            price: getCurrentPrice(),
+            image: selectedVariant?.image || product.mainImage,
+            options: selectedVariant?.options || []
+        };
+
+        // Add to cart
+        addToCart(cartItem);
+
+        // Show feedback to the user
+        // You could use a toast notification here
+        console.log('Added to cart:', cartItem);
     };
-
     // Extract color option for the main color display
     const getSelectedColor = () => {
         if (selectedOptions['Color']) {
@@ -190,6 +201,7 @@ const ProductDetails: React.FC = () => {
 
         return colorVariant?.image || product.mainImage;
     };
+
 
     // Loading and error states
     if (loading) {

@@ -18,9 +18,9 @@ import {
     IonLoading,
     IonToast
 } from '@ionic/react';
-import { useCart } from '../contexts/CartContext';
+import { useCart } from '../context/CartContext';
 import { createOrderFromCart } from '../services/api';
-import '../scss/pages/Checkout.scss';
+import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';
 
 const Checkout: React.FC = () => {

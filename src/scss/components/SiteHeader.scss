@@ -66,6 +66,11 @@ $link-hover-color: $blue;
     height: 50px;
   }
 
+  .header-actions {
+    display: flex;
+    align-items: center;
+  }
+
   .nav-back {
     width: 24px;
     height: 24px;

@@ -37,6 +37,8 @@ import './theme/variables.css';
 import './theme/catppuccin.scss';
 import ProductList from "./pages/ProductList";
 import ProductDetails from "./pages/ProductDetails";
+import { CartProvider } from "./context/CartContext";
+import Checkout from "./pages/Checkout";
 
 // Import placeholder pages
 // These will be replaced with actual implementations later
@@ -70,76 +72,83 @@ setupIonicReact();
 
 const App: React.FC = () => (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          {/* Main routes */}
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/home">
-            <Redirect to="/" />
-          </Route>
+      <CartProvider>
+          <IonReactRouter>
+              <IonRouterOutlet>
+                  {/* Main routes */}
+                  <Route exact path="/">
+                      <Home />
+                  </Route>
+                  <Route exact path="/home">
+                      <Redirect to="/" />
+                  </Route>
 
-          {/* Shop section */}
-          <Route exact path="/shop">
-            <ProductList />
-          </Route>
-          <Route exact path="/product/:slug">
-            <ProductDetails />
-          </Route>
+                  {/* Shop section */}
+                  <Route exact path="/shop">
+                      <ProductList />
+                  </Route>
+                  <Route exact path="/product/:slug">
+                      <ProductDetails />
+                  </Route>
 
-            {/* News section */}
-          <Route exact path="/news">
-            <PlaceholderPage title="News" />
-          </Route>
+                  {/* News section */}
+                  <Route exact path="/news">
+                      <PlaceholderPage title="News" />
+                  </Route>
 
-          {/* Collection previews */}
-          <Route exact path="/previews/newcollection">
-            <PlaceholderPage title="New Collection Preview" />
-          </Route>
-          <Route exact path="/previews/previouscollection">
-            <PlaceholderPage title="Previous Collection" />
-          </Route>
+                  {/* Collection previews */}
+                  <Route exact path="/previews/newcollection">
+                      <PlaceholderPage title="New Collection Preview" />
+                  </Route>
+                  <Route exact path="/previews/previouscollection">
+                      <PlaceholderPage title="Previous Collection" />
+                  </Route>
 
-          {/* Lookbook */}
-          <Route exact path="/lookbook">
-            <PlaceholderPage title="Lookbook" />
-          </Route>
+                  {/* Lookbook */}
+                  <Route exact path="/lookbook">
+                      <PlaceholderPage title="Lookbook" />
+                  </Route>
 
-          {/* Information pages */}
-          <Route exact path="/random">
-            <PlaceholderPage title="Random" />
-          </Route>
-          <Route exact path="/about">
-            <PlaceholderPage title="About" />
-          </Route>
-          <Route exact path="/contact">
-            <PlaceholderPage title="Contact" />
-          </Route>
+                  {/* Information pages */}
+                  <Route exact path="/random">
+                      <PlaceholderPage title="Random" />
+                  </Route>
+                  <Route exact path="/about">
+                      <PlaceholderPage title="About" />
+                  </Route>
+                  <Route exact path="/contact">
+                      <PlaceholderPage title="Contact" />
+                  </Route>
 
-          {/* Support pages */}
-          <Route exact path="/faq">
-            <PlaceholderPage title="FAQ" />
-          </Route>
-          <Route exact path="/sizing">
-            <PlaceholderPage title="Sizing" />
-          </Route>
-          <Route exact path="/terms">
-            <PlaceholderPage title="Terms" />
-          </Route>
-          <Route exact path="/privacy">
-            <PlaceholderPage title="Privacy" />
-          </Route>
-          <Route exact path="/shipping">
-            <PlaceholderPage title="Shipping" />
-          </Route>
+                  {/* Support pages */}
+                  <Route exact path="/faq">
+                      <PlaceholderPage title="FAQ" />
+                  </Route>
+                  <Route exact path="/sizing">
+                      <PlaceholderPage title="Sizing" />
+                  </Route>
+                  <Route exact path="/terms">
+                      <PlaceholderPage title="Terms" />
+                  </Route>
+                  <Route exact path="/privacy">
+                      <PlaceholderPage title="Privacy" />
+                  </Route>
+                  <Route exact path="/shipping">
+                      <PlaceholderPage title="Shipping" />
+                  </Route>
 
-          {/* Catch all undefined routes */}
-          <Route>
-            <Redirect to="/" />
-          </Route>
-        </IonRouterOutlet>
-      </IonReactRouter>
+                  {/* Checkout page */}
+                  <Route exact path="/checkout">
+                      <Checkout />
+                  </Route>
+
+                  {/* Catch all undefined routes */}
+                  <Route>
+                      <Redirect to="/" />
+                  </Route>
+              </IonRouterOutlet>
+          </IonReactRouter>
+      </CartProvider>
     </IonApp>
 );
 
