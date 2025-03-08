@@ -1,4 +1,4 @@
-// src/pages/Checkout.tsx
+
 import React, { useState } from 'react';
 import {
     IonContent,
