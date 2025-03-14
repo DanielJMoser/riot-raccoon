@@ -1,3 +1,4 @@
+/* src/scss/components/SiteHeader.scss */
 /* Catppuccin Mocha Color Palette */
 $rosewater: #f5e0dc;
 $flamingo: #f2cdcd;
@@ -26,97 +27,244 @@ $base: #1e1e2e;
 $mantle: #181825;
 $crust: #11111b;
 
-// Main theme variables
-$primary-color: $mauve;
-$text-color: $text;
-$bg-color: $base;
-$header-bg: $mantle;
-$link-color: $lavender;
-$link-hover-color: $blue;
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
-.shop-page {
-  --ion-background-color: #{$bg-color};
-  --ion-text-color: #{$text-color};
-  font-family: Arial, sans-serif;
-  letter-spacing: 0.025em;
-  color: $text-color;
-
-  ion-header {
-    --ion-toolbar-background: #{$header-bg};
-    --ion-toolbar-color: #{$text-color};
-  }
-
-  &::part(content) {
-    --background: #{$bg-color};
-  }
-}
-
-/* Header Styles */
 .site-header {
-  position: relative;
-  padding: 10px 0;
-  border-bottom: 1px solid $surface0;
-  background-color: $mantle;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
 
-  .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px;
-    height: 50px;
-  }
+  &.retro-modern {
+    font-family: 'Space Grotesk', sans-serif;
 
-  .header-actions {
-    display: flex;
-    align-items: center;
-  }
+    &.scrolled {
+      background-color: rgba($mantle, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-  .nav-back {
-    width: 24px;
-    height: 24px;
-
-    .caret-link {
+    .header-container {
       display: flex;
-      justify-content: center;
       align-items: center;
-      color: $text;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      height: auto;
+      min-height: 60px;
 
-      .caret-icon {
-        transform: rotate(180deg);
-        font-size: 12px;
+      @media (max-width: 768px) {
+        padding: 0.5rem 1rem;
       }
     }
-  }
 
-  .logo-container {
-    display: flex;
-    justify-content: center;
-    flex: 1;
+    .header-left {
+      display: flex;
+      align-items: center;
 
-    .logo-link {
-      text-decoration: none;
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
 
-      .logo {
-        width: 144px;
-        height: 43.5px;
-        background-color: $surface1;
-        color: $mauve;
+    .header-nav {
+      display: flex;
+      margin-left: 1.5rem;
+
+      .nav-link {
+        font-family: 'VT323', monospace;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        margin: 0 0.75rem;
+        color: $text;
+        text-decoration: none;
+        position: relative;
+        letter-spacing: 1px;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -3px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: $mauve;
+          transform: scaleX(0);
+          transform-origin: right;
+          transition: transform 0.3s ease;
+        }
+
+        &:hover, &:focus {
+          color: $mauve;
+
+          &::after {
+            transform: scaleX(1);
+            transform-origin: left;
+          }
+        }
+      }
+    }
+
+    .logo-container {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+
+      .logo-link {
+        text-decoration: none;
+
+        .logo {
+          font-family: 'VT323', monospace;
+          font-size: 1.8rem;
+          letter-spacing: 1px;
+          color: $pink;
+          text-shadow: 0 0 5px rgba($pink, 0.5);
+          text-transform: uppercase;
+
+          @media (max-width: 768px) {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+
+      .search-button, .account-button {
+        --color: #{$text};
+        --color-hover: #{$mauve};
+        margin: 0 0.3rem;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
+
+        ion-icon {
+          font-size: 1.4rem;
+        }
+      }
+
+      .date-time {
+        margin-left: 1rem;
+        border-left: 2px solid $surface1;
+        padding-left: 1rem;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
+
+        h2 {
+          margin: 0;
+          font-size: 0.8rem;
+          color: $overlay1;
+          font-weight: 400;
+          font-family: 'Space Grotesk', sans-serif;
+        }
+      }
+    }
+
+    .nav-back {
+      .caret-link {
         display: flex;
-        justify-content: center;
         align-items: center;
-        font-weight: bold;
-        font-size: 24px;
-        border: 1px solid $mauve;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        background-color: $surface0;
+        border-radius: 50%;
+
+        .caret-icon {
+          color: $mauve;
+          font-size: 14px;
+          transform: rotate(180deg);
+        }
       }
     }
   }
 
-  .date-time {
-    h2 {
-      font-size: 14px;
-      font-weight: normal;
-      margin: 0;
-      color: $subtext1;
+  /* Mobile Navigation */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: rgba($mantle, 0.95);
+    backdrop-filter: blur(8px);
+    border-top: 2px solid $surface1;
+    padding: 0 1rem;
+    z-index: 1001;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      display: flex;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: $overlay1;
+      text-decoration: none;
+      flex: 1;
+      padding: 0.5rem;
+      font-size: 1.1rem;
+
+      &:hover, &:focus {
+        color: $mauve;
+      }
+
+      .mobile-nav-label {
+        font-size: 0.7rem;
+        margin-top: 0.2rem;
+        font-family: 'Space Grotesk', sans-serif;
+      }
+
+      ion-icon {
+        font-size: 1.3rem;
+      }
+
+      &.home-icon {
+        .home-icon-shape {
+          width: 30px;
+          height: 30px;
+          background-color: $mauve;
+          color: $mantle;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          margin-bottom: 0.2rem;
+        }
+      }
+    }
+
+    .cart-button-container {
+      position: relative;
+
+      .cart-widget-button {
+        --padding-start: 0;
+        --padding-end: 0;
+        margin: 0;
+        height: 1.3rem;
+      }
+    }
+  }
+
+  /* Adjust main content padding to account for fixed header and mobile nav */
+  & + ion-content {
+    --padding-top: 60px;
+
+    @media (max-width: 768px) {
+      --padding-bottom: 60px;
     }
   }
 }

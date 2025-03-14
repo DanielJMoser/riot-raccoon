@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     IonContent,
     IonPage,
-    IonHeader,
     IonRouterLink,
-    IonSkeletonText,
     IonSpinner,
     IonText,
     IonGrid,
@@ -14,13 +12,13 @@ import {
     IonSelectOption,
     IonSearchbar,
     IonChip,
-    IonLabel,
-    IonBadge
+    IonLabel
 } from '@ionic/react';
 import { getProducts } from '../services/api';
-import { urlFor } from '../../backend/services/sanityClient';
 import { Product, Category } from '../types/homepageTypes';
 import '../scss/ProductList.scss';
+import SiteHeader from '../components/SiteHeader';
+import ProductCard from '../components/ProductCard';
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -34,17 +32,6 @@ const ProductList: React.FC = () => {
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('featured');
     const [inStockOnly, setInStockOnly] = useState<boolean>(false);
-
-    // Current time
-    const formattedDate = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-    const formattedTime = new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -130,16 +117,6 @@ const ProductList: React.FC = () => {
         setFilteredProducts(result);
     }, [products, searchQuery, categoryFilter, sortOption, inStockOnly]);
 
-    // Helper function to get product URL
-    const getProductUrl = (product: Product) => {
-        return `/product/${product.slug.current}`;
-    };
-
-    // Format currency
-    const formatCurrency = (amount: number) => {
-        return `$${amount.toFixed(2)}`;
-    };
-
     // Toggle in-stock filter
     const toggleInStockFilter = () => {
         setInStockOnly(prev => !prev);
@@ -147,25 +124,7 @@ const ProductList: React.FC = () => {
 
     return (
         <IonPage className="shop-page">
-            <IonHeader className="site-header">
-                <div className="header-container">
-                    <div className="nav-back">
-                        <IonRouterLink routerLink="/" className="caret-link">
-                            <span className="caret-icon">▲</span>
-                        </IonRouterLink>
-                    </div>
-                    <div className="logo-container">
-                        <IonRouterLink routerLink="/" className="logo-link">
-                            <div className="logo">
-                                BRAND
-                            </div>
-                        </IonRouterLink>
-                    </div>
-                    <div className="date-time">
-                        <h2>{formattedDate} {formattedTime}</h2>
-                    </div>
-                </div>
-            </IonHeader>
+            <SiteHeader brandTitle="BRAND" />
 
             <IonContent fullscreen>
                 <main id="MainContent">
@@ -273,69 +232,7 @@ const ProductList: React.FC = () => {
                                     <IonRow>
                                         {filteredProducts.map(product => (
                                             <IonCol size="12" sizeSm="6" sizeMd="4" sizeLg="3" key={product._id}>
-                                                <div className="product-card">
-                                                    <IonRouterLink routerLink={getProductUrl(product)}>
-                                                        {/* Product Image */}
-                                                        <div className="product-image">
-                                                            {product.mainImage ? (
-                                                                <img
-                                                                    src={urlFor(product.mainImage).width(300).height(300).url()}
-                                                                    alt={product.name}
-                                                                />
-                                                            ) : (
-                                                                <div className="placeholder-image">
-                                                                    <span>No image</span>
-                                                                </div>
-                                                            )}
-
-                                                            {/* Product Badges */}
-                                                            <div className="product-badges">
-                                                                {product.new && (
-                                                                    <div className="badge new">New</div>
-                                                                )}
-                                                                {!product.inStock && (
-                                                                    <div className="badge sold-out">Sold Out</div>
-                                                                )}
-                                                                {product.compareAtPrice && product.compareAtPrice > product.price && (
-                                                                    <div className="badge sale">Sale</div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Product Info */}
-                                                        <div className="product-info">
-                                                            {/* Product Categories */}
-                                                            {product.categories && product.categories.length > 0 && (
-                                                                <div className="product-categories">
-                                                                    {product.categories.slice(0, 2).map(category => (
-                                                                        <span key={category._id} className="product-category">{category.title}</span>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-
-                                                            {/* Product Name */}
-                                                            <h3 className="product-name">{product.name}</h3>
-
-                                                            {/* Product Price */}
-                                                            <div className="product-price-container">
-                                                                {product.compareAtPrice && product.compareAtPrice > product.price ? (
-                                                                    <>
-                                    <span className="product-compare-price">
-                                      {formatCurrency(product.compareAtPrice)}
-                                    </span>
-                                                                        <span className="product-price sale">
-                                      {formatCurrency(product.price)}
-                                    </span>
-                                                                    </>
-                                                                ) : (
-                                                                    <span className="product-price">
-                                    {formatCurrency(product.price)}
-                                  </span>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </IonRouterLink>
-                                                </div>
+                                                <ProductCard product={product} />
                                             </IonCol>
                                         ))}
                                     </IonRow>
