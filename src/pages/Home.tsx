@@ -138,7 +138,7 @@ const Home: React.FC = () => {
 
     return (
         <IonPage className="shop-page retro-modern">
-            <SiteHeader brandTitle={homeData?.title} loading={loading} />
+            <SiteHeader loading={loading} />
 
             <IonContent fullscreen>
                 <main id="MainContent">

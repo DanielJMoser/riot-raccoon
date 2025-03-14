@@ -39,6 +39,7 @@ import ProductList from "./pages/ProductList";
 import ProductDetails from "./pages/ProductDetails";
 import { CartProvider } from "./context/CartContext";
 import Checkout from "./pages/Checkout";
+import About from "./pages/About";
 
 // Import placeholder pages
 // These will be replaced with actual implementations later
@@ -114,7 +115,7 @@ const App: React.FC = () => (
                       <PlaceholderPage title="Random" />
                   </Route>
                   <Route exact path="/about">
-                      <PlaceholderPage title="About" />
+                      <About />
                   </Route>
                   <Route exact path="/contact">
                       <PlaceholderPage title="Contact" />

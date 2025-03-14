@@ -3,22 +3,24 @@ import React, { useEffect, useState } from 'react';
 import {
     IonHeader,
     IonRouterLink,
-    IonSkeletonText,
     IonIcon,
-    IonButton
+    IonButton,
+    IonSkeletonText
 } from '@ionic/react';
 import { searchOutline, personOutline } from 'ionicons/icons';
 import CartWidget from './cart/CartWidget';
 import '../scss/components/SiteHeader.scss';
 
 interface HeaderProps {
-    brandTitle?: string;
     loading?: boolean;
 }
 
-const SiteHeader: React.FC<HeaderProps> = ({ brandTitle = 'BRAND', loading = false }) => {
+const SiteHeader: React.FC<HeaderProps> = ({ loading = false }) => {
     const [dateTime, setDateTime] = useState<string>('');
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+    // Brand title is now fixed
+    const brandTitle = "Riot Raccoon";
 
     // Update date and time
     useEffect(() => {

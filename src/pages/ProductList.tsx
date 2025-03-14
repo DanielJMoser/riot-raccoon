@@ -124,7 +124,7 @@ const ProductList: React.FC = () => {
 
     return (
         <IonPage className="shop-page">
-            <SiteHeader brandTitle="BRAND" />
+            <SiteHeader loading={loading} />
 
             <IonContent fullscreen>
                 <main id="MainContent">
