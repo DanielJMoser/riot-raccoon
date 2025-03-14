@@ -1,3 +1,7 @@
+/* ProductList.scss */
+/* --------------------------------------------------------
+   Catppuccin Mocha Color Palette (same as home.scss)
+--------------------------------------------------------- */
 $rosewater: #f5e0dc;
 $flamingo: #f2cdcd;
 $pink: #f5c2e7;
@@ -25,14 +29,75 @@ $base: #1e1e2e;
 $mantle: #181825;
 $crust: #11111b;
 
-// Main theme variables
-$primary-color: $mauve;
-$text-color: $text;
-$bg-color: $base;
-$header-bg: $mantle;
-$link-color: $lavender;
-$link-hover-color: $blue;
+/* --------------------------------------------------------
+   Fonts
+   (Same Google Fonts as in home.scss)
+--------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
+/* --------------------------------------------------------
+   Mixins (Copied from home.scss for a consistent style)
+--------------------------------------------------------- */
+@mixin retro-card {
+  background-color: $surface0;
+  border: 2px solid $mauve;
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 rgba($mauve, 0.5);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 rgba($mauve, 0.5);
+  }
+}
+
+@mixin retro-text-glow($color) {
+  text-shadow: 0 0 5px rgba($color, 0.8);
+}
+
+@mixin retro-button {
+  background-color: $mauve;
+  color: $base;
+  border: 2px solid $pink;
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.5px;
+  font-size: 1.2rem;
+  padding: 0.5rem 1.5rem;
+  text-transform: uppercase;
+  position: relative;
+  transition: all 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: 2px solid $blue;
+    z-index: -1;
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    transform: translate(-2px, -2px);
+
+    &::after {
+      transform: translate(4px, 4px);
+    }
+  }
+}
+
+@mixin grid-background($color, $size) {
+  background-image: linear-gradient($color 1px, transparent 1px),
+  linear-gradient(90deg, $color 1px, transparent 1px);
+  background-size: $size $size;
+}
+
+/* --------------------------------------------------------
+   General Retro Style
+--------------------------------------------------------- */
 .product-list-container {
   width: 100%;
   max-width: 1200px;
@@ -40,6 +105,14 @@ $link-hover-color: $blue;
   padding: 30px 20px;
   background-color: $base;
   min-height: calc(100vh - 70px);
+
+  /* Use Space Grotesk as the default font in this container */
+  font-family: 'Space Grotesk', sans-serif;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'VT323', monospace; /* Match hero titles in home.scss */
+    letter-spacing: 1px;
+  }
 }
 
 /* Header */
@@ -50,16 +123,17 @@ $link-hover-color: $blue;
   padding-bottom: 15px;
 
   h1 {
-    font-size: 28px;
+    font-size: 2.5rem;
     font-weight: 600;
     margin: 0 0 5px;
-    color: $text;
+    color: $pink;
     text-transform: uppercase;
     letter-spacing: 2px;
+    @include retro-text-glow($pink);
   }
 
   .product-count {
-    font-size: 14px;
+    font-size: 1rem;
     color: $subtext0;
     margin: 0;
   }
@@ -71,6 +145,8 @@ $link-hover-color: $blue;
   background-color: $surface0;
   border-radius: 8px;
   padding: 15px;
+  border: 2px solid $mauve;
+  box-shadow: 4px 4px 0 rgba($mauve, 0.3);
 
   .filter-control-row {
     display: flex;
@@ -117,6 +193,8 @@ $link-hover-color: $blue;
       border-radius: 4px;
       --padding-end: 10px;
       --padding-start: 10px;
+      font-family: 'VT323', monospace;
+      font-size: 1rem;
     }
   }
 
@@ -128,15 +206,21 @@ $link-hover-color: $blue;
 
     ion-chip {
       margin: 0;
-      font-size: 12px;
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
 
       &.md {
-        --background: transparent;
+        --background: #{$surface1};
         --color: #{$text};
       }
 
       &.selected {
         --background: #{$mauve};
+        --color: #{$base};
+      }
+
+      &:hover {
+        --background: #{$pink};
         --color: #{$base};
       }
     }
@@ -145,7 +229,8 @@ $link-hover-color: $blue;
   .instock-filter {
     ion-chip {
       margin: 0;
-      font-size: 12px;
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
     }
   }
 }
@@ -160,6 +245,7 @@ $link-hover-color: $blue;
 
   ion-spinner {
     margin-bottom: 15px;
+    --color: #{$mauve};
   }
 
   p {
@@ -175,6 +261,7 @@ $link-hover-color: $blue;
   background-color: rgba($red, 0.1);
   border-radius: 8px;
   margin: 30px 0;
+  border: 2px solid $red;
 }
 
 /* Empty Results */
@@ -183,8 +270,9 @@ $link-hover-color: $blue;
   padding: 50px 0;
 
   h2 {
-    font-size: 20px;
+    font-size: 1.5rem;
     color: $text;
+    font-family: 'VT323', monospace;
     margin-bottom: 10px;
   }
 
@@ -197,17 +285,11 @@ $link-hover-color: $blue;
 /* Product Grid */
 .product-grid {
   .product-card {
-    background-color: $surface0;
-    border-radius: 8px;
-    overflow: hidden;
+    @include retro-card;
     margin-bottom: 25px;
+    overflow: hidden;
+    border: 2px solid $mauve; /* Additional pop */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid $surface1;
-
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
 
     a {
       text-decoration: none;
@@ -218,20 +300,25 @@ $link-hover-color: $blue;
     .product-image {
       position: relative;
       width: 100%;
-      height: 0;
-      padding-bottom: 100%;
-      overflow: hidden;
-      background-color: $surface1;
+      /* Remove or comment out the forced 1:1 aspect ratio */
+      // padding-bottom: 100%;
 
-      /*img {
+      // Option 1: Allow the image to dictate height naturally:
+      min-height: 200px; /* or any desired minimum height */
+      background-color: $surface1;
+      overflow: hidden;
+
+      img {
         position: absolute;
         top: 0;
         left: 0;
+        /* Make the image fill the container’s width while maintaining aspect ratio */
         width: 100%;
-        height: 100%;
+        height: auto;
+        /* If you want to ensure it covers the container, you can use object-fit */
         object-fit: cover;
         transition: transform 0.5s ease;
-      }*/
+      }
 
       &:hover img {
         transform: scale(1.05);
@@ -297,21 +384,25 @@ $link-hover-color: $blue;
         margin-bottom: 8px;
 
         .product-category {
-          font-size: 10px;
+          font-size: 0.7rem;
           color: $overlay1;
           text-transform: uppercase;
           letter-spacing: 0.5px;
+          background-color: $surface1;
+          padding: 2px 6px;
+          border-radius: 4px;
         }
       }
 
       .product-name {
-        font-size: 14px;
+        font-size: 1rem;
         font-weight: 600;
         margin: 0 0 8px;
         color: $text;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-family: 'VT323', monospace;
       }
 
       .product-price-container {
@@ -320,17 +411,17 @@ $link-hover-color: $blue;
         gap: 8px;
 
         .product-price {
-          font-size: 14px;
+          font-size: 1rem;
           color: $text;
           font-weight: 600;
 
           &.sale {
-            color: $green;
+            color: $red;
           }
         }
 
         .product-compare-price {
-          font-size: 12px;
+          font-size: 0.9rem;
           text-decoration: line-through;
           color: $overlay1;
         }
@@ -346,17 +437,17 @@ $link-hover-color: $blue;
   margin-top: 40px;
 
   .pagination-button {
-    padding: 8px 12px;
-    background-color: $surface0;
-    border: 1px solid $surface1;
-    color: $text;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    @include retro-button;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
     margin: 0 5px;
+    border: 2px solid $mauve;
+    transition: all 0.2s ease;
 
     &:hover:not(:disabled) {
-      background-color: $surface1;
+      background-color: $pink;
+      border-color: $pink;
+      color: $base;
     }
 
     &:disabled {
