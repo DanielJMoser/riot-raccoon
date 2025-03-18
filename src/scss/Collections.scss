@@ -1,0 +1,268 @@
+/* src/scss/Collections.scss */
+/* Catppuccin Mocha Color Palette */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+.collections-page {
+  font-family: 'Space Grotesk', sans-serif;
+
+  #MainContent {
+    padding-bottom: 3rem;
+  }
+
+  .collections-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  /* Page header */
+  .collections-header {
+    text-align: center;
+    margin: 3rem 0 2rem;
+
+    h1 {
+      font-family: 'VT323', monospace;
+      font-size: 2.5rem;
+      color: $text;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+    }
+
+    .retro-line {
+      height: 2px;
+      width: 100px;
+      background: linear-gradient(90deg, transparent, $mauve, transparent);
+      margin: 0 auto;
+    }
+  }
+
+  /* Loading, error, and empty states */
+  .loading-container,
+  .error-container,
+  .empty-collections {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    min-height: 300px;
+
+    h2 {
+      font-size: 1.5rem;
+      color: $text;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: $subtext1;
+    }
+
+    ion-spinner {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* Collections grid */
+  .collections-grid {
+    margin-top: 2rem;
+
+    .collection-card {
+      position: relative;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: $surface0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+        .collection-overlay {
+          opacity: 0.3;
+        }
+
+        .view-collection-button {
+          background-color: $mauve;
+          color: $base;
+        }
+      }
+
+      a {
+        text-decoration: none;
+        color: $text;
+      }
+
+      .collection-image-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 66.67%; /* 3:2 aspect ratio */
+        overflow: hidden;
+
+        .collection-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+
+        &:hover .collection-image {
+          transform: scale(1.05);
+        }
+
+        .placeholder-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: $surface1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .retro-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                    linear-gradient(to right, $surface2 1px, transparent 1px) 0 0 / 40px 40px,
+                    linear-gradient(to bottom, $surface2 1px, transparent 1px) 0 0 / 40px 40px;
+            opacity: 0.3;
+          }
+        }
+
+        .collection-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to bottom, transparent 50%, rgba($base, 0.8) 100%);
+          opacity: 0.7;
+          transition: opacity 0.3s ease;
+        }
+
+        .collection-badge {
+          position: absolute;
+          top: 10px;
+          z-index: 2;
+          padding: 5px 10px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          border-radius: 4px;
+          backdrop-filter: blur(4px);
+
+          &.featured-badge {
+            left: 10px;
+            background-color: rgba($mauve, 0.9);
+            color: $base;
+          }
+
+          &.coming-soon-badge {
+            right: 10px;
+            background-color: rgba($blue, 0.9);
+            color: $base;
+          }
+        }
+      }
+
+      .collection-info {
+        padding: 1.25rem;
+
+        .collection-title {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 1.3rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem;
+          color: $text;
+        }
+
+        .collection-release-date,
+        .collection-product-count {
+          font-size: 0.9rem;
+          color: $subtext0;
+          margin: 0.25rem 0;
+        }
+
+        .view-collection-button {
+          display: inline-block;
+          margin-top: 1rem;
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+          border: 1px solid $mauve;
+          border-radius: 4px;
+          color: $mauve;
+          background-color: transparent;
+          transition: all 0.3s ease;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .collections-page .collections-grid .collection-card {
+    height: 100%;
+
+    a {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .collection-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .view-collection-button {
+        margin-top: auto;
+      }
+    }
+  }
+}

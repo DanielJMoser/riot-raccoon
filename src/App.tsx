@@ -40,6 +40,8 @@ import ProductDetails from "./pages/ProductDetails";
 import { CartProvider } from "./context/CartContext";
 import Checkout from "./pages/Checkout";
 import About from "./pages/About";
+import CollectionDetails from "./pages/CollectionDetails";
+import Collections from "./pages/Collections";
 
 // Import placeholder pages
 // These will be replaced with actual implementations later
@@ -98,11 +100,11 @@ const App: React.FC = () => (
                   </Route>
 
                   {/* Collection previews */}
-                  <Route exact path="/previews/newcollection">
-                      <PlaceholderPage title="New Collection Preview" />
+                  <Route exact path="/collections">
+                      <Collections />
                   </Route>
-                  <Route exact path="/previews/previouscollection">
-                      <PlaceholderPage title="Previous Collection" />
+                  <Route exact path="/collection/:slug">
+                      <CollectionDetails />
                   </Route>
 
                   {/* Lookbook */}

@@ -3,14 +3,23 @@ import {
     IonContent,
     IonPage,
     IonRouterLink,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonButton,
+    IonIcon,
+    IonSpinner,
+    IonText
 } from '@ionic/react';
 import { useParams } from 'react-router';
 import { getProductBySlug } from '../services/api';
 import { urlFor } from '../../backend/services/sanityClient';
 import { PortableText } from '@portabletext/react';
-import '../scss/ProductDetails.scss'; // Import the Supreme-style SCSS
-import { Product, Category } from "../types/homepageTypes";
+import '../scss/ProductDetails.scss';
+import {Category, Product} from "../types/homepageTypes";
 import { useCart } from "../context/CartContext";
+import SiteHeader from '../components/SiteHeader';
+import { chevronBack } from 'ionicons/icons';
 
 interface ProductDetailParams {
     slug: string;
@@ -26,25 +35,6 @@ const ProductDetails: React.FC = () => {
     const [quantity, setQuantity] = useState<number>(1);
     const [mainImage, setMainImage] = useState<any | null>(null);
     const { addToCart, isInCart } = useCart();
-
-
-    // Format date in Supreme style: DD/MM/YYYY
-    const formattedDate = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-
-    // Format time in Supreme style: HH:MMpm/am
-    const formattedTime = new Date().toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-
-    // Get timezone abbreviation
-    const timezone = new Date().toLocaleTimeString('en-US', {
-        timeZoneName: 'short'
-    }).split(' ')[2];
 
     useEffect(() => {
         const fetchProductData = async () => {
@@ -176,11 +166,8 @@ const ProductDetails: React.FC = () => {
 
         // Add to cart
         addToCart(cartItem);
-
-        // Show feedback to the user
-        // You could use a toast notification here
-        console.log('Added to cart:', cartItem);
     };
+
     // Extract color option for the main color display
     const getSelectedColor = () => {
         if (selectedOptions['Color']) {
@@ -202,184 +189,293 @@ const ProductDetails: React.FC = () => {
         return colorVariant?.image || product.mainImage;
     };
 
+    // Increase quantity
+    const increaseQuantity = () => {
+        setQuantity(prev => prev + 1);
+    };
 
-    // Loading and error states
-    if (loading) {
-        return (
-            <IonPage className="shop-page">
-                <div className="supreme-header">
-                    <div className="logo-container">
-                        <img className="logo" src="/path-to-your-logo.png" alt="Logo" />
-                    </div>
-                    <div className="date-time">
-                        {formattedDate} {formattedTime} {timezone}
-                    </div>
-                </div>
-                <IonContent>
-                    <div className="product-details-container supreme-style">
-                        <div className="loading-spinner">Loading...</div>
-                    </div>
-                </IonContent>
-            </IonPage>
-        );
-    }
-
-    if (error || !product) {
-        return (
-            <IonPage className="shop-page">
-                <div className="supreme-header">
-                    <div className="logo-container">
-                        <img className="logo" src="/path-to-your-logo.png" alt="Logo" />
-                    </div>
-                    <div className="date-time">
-                        {formattedDate} {formattedTime} {timezone}
-                    </div>
-                </div>
-                <IonContent>
-                    <div className="product-details-container supreme-style">
-                        <div className="error-message">
-                            {error || 'Product not found'}
-                            <button onClick={() => window.history.back()} className="keep-shopping-btn">
-                                back to shop
-                            </button>
-                        </div>
-                    </div>
-                </IonContent>
-            </IonPage>
-        );
-    }
+    // Decrease quantity
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(prev => prev - 1);
+        }
+    };
 
     return (
-        <IonPage className="shop-page">
-            {/* Supreme-style header with logo and date/time */}
-            <div className="supreme-header">
-                <div className="logo-container">
-                    <img className="logo" src="/path-to-your-logo.png" alt="Logo" />
-                </div>
-                <div className="date-time">
-                    {formattedDate} {formattedTime} {timezone}
-                </div>
-            </div>
+        <IonPage className="product-details-page retro-modern">
+            <SiteHeader loading={loading} />
 
-            <IonContent>
-                <div className="product-details-container supreme-style">
-                    <div className="product-main-content">
-                        {/* Left: Product Image */}
-                        <div className="product-image-column">
-                            <div className="main-image">
-                                {mainImage && (
-                                    <img
-                                        src={urlFor(mainImage).width(600).url()}
-                                        alt={product.name}
-                                    />
+            <IonContent fullscreen>
+                <div className="product-details-container">
+                    {/* Loading state */}
+                    {loading && (
+                        <div className="loading-container">
+                            <IonSpinner name="dots" />
+                            <p>Loading product details...</p>
+                        </div>
+                    )}
+
+                    {/* Error state */}
+                    {error && !loading && (
+                        <div className="error-container">
+                            <IonText color="danger">{error}</IonText>
+                            <IonButton
+                                fill="outline"
+                                routerLink="/shop"
+                                className="back-to-shop-btn"
+                            >
+                                <IonIcon icon={chevronBack} slot="start" />
+                                Back to Shop
+                            </IonButton>
+                        </div>
+                    )}
+
+                    {/* Product details */}
+                    {!loading && !error && product && (
+                        <div className="product-content">
+                            {/* Breadcrumbs */}
+                            <div className="breadcrumbs">
+                                <IonRouterLink routerLink="/">Home</IonRouterLink>
+                                <span> / </span>
+                                <IonRouterLink routerLink="/shop">Shop</IonRouterLink>
+                                <span> / </span>
+                                {product.categories && product.categories.length > 0 && (
+                                    <>
+                                        <IonRouterLink
+                                            routerLink={`/category/${product.categories[0].slug.current}`}
+                                        >
+                                            {product.categories[0].title}
+                                        </IonRouterLink>
+                                        <span> / </span>
+                                    </>
                                 )}
+                                <span className="current">{product.name}</span>
                             </div>
 
-                            {/* Thumbnail gallery */}
-                            {product.images && product.images.length > 0 && (
-                                <div className="thumbnail-gallery">
-                                    {/* Show color variants as thumbnails */}
-                                    {getOptionNames().includes('Color') &&
-                                        getAvailableOptionValues('Color').map(color => {
-                                            const variantImage = getVariantImageForColor(color);
-                                            return (
-                                                <div
-                                                    key={color}
-                                                    className={`thumbnail ${selectedOptions['Color'] === color ? 'selected' : ''}`}
-                                                    onClick={() => handleOptionChange('Color', color)}
-                                                >
-                                                    {variantImage && (
+                            <IonGrid>
+                                <IonRow>
+                                    {/* Product Images */}
+                                    <IonCol size="12" sizeMd="6">
+                                        <div className="product-images">
+                                            <div className="main-image">
+                                                {mainImage && (
+                                                    <img
+                                                        src={urlFor(mainImage).width(600).url()}
+                                                        alt={product.name}
+                                                    />
+                                                )}
+                                            </div>
+
+                                            {/* Thumbnail gallery */}
+                                            {(product.images && product.images.length > 0 ||
+                                                getOptionNames().includes('Color')) && (
+                                                <div className="thumbnail-gallery">
+                                                    {/* Main product image thumbnail */}
+                                                    <div
+                                                        className={`thumbnail ${!selectedOptions['Color'] ? 'selected' : ''}`}
+                                                        onClick={() => setMainImage(product.mainImage)}
+                                                    >
                                                         <img
-                                                            src={urlFor(variantImage).width(100).height(100).url()}
-                                                            alt={color}
+                                                            src={urlFor(product.mainImage).width(100).height(100).url()}
+                                                            alt={product.name}
                                                         />
-                                                    )}
+                                                    </div>
+
+                                                    {/* Additional images thumbnails */}
+                                                    {product.images && product.images.map((img, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className="thumbnail"
+                                                            onClick={() => setMainImage(img)}
+                                                        >
+                                                            <img
+                                                                src={urlFor(img).width(100).height(100).url()}
+                                                                alt={`${product.name} - view ${index + 1}`}
+                                                            />
+                                                        </div>
+                                                    ))}
+
+                                                    {/* Color variant thumbnails */}
+                                                    {getOptionNames().includes('Color') &&
+                                                        getAvailableOptionValues('Color').map(color => {
+                                                            const variantImage = getVariantImageForColor(color);
+                                                            if (!variantImage) return null;
+
+                                                            return (
+                                                                <div
+                                                                    key={color}
+                                                                    className={`thumbnail ${selectedOptions['Color'] === color ? 'selected' : ''}`}
+                                                                    onClick={() => handleOptionChange('Color', color)}
+                                                                >
+                                                                    <img
+                                                                        src={urlFor(variantImage).width(100).height(100).url()}
+                                                                        alt={color}
+                                                                    />
+                                                                    <span className="color-label">{color}</span>
+                                                                </div>
+                                                            );
+                                                        })
+                                                    }
                                                 </div>
-                                            );
-                                        })
-                                    }
-                                </div>
-                            )}
+                                            )}
+                                        </div>
+                                    </IonCol>
+
+                                    {/* Product Info */}
+                                    <IonCol size="12" sizeMd="6">
+                                        <div className="product-info">
+                                            <h1 className="product-title">{product.name}</h1>
+
+                                            {/* Product flags */}
+                                            <div className="product-flags">
+                                                {product.new && <span className="product-flag new">New</span>}
+                                                {!isCurrentVariantInStock() && <span className="product-flag out-of-stock">Out of Stock</span>}
+                                                {product.featured && <span className="product-flag featured">Featured</span>}
+                                            </div>
+
+                                            {/* Price */}
+                                            <div className="product-price-container">
+                                                {product.compareAtPrice && product.compareAtPrice > getCurrentPrice() ? (
+                                                    <>
+                                                        <span className="product-compare-price">{formatCurrency(product.compareAtPrice)}</span>
+                                                        <span className="product-price sale">{formatCurrency(getCurrentPrice())}</span>
+                                                        <span className="discount-percentage">
+                                                            -{Math.round(((product.compareAtPrice - getCurrentPrice()) / product.compareAtPrice) * 100)}%
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <span className="product-price">{formatCurrency(getCurrentPrice())}</span>
+                                                )}
+                                            </div>
+
+                                            {/* Short description */}
+                                            {product.shortDescription && (
+                                                <div className="product-short-description">
+                                                    <p>{product.shortDescription}</p>
+                                                </div>
+                                            )}
+
+                                            {/* Variant Options */}
+                                            {getOptionNames().length > 0 && (
+                                                <div className="product-options">
+                                                    {getOptionNames().map(optionName => (
+                                                        <div key={optionName} className="option-selector">
+                                                            <label>{optionName}</label>
+
+                                                            {optionName.toLowerCase() === 'color' ? (
+                                                                <div className="color-options">
+                                                                    {getAvailableOptionValues(optionName).map(value => (
+                                                                        <div
+                                                                            key={value}
+                                                                            className={`color-option ${selectedOptions[optionName] === value ? 'selected' : ''}`}
+                                                                            onClick={() => handleOptionChange(optionName, value)}
+                                                                            title={value}
+                                                                        >
+                                                                            <span
+                                                                                className="color-swatch"
+                                                                                style={{
+                                                                                    backgroundColor: value.toLowerCase()
+                                                                                }}
+                                                                            ></span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            ) : (
+                                                                <div className="option-values">
+                                                                    {getAvailableOptionValues(optionName).map(value => (
+                                                                        <button
+                                                                            key={value}
+                                                                            className={`option-value ${selectedOptions[optionName] === value ? 'selected' : ''}`}
+                                                                            onClick={() => handleOptionChange(optionName, value)}
+                                                                        >
+                                                                            {value}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Quantity selector */}
+                                            <div className="quantity-selector">
+                                                <label>Quantity</label>
+                                                <div className="quantity-controls">
+                                                    <button
+                                                        className="quantity-btn"
+                                                        onClick={decreaseQuantity}
+                                                        disabled={quantity <= 1}
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <input
+                                                        type="number"
+                                                        min="1"
+                                                        value={quantity}
+                                                        onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                                        className="quantity-input"
+                                                    />
+                                                    <button
+                                                        className="quantity-btn"
+                                                        onClick={increaseQuantity}
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {/* Add to cart button */}
+                                            <div className="product-actions">
+                                                <IonButton
+                                                    expand="block"
+                                                    className="add-to-cart-btn"
+                                                    onClick={handleAddToCart}
+                                                    disabled={!isCurrentVariantInStock()}
+                                                >
+                                                    {isCurrentVariantInStock() ? 'Add to Cart' : 'Out of Stock'}
+                                                </IonButton>
+                                            </div>
+
+                                            {/* Shipping note */}
+                                            <div className="shipping-note">
+                                                <p>Free shipping on all orders over €250</p>
+                                            </div>
+
+                                            {/* Product full description */}
+                                            {product.description && (
+                                                <div className="product-description">
+                                                    <h3>Product Details</h3>
+                                                    <div className="description-content">
+                                                        <PortableText value={product.description} />
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Categories */}
+                                            {product.categories && product.categories.length > 0 && (
+                                                <div className="product-categories">
+                                                    <span>Categories: </span>
+                                                    {product.categories.map((category: Category, index: number) => (
+                                                        <span key={category._id}>
+                                                            <IonRouterLink routerLink={`/category/${category.slug.current}`}>
+                                                                {category.title}
+                                                            </IonRouterLink>
+                                                            {index < product.categories!.length - 1 && ', '}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* No Tags section as it's not in the Product interface */}
+                                        </div>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
+
+                            {/* Related Products section would go here */}
                         </div>
-
-                        {/* Right: Product Info */}
-                        <div className="product-info-column">
-                            <h1 className="product-title">{product.name}</h1>
-
-                            {/* Selected color */}
-                            {getSelectedColor() && (
-                                <div className="product-color">{getSelectedColor()}</div>
-                            )}
-
-                            {/* Product short description */}
-                            {product.shortDescription && (
-                                <div className="product-description-simple">
-                                    <p>{product.shortDescription}</p>
-                                </div>
-                            )}
-
-                            {/* Product full description as bullet points */}
-                            {product.description && (
-                                <div className="product-features">
-                                    <PortableText value={product.description} />
-                                </div>
-                            )}
-
-                            {/* Price */}
-                            <div className="product-price">
-                                {formatCurrency(getCurrentPrice())}
-                            </div>
-
-                            {/* Size Selection as dropdown */}
-                            {getOptionNames().includes('Size') && (
-                                <div className="size-selector">
-                                    <select
-                                        value={selectedOptions['Size'] || ''}
-                                        onChange={(e) => handleOptionChange('Size', e.target.value)}
-                                        className="supreme-select"
-                                    >
-                                        <option value="" disabled>Select Size</option>
-                                        {getAvailableOptionValues('Size').map(size => (
-                                            <option key={size} value={size}>{size}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            )}
-
-                            {/* Add to Cart and Keep Shopping buttons */}
-                            <div className="cart-actions">
-                                <button
-                                    className="add-to-cart-btn"
-                                    onClick={handleAddToCart}
-                                    disabled={!isCurrentVariantInStock()}
-                                >
-                                    add to cart
-                                </button>
-                                <button
-                                    className="keep-shopping-btn"
-                                    onClick={() => window.history.back()}
-                                >
-                                    keep shopping
-                                </button>
-                            </div>
-
-                            {/* Shipping note */}
-                            <div className="shipping-note">
-                                * free shipping on all orders over €250, some exceptions may apply
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom navigation */}
-                    <div className="bottom-nav">
-                        <div className="nav-back">
-                            <IonRouterLink routerLink="/shop">shop</IonRouterLink>
-                        </div>
-                        <div className="nav-links">
-                            <IonRouterLink routerLink="/lookbook">lookbook</IonRouterLink>
-                            <IonRouterLink routerLink="/news">news</IonRouterLink>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </IonContent>
         </IonPage>

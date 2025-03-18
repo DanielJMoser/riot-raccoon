@@ -2,55 +2,69 @@
 import {HomepageData, Product, Collection, CartOption} from '../types/homepageTypes';
 import sanityClient from '../../backend/services/sanityClient';
 import {Cart, CartItem} from "../context/CartContext";
+import client from "../../backend/services/sanityClient";
 
 
 // Get homepage content with expanded references
-export const getHomepageContent = async (): Promise<HomepageData> => {
-    const query = `*[_type == "homepage"][0]{
-    title,
-    subtitle,
-    mainBanner,
-    mainMenuItems[] {
-      _id,
-      title,
-      url
-    },
-    socialLinks[] {
-      _id,
-      id,
-      label,
-      url,
-      color
-    },
-    "featuredProducts": featuredProducts[]-> {
-      _id,
-      name,
-      "slug": slug,
-      sku,
-      mainImage,
-      price,
-      compareAtPrice,
-      shortDescription,
-      inStock,
-      featured,
-      new,
-      "categories": categories[]-> {
+export const getHomepageContent = async () => {
+    try {
+        const query = `{
+      "homepage": *[_type == "homepage"][0] {
+        title,
+        subtitle,
+        mainBanner,
+        mainMenuItems[] {
+          _id,
+          title, 
+          url
+        },
+        socialLinks[] {
+          _id,
+          id,
+          label,
+          url,
+          color
+        }
+      },
+      "featuredProducts": *[_type == "product" && featured == true] {
+        _id,
+        name,
+        slug,
+        mainImage,
+        images,
+        price, 
+        compareAtPrice,
+        shortDescription,
+        inStock,
+        featured,
+        new,
+        "categories": categories[] -> {
+          _id,
+          title,
+          slug
+        }
+      },
+      "featuredCollections": *[_type == "collection" && featured == true && active != false] {
         _id,
         title,
-        "slug": slug
+        slug,
+        mainImage,
+        releaseDate
       }
-    },
-    "featuredCollections": *[_type == "collection" && featured == true] {
-      _id,
-      title,
-      "slug": slug,
-      mainImage,
-      featured
-    }[0...4]
-  }`;
+    }`;
 
-    const data = await sanityClient.fetch(query);
-    return data;
+        const data = await client.fetch(query);
+
+        // Combine the homepage data with featured products and collections
+        return {
+            ...data.homepage,
+            featuredProducts: data.featuredProducts,
+            featuredCollections: data.featuredCollections
+        };
+    } catch (error) {
+        console.error('Error fetching homepage content:', error);
+        throw error;
+    }
 };
 
 // Get all products
@@ -80,24 +94,23 @@ export const getProducts = async (): Promise<Product[]> => {
 
 // Get all collections
 export const getCollections = async (): Promise<Collection[]> => {
-    const query = `*[_type == "collection"] {
-    _id,
-    title,
-    "slug": slug,
-    mainImage,
-    description,
-    featured,
-    "products": products[]-> {
+    try {
+        const query = `*[_type == "collection" && active != false] {
       _id,
-      name,
-      "slug": slug,
+      title,
+      slug,
       mainImage,
-      price
-    }
-  }`;
+      releaseDate,
+      featured,
+      "productCount": count(products)
+    } | order(displayOrder asc, releaseDate desc)`;
 
-    const data = await sanityClient.fetch(query);
-    return data;
+        const collections = await client.fetch<Collection[]>(query);
+        return collections;
+    } catch (error) {
+        console.error('Error fetching collections:', error);
+        throw error;
+    }
 };
 
 // Get a single product by slug
@@ -144,31 +157,64 @@ export const getProductBySlug = async (slug: string): Promise<Product | null> =>
 };
 
 // Get a single collection by slug
-export const getCollectionBySlug = async (slug: string): Promise<Collection | null> => {
-    const query = `*[_type == "collection" && slug.current == $slug][0] {
-    _id,
-    title,
-    "slug": slug,
-    mainImage,
-    description,
-    featured,
-    lookbookImages,
-    "products": products[]-> {
+export const getCollectionBySlug = async (slug: string): Promise<Collection> => {
+    try {
+        const query = `*[_type == "collection" && slug.current == $slug][0] {
       _id,
-      name,
-      "slug": slug,
+      title,
+      slug,
       mainImage,
-      price,
-      compareAtPrice,
-      new,
-      inStock
+      description,
+      releaseDate,
+      active,
+      featured,
+      lookbookImages[] {
+        image,
+        caption,
+        alt
+      },
+      "products": products[] -> {
+        _id,
+        name,
+        slug,
+        mainImage,
+        images,
+        price,
+        compareAtPrice,
+        shortDescription,
+        inStock,
+        featured,
+        new,
+        "categories": categories[] -> {
+          _id,
+          title,
+          slug
+        },
+        "variants": *[_type == "productVariant" && references(^._id)] {
+          _id,
+          title,
+          sku,
+          price,
+          compareAtPrice,
+          inStock,
+          image,
+          options
+        }
+      }
+    }`;
+
+        const collection = await client.fetch<Collection>(query, { slug });
+
+        if (!collection) {
+            throw new Error('Collection not found');
+        }
+
+        return collection;
+    } catch (error) {
+        console.error(`Error fetching collection with slug ${slug}:`, error);
+        throw error;
     }
-  }`;
-
-    const data = await sanityClient.fetch(query, { slug });
-    return data;
 };
-
 
 // Save a cart to Sanity (for persistent storage)
 export const saveCart = async (cart: Cart) => {

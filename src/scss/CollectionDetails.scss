@@ -1,0 +1,310 @@
+/* src/scss/CollectionDetails.scss */
+/* Catppuccin Mocha Color Palette */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+.collection-details-page {
+  font-family: 'Space Grotesk', sans-serif;
+
+  #MainContent {
+    padding-bottom: 3rem;
+  }
+
+  .collection-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  /* Loading and error states */
+  .loading-container,
+  .error-container,
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    min-height: 300px;
+
+    p {
+      color: $subtext1;
+      margin-bottom: 1rem;
+    }
+
+    ion-spinner {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+    }
+
+    .back-button {
+      --color: #{$mauve};
+    }
+  }
+
+  /* Collection header */
+  .collection-header {
+    margin: 2rem 0;
+
+    .back-link {
+      margin-bottom: 2rem;
+
+      a {
+        color: $subtext1;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $mauve;
+        }
+
+        ion-icon {
+          margin-right: 0.3rem;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .collection-title {
+      font-family: 'VT323', monospace;
+      font-size: 2.5rem;
+      color: $text;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 0.5rem 0;
+      text-align: center;
+
+      @media (max-width: 768px) {
+        font-size: 2rem;
+      }
+    }
+
+    .collection-release-date {
+      color: $subtext0;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .collection-hero {
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+      .collection-main-image {
+        width: 100%;
+        display: block;
+      }
+
+      .collection-image-placeholder {
+        width: 100%;
+        height: 300px;
+        background-color: $surface1;
+        position: relative;
+
+        .retro-grid {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background:
+                  linear-gradient(to right, $surface2 1px, transparent 1px) 0 0 / 40px 40px,
+                  linear-gradient(to bottom, $surface2 1px, transparent 1px) 0 0 / 40px 40px;
+          opacity: 0.3;
+        }
+      }
+    }
+
+    .collection-description {
+      max-width: 800px;
+      margin: 2rem auto;
+      color: $subtext1;
+      line-height: 1.6;
+
+      p {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  /* Collection tabs */
+  .collection-tabs {
+    margin-top: 3rem;
+
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid $surface1;
+
+      button {
+        background: transparent;
+        color: $subtext0;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-family: 'Space Grotesk', sans-serif;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background-color: $mauve;
+          transform: scaleX(0);
+          transition: transform 0.3s ease;
+        }
+
+        &.active {
+          color: $text;
+
+          &:after {
+            transform: scaleX(1);
+          }
+        }
+
+        &:hover:not(.active):not(:disabled) {
+          color: $subtext1;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    /* Products tab content */
+    .collection-products {
+      h2 {
+        text-align: center;
+        font-size: 1.5rem;
+        color: $text;
+        margin-bottom: 2rem;
+      }
+
+      .shop-all-cta {
+        text-align: center;
+        margin-top: 2rem;
+
+        .shop-all-link {
+          display: inline-flex;
+          align-items: center;
+          color: $mauve;
+          font-size: 1rem;
+          text-decoration: none;
+          padding: 0.5rem 1rem;
+          border: 1px solid $mauve;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+
+          ion-icon {
+            margin-left: 0.5rem;
+          }
+
+          &:hover {
+            background-color: $mauve;
+            color: $base;
+          }
+        }
+      }
+    }
+
+    /* Lookbook tab content */
+    .collection-lookbook {
+      h2 {
+        text-align: center;
+        font-size: 1.5rem;
+        color: $text;
+        margin-bottom: 2rem;
+      }
+
+      .lookbook-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1.5rem;
+
+        @media (min-width: 576px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (min-width: 992px) {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .lookbook-item {
+          position: relative;
+          overflow: hidden;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+          &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+            .lookbook-image {
+              transform: scale(1.05);
+            }
+          }
+
+          .lookbook-image {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+          }
+
+          .lookbook-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba($base, 0.9), transparent);
+            color: $text;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+}

@@ -77,12 +77,17 @@ export interface Collection {
     mainImage: any; // Sanity image type
     description?: PortableTextBlock[]; // Portable Text content
     featured: boolean;
+    active?: boolean;
+    displayOrder?: number;
+    releaseDate?: string; // Add this field
     products?: Product[];
     lookbookImages?: Array<{
         image: any;
         caption?: string;
         alt: string;
     }>;
+    seo?: any;
+    productCount?: number; // For displaying product count in collections list
 }
 
 export interface HomepageData {
