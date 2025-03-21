@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     IonContent,
     IonPage,
@@ -10,7 +10,11 @@ import {
     IonSelectOption,
     IonButton,
     IonLoading,
-    IonToast
+    IonToast,
+    IonIcon,
+    IonGrid,
+    IonRow,
+    IonCol
 } from '@ionic/react';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useCart } from '../context/CartContext';
@@ -18,6 +22,14 @@ import { createOrderFromCart } from '../services/api';
 import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';
 import PayPalCheckoutButton from '../components/cart/PayPalCheckoutButton';
+import {
+    cardOutline,
+    cashOutline,
+    arrowBackOutline,
+    checkmarkCircleOutline,
+    lockClosedOutline,
+    logoPaypal
+} from 'ionicons/icons';
 
 const Checkout: React.FC = () => {
     const { cart, clearCart } = useCart();
@@ -51,6 +63,15 @@ const Checkout: React.FC = () => {
 
     // Format currency
     const formatCurrency = (amount: number) => `€${amount.toFixed(2)}`;
+
+    // Check if cart is empty on initial load and redirect if needed
+    useEffect(() => {
+        if (cart.items.length === 0 && !orderPlaced) {
+            // This could be replaced with a redirect, for now we'll just show a message
+            setToastMessage('Your cart is empty');
+            setShowToast(true);
+        }
+    }, [cart.items.length, orderPlaced]);
 
     const handleInputChange = (field: string, value: string) => {
         setCustomerInfo((prev) => ({
@@ -128,215 +149,337 @@ const Checkout: React.FC = () => {
         }
     };
 
+    // Get current date/time for cyberpunk header
+    const getCurrentDateTime = () => {
+        const now = new Date();
+        const date = now.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        const time = now.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        return `${date} ${time}`;
+    };
+
     return (
         <PayPalScriptProvider
             options={{
-                clientId: 'API-KEY',
+                clientId: 'AZftd9zH5gCk6ucDk8LGTShn-tgr_W2IOKUxontLcYs8o2-d2YPbNc3fHbBcqb0opkv7uezihcedizVQ',
                 currency: 'EUR'
             }}
         >
-            <IonPage>
+            <IonPage className="checkout-page retro-modern">
                 <SiteHeader />
 
                 <IonContent>
                     <div className="checkout-container">
                         <div className="checkout-header">
                             <h1>Checkout</h1>
+                            <div className="cyberpunk-datetime">{getCurrentDateTime()}</div>
                         </div>
 
                         {orderPlaced ? (
                             <div className="order-confirmation">
                                 <h2>Order Placed Successfully!</h2>
-                                <p className="order-number">Order #: {orderNumber}</p>
+                                <div className="order-number">Order #: {orderNumber}</div>
                                 <p>
                                     Thank you for your purchase. We've sent a confirmation email to{' '}
-                                    {customerInfo.email}.
+                                    <span className="highlight-text">{customerInfo.email}</span>.
                                 </p>
                                 <IonButton expand="block" routerLink="/" className="continue-shopping-btn">
+                                    <IonIcon icon={arrowBackOutline} slot="start" />
                                     Return to Homepage
                                 </IonButton>
                             </div>
                         ) : (
-                            <>
-                                <div className="checkout-summary">
-                                    <h2>Order Summary</h2>
-                                    <div className="summary-details">
-                                        <div className="summary-row">
-                                            <span>Items ({cart.totalItems}):</span>
-                                            <span>{formatCurrency(subtotal)}</span>
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol size="12" sizeMd="7">
+                                        <div className="customer-info">
+                                            <h2>
+                                                <IonIcon icon={lockClosedOutline} />
+                                                Shipping Information
+                                            </h2>
+                                            <IonList>
+                                                <IonItem>
+                                                    <IonLabel position="floating">Email *</IonLabel>
+                                                    <IonInput
+                                                        type="email"
+                                                        value={customerInfo.email}
+                                                        onIonChange={(e) =>
+                                                            handleInputChange('email', e.detail.value || '')
+                                                        }
+                                                        required
+                                                    />
+                                                </IonItem>
+
+                                                <IonRow>
+                                                    <IonCol size="12" sizeMd="6">
+                                                        <IonItem>
+                                                            <IonLabel position="floating">First Name *</IonLabel>
+                                                            <IonInput
+                                                                value={customerInfo.firstName}
+                                                                onIonChange={(e) =>
+                                                                    handleInputChange('firstName', e.detail.value || '')
+                                                                }
+                                                                required
+                                                            />
+                                                        </IonItem>
+                                                    </IonCol>
+                                                    <IonCol size="12" sizeMd="6">
+                                                        <IonItem>
+                                                            <IonLabel position="floating">Last Name *</IonLabel>
+                                                            <IonInput
+                                                                value={customerInfo.lastName}
+                                                                onIonChange={(e) =>
+                                                                    handleInputChange('lastName', e.detail.value || '')
+                                                                }
+                                                                required
+                                                            />
+                                                        </IonItem>
+                                                    </IonCol>
+                                                </IonRow>
+
+                                                <IonItem>
+                                                    <IonLabel position="floating">Address *</IonLabel>
+                                                    <IonInput
+                                                        value={customerInfo.address}
+                                                        onIonChange={(e) =>
+                                                            handleInputChange('address', e.detail.value || '')
+                                                        }
+                                                        required
+                                                    />
+                                                </IonItem>
+
+                                                <IonRow>
+                                                    <IonCol size="12" sizeMd="6">
+                                                        <IonItem>
+                                                            <IonLabel position="floating">City *</IonLabel>
+                                                            <IonInput
+                                                                value={customerInfo.city}
+                                                                onIonChange={(e) =>
+                                                                    handleInputChange('city', e.detail.value || '')
+                                                                }
+                                                                required
+                                                            />
+                                                        </IonItem>
+                                                    </IonCol>
+                                                    <IonCol size="12" sizeMd="6">
+                                                        <IonItem>
+                                                            <IonLabel position="floating">State/Province *</IonLabel>
+                                                            <IonInput
+                                                                value={customerInfo.state}
+                                                                onIonChange={(e) =>
+                                                                    handleInputChange('state', e.detail.value || '')
+                                                                }
+                                                                required
+                                                            />
+                                                        </IonItem>
+                                                    </IonCol>
+                                                </IonRow>
+
+                                                <IonRow>
+                                                    <IonCol size="12" sizeMd="6">
+                                                        <IonItem>
+                                                            <IonLabel position="floating">Postal Code *</IonLabel>
+                                                            <IonInput
+                                                                value={customerInfo.postalCode}
+                                                                onIonChange={(e) =>
+                                                                    handleInputChange('postalCode', e.detail.value || '')
+                                                                }
+                                                                required
+                                                            />
+                                                        </IonItem>
+                                                    </IonCol>
+                                                    <IonCol size="12" sizeMd="6">
+                                                        <IonItem>
+                                                            <IonLabel position="floating">Country *</IonLabel>
+                                                            <IonSelect
+                                                                value={customerInfo.country}
+                                                                onIonChange={(e) => handleInputChange('country', e.detail.value)}
+                                                                className="retro-select"
+                                                            >
+                                                                <IonSelectOption value="FR">France</IonSelectOption>
+                                                                <IonSelectOption value="DE">Germany</IonSelectOption>
+                                                                <IonSelectOption value="IT">Italy</IonSelectOption>
+                                                                <IonSelectOption value="ES">Spain</IonSelectOption>
+                                                                <IonSelectOption value="UK">United Kingdom</IonSelectOption>
+                                                                <IonSelectOption value="US">United States</IonSelectOption>
+                                                            </IonSelect>
+                                                        </IonItem>
+                                                    </IonCol>
+                                                </IonRow>
+
+                                                <IonItem>
+                                                    <IonLabel position="floating">Phone</IonLabel>
+                                                    <IonInput
+                                                        type="tel"
+                                                        value={customerInfo.phone}
+                                                        onIonChange={(e) =>
+                                                            handleInputChange('phone', e.detail.value || '')
+                                                        }
+                                                    />
+                                                </IonItem>
+                                            </IonList>
                                         </div>
-                                        <div className="summary-row">
-                                            <span>Shipping:</span>
-                                            <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
+
+                                        <div className="payment-info">
+                                            <h2>
+                                                <IonIcon icon={cardOutline} />
+                                                Payment Method
+                                            </h2>
+                                            <IonList>
+                                                <IonItem>
+                                                    <IonLabel>Select Payment Method</IonLabel>
+                                                    <IonSelect
+                                                        value={paymentMethod}
+                                                        onIonChange={(e) => {
+                                                            setPaymentMethod(e.detail.value);
+                                                        }}
+                                                        className="retro-select"
+                                                    >
+                                                        <IonSelectOption value="creditCard">
+                                                            <IonIcon icon={cardOutline} /> Credit Card
+                                                        </IonSelectOption>
+                                                        <IonSelectOption value="paypal">
+                                                            <IonIcon icon={logoPaypal} /> PayPal
+                                                        </IonSelectOption>
+                                                        <IonSelectOption value="bankTransfer">
+                                                            <IonIcon icon={cashOutline} /> Bank Transfer
+                                                        </IonSelectOption>
+                                                    </IonSelect>
+                                                </IonItem>
+                                            </IonList>
+
+                                            {paymentMethod === 'creditCard' && (
+                                                <div className="credit-card-form">
+                                                    <p className="payment-notice">
+                                                        This is a demo checkout page. In a production app, you would integrate
+                                                        with a payment processor like Stripe or PayPal here.
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {paymentMethod === 'paypal' && (
+                                                <div className="paypal-button-container">
+                                                    <div className="paypal-info">
+                                                        <p>You'll be redirected to PayPal to complete your purchase securely.</p>
+                                                    </div>
+                                                    <PayPalCheckoutButton
+                                                        amount={total}
+                                                        onSuccess={(details) => {
+                                                            // Handle successful payment
+                                                            const customerData = {
+                                                                ...customerInfo,
+                                                                paymentMethod: 'paypal',
+                                                                paypalOrderId: details.id,
+                                                                paypalPayerId: details.payer?.payer_id
+                                                            };
+
+                                                            // We would normally create the order here,
+                                                            // but for now, simulate order creation
+                                                            setTimeout(() => {
+                                                                // Generate random order number
+                                                                const orderNum = `PP-${Math.floor(100000 + Math.random() * 900000)}`;
+                                                                setOrderNumber(orderNum);
+                                                                setOrderPlaced(true);
+                                                                clearCart();
+                                                            }, 1500);
+                                                        }}
+                                                        onError={(error) => {
+                                                            console.error('PayPal payment error:', error);
+                                                            setToastMessage('Payment failed. Please try again.');
+                                                            setShowToast(true);
+                                                        }}
+                                                    />
+                                                </div>
+                                            )}
+
+                                            {paymentMethod === 'bankTransfer' && (
+                                                <div className="credit-card-form">
+                                                    <p className="payment-notice">
+                                                        Bank transfer details will be sent to your email after placing the order.
+                                                        Your order will be processed once payment is confirmed.
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="summary-row">
-                                            <span>Tax (20%):</span>
-                                            <span>{formatCurrency(tax)}</span>
+                                    </IonCol>
+
+                                    <IonCol size="12" sizeMd="5">
+                                        <div className="checkout-summary">
+                                            <h2>Order Summary</h2>
+                                            <div className="summary-details">
+                                                <div className="summary-row">
+                                                    <span>Items ({cart.totalItems}):</span>
+                                                    <span>{formatCurrency(subtotal)}</span>
+                                                </div>
+                                                <div className="summary-row">
+                                                    <span>Shipping:</span>
+                                                    <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
+                                                </div>
+                                                <div className="summary-row">
+                                                    <span>Tax (20%):</span>
+                                                    <span>{formatCurrency(tax)}</span>
+                                                </div>
+                                                {cart.metadata?.couponCode && (
+                                                    <div className="summary-row discount">
+                                                        <span>Discount ({cart.metadata.couponCode}):</span>
+                                                        <span>-€0.00</span>
+                                                    </div>
+                                                )}
+                                                <div className="summary-row total">
+                                                    <span>Total:</span>
+                                                    <span>{formatCurrency(total)}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        {cart.metadata?.couponCode && (
-                                            <div className="summary-row discount">
-                                                <span>Discount ({cart.metadata.couponCode}):</span>
-                                                <span>-€0.00</span>
+
+                                        {/* Order Items Summary */}
+                                        {cart.items.length > 0 && (
+                                            <div className="checkout-summary items-preview">
+                                                <h2>Your Items</h2>
+                                                <div className="items-list">
+                                                    {cart.items.map((item, index) => (
+                                                        <div className="item-row" key={`${item.productId}-${item.variantId || 'default'}-${index}`}>
+                                                            <div className="item-info">
+                                                                <span className="item-name">{item.productName}</span>
+                                                                {item.options && item.options.length > 0 && (
+                                                                    <span className="item-options">
+                                                                        {item.options.map(opt => `${opt.name}: ${opt.value}`).join(', ')}
+                                                                    </span>
+                                                                )}
+                                                                <span className="item-quantity">Qty: {item.quantity}</span>
+                                                            </div>
+                                                            <span className="item-price">{formatCurrency(item.price * item.quantity)}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         )}
-                                        <div className="summary-row total">
-                                            <span>Total:</span>
-                                            <span>{formatCurrency(total)}</span>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="customer-info">
-                                    <h2>Shipping Information</h2>
-                                    <IonList>
-                                        <IonItem>
-                                            <IonLabel position="floating">Email *</IonLabel>
-                                            <IonInput
-                                                type="email"
-                                                value={customerInfo.email}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('email', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">First Name *</IonLabel>
-                                            <IonInput
-                                                value={customerInfo.firstName}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('firstName', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">Last Name *</IonLabel>
-                                            <IonInput
-                                                value={customerInfo.lastName}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('lastName', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">Address *</IonLabel>
-                                            <IonInput
-                                                value={customerInfo.address}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('address', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">City *</IonLabel>
-                                            <IonInput
-                                                value={customerInfo.city}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('city', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">State/Province *</IonLabel>
-                                            <IonInput
-                                                value={customerInfo.state}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('state', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">Postal Code *</IonLabel>
-                                            <IonInput
-                                                value={customerInfo.postalCode}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('postalCode', e.detail.value || '')
-                                                }
-                                                required
-                                            />
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">Country *</IonLabel>
-                                            <IonSelect
-                                                value={customerInfo.country}
-                                                onIonChange={(e) => handleInputChange('country', e.detail.value)}
+                                        <div className="checkout-actions">
+                                            <IonButton fill="outline" routerLink="/shop" className="continue-shopping-btn">
+                                                <IonIcon icon={arrowBackOutline} slot="start" />
+                                                Continue Shopping
+                                            </IonButton>
+
+                                            <IonButton
+                                                expand="block"
+                                                onClick={handlePlaceOrder}
+                                                className="place-order-btn"
+                                                disabled={cart.items.length === 0}
                                             >
-                                                <IonSelectOption value="FR">France</IonSelectOption>
-                                                <IonSelectOption value="DE">Germany</IonSelectOption>
-                                                <IonSelectOption value="IT">Italy</IonSelectOption>
-                                                <IonSelectOption value="ES">Spain</IonSelectOption>
-                                                <IonSelectOption value="UK">United Kingdom</IonSelectOption>
-                                                <IonSelectOption value="US">United States</IonSelectOption>
-                                            </IonSelect>
-                                        </IonItem>
-                                        <IonItem>
-                                            <IonLabel position="floating">Phone</IonLabel>
-                                            <IonInput
-                                                type="tel"
-                                                value={customerInfo.phone}
-                                                onIonChange={(e) =>
-                                                    handleInputChange('phone', e.detail.value || '')
-                                                }
-                                            />
-                                        </IonItem>
-                                    </IonList>
-                                </div>
-
-                                <div className="payment-info">
-                                    <h2>Payment Method</h2>
-                                    <IonList>
-                                        <IonItem>
-                                            <IonLabel>Payment Method</IonLabel>
-                                            <IonSelect
-                                                value={paymentMethod}
-                                                onIonChange={(e) => {
-                                                    console.log('Payment method changed to:', e.detail.value);
-                                                    setPaymentMethod(e.detail.value);
-                                                }}
-                                            >
-                                                <IonSelectOption value="creditCard">Credit Card</IonSelectOption>
-                                                <IonSelectOption value="paypal">PayPal</IonSelectOption>
-                                                <IonSelectOption value="bankTransfer">Bank Transfer</IonSelectOption>
-                                            </IonSelect>
-                                        </IonItem>
-                                    </IonList>
-
-                                    {paymentMethod === 'creditCard' && (
-                                        <div className="credit-card-form">
-                                            <p className="payment-notice">
-                                                This is a demo checkout page. In a production app, you would integrate
-                                                with a payment processor like Stripe or PayPal here.
-                                            </p>
+                                                <IonIcon icon={checkmarkCircleOutline} slot="start" />
+                                                Place Order ({formatCurrency(total)})
+                                            </IonButton>
                                         </div>
-                                    )}
-
-                                    {paymentMethod === 'paypal' && (
-                                        <div className="paypal-button-container">
-                                            <PayPalCheckoutButton amount={total} />
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="checkout-actions">
-                                    <IonButton fill="outline" routerLink="/shop" className="continue-shopping-btn">
-                                        Continue Shopping
-                                    </IonButton>
-
-                                    <IonButton
-                                        expand="block"
-                                        onClick={handlePlaceOrder}
-                                        className="place-order-btn"
-                                        disabled={cart.items.length === 0}
-                                    >
-                                        Place Order ({formatCurrency(total)})
-                                    </IonButton>
-                                </div>
-                            </>
+                                    </IonCol>
+                                </IonRow>
+                            </IonGrid>
                         )}
                     </div>
 
@@ -354,6 +497,6 @@ const Checkout: React.FC = () => {
             </IonPage>
         </PayPalScriptProvider>
     );
-};
+}
 
 export default Checkout;

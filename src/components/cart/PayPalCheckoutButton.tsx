@@ -3,19 +3,28 @@ import { PayPalButtons } from '@paypal/react-paypal-js';
 
 interface PayPalCheckoutButtonProps {
     amount: number;
+    onSuccess?: (details: any) => void;
+    onError?: (error: any) => void;
 }
 
-const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({ amount }) => {
+const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({
+                                                                       amount,
+                                                                       onSuccess,
+                                                                       onError
+                                                                   }) => {
     return (
         <PayPalButtons
-            style={{ layout: 'vertical', shape: 'pill' }}
+            style={{
+                layout: 'vertical',
+                shape: 'pill',
+                color: 'blue'
+            }}
             createOrder={(data, actions) => {
                 if (!actions.order) {
-                    // Return a rejected promise if actions.order is unavailable
                     return Promise.reject(new Error('actions.order is undefined'));
                 }
 
-                // Create the order on PayPal, specifying currency_code
+                // Create the order on PayPal, keeping closer to original implementation
                 return actions.order.create({
                     intent: 'CAPTURE',
                     purchase_units: [
@@ -27,11 +36,9 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({ amount }) =
                         }
                     ]
                 });
-
             }}
             onApprove={async (data, actions) => {
                 try {
-                    // Check if actions.order is available
                     if (!actions || !actions.order) {
                         throw new Error('actions.order is undefined');
                     }
@@ -39,15 +46,24 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({ amount }) =
                     // Capture the order on PayPal
                     const details = await actions.order.capture();
                     const firstName = details?.payer?.name?.given_name ?? 'Unknown';
-
                     console.log('Transaction completed by', firstName);
-                    // TODO: Use these `details` to create or update an order in your DB
+
+                    // Call onSuccess callback if provided
+                    if (onSuccess) {
+                        onSuccess(details);
+                    }
                 } catch (err) {
                     console.error('PayPal checkout error', err);
+                    if (onError) {
+                        onError(err);
+                    }
                 }
             }}
             onError={(err) => {
                 console.error('PayPal checkout error', err);
+                if (onError) {
+                    onError(err);
+                }
             }}
         />
     );

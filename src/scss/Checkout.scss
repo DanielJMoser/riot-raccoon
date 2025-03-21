@@ -1,4 +1,5 @@
-// src/scss/pages/Checkout.scss
+/* src/scss/Checkout.scss */
+/* Catppuccin Mocha Color Palette */
 $rosewater: #f5e0dc;
 $flamingo: #f2cdcd;
 $pink: #f5c2e7;
@@ -26,69 +27,151 @@ $base: #1e1e2e;
 $mantle: #181825;
 $crust: #11111b;
 
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 .checkout-container {
-  width: 100%;
-  max-width: 800px;
+  padding: 2rem 1rem 4rem;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 20px;
+  color: $text;
+  font-family: 'Space Grotesk', sans-serif;
+
+  @media (min-width: 768px) {
+    padding: 2rem 2rem 4rem;
+  }
 
   .checkout-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
+    position: relative;
 
     h1 {
-      color: $text;
-      font-size: 24px;
+      font-family: 'VT323', monospace;
+      font-size: 3rem;
+      color: $mauve;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0;
+      text-shadow: 0 0 8px rgba($mauve, 0.5);
+
+      &::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, $pink, $mauve);
+        margin: 0.5rem auto 0;
+      }
+    }
+
+    .cyberpunk-datetime {
+      font-family: 'VT323', monospace;
+      font-size: 1rem;
+      color: $overlay1;
+      margin-top: 0.5rem;
       letter-spacing: 1px;
     }
   }
 
-  h2 {
-    color: $text;
-    font-size: 18px;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid $surface0;
-  }
-
   .checkout-summary {
-    background-color: $surface0;
+    background-color: rgba($surface0, 0.7);
+    border: 2px solid $surface1;
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, $mauve, transparent);
+    }
+
+    &.items-preview {
+      .items-list {
+        margin-top: 1rem;
+
+        .item-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid rgba($surface1, 0.6);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .item-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            .item-name {
+              font-weight: 500;
+              margin-bottom: 0.25rem;
+              font-size: 0.9rem;
+            }
+
+            .item-options {
+              font-size: 0.8rem;
+              color: $subtext0;
+              margin-bottom: 0.25rem;
+            }
+
+            .item-quantity {
+              font-size: 0.8rem;
+              color: $overlay1;
+            }
+          }
+
+          .item-price {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: $text;
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+
+    h2 {
+      font-family: 'VT323', monospace;
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+      color: $pink;
+    }
 
     .summary-details {
       .summary-row {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
-        font-size: 14px;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
 
-        span:first-child {
-          color: $subtext1;
-        }
-
-        span:last-child {
-          color: $text;
-          font-weight: 500;
+        &:last-child {
+          margin-bottom: 0;
         }
 
         &.discount {
-          span:last-child {
-            color: $green;
-          }
+          color: $green;
         }
 
         &.total {
           border-top: 1px solid $surface1;
-          margin-top: 10px;
-          padding-top: 10px;
-          font-size: 16px;
-
-          span {
-            font-weight: 600;
-          }
+          padding-top: 1rem;
+          margin-top: 1rem;
+          font-weight: 600;
+          font-size: 1.2rem;
 
           span:last-child {
             color: $mauve;
@@ -98,106 +181,459 @@ $crust: #11111b;
     }
   }
 
-  .customer-info,
-  .payment-info {
-    margin-bottom: 30px;
+  .customer-info, .payment-info {
+    margin-bottom: 2rem;
+    background-color: rgba($surface0, 0.7);
+    border: 2px solid $surface1;
+    border-radius: 8px;
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, $blue, transparent);
+    }
+
+    h2 {
+      font-family: 'VT323', monospace;
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+      color: $blue;
+    }
 
     ion-list {
-      background-color: transparent;
+      background: transparent;
       padding: 0;
 
       ion-item {
-        --background: #{$surface0};
-        --color: #{$text};
-        --border-color: #{$surface1};
-        margin-bottom: 10px;
-        border-radius: 8px;
+        --background: rgba(#{$surface1}, 0.5);
+        --background-hover: #{$surface1};
+        --background-focused: #{$surface1};
+        --background-activated: #{$surface1};
+        --border-color: #{$surface2};
+        --border-radius: 8px;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        margin-bottom: 12px;
+        --ripple-color: #{$mauve};
 
-        ion-label {
-          color: $text;
-
-          &.label-floating {
-            color: $subtext0;
-          }
+        &:last-child {
+          margin-bottom: 0;
         }
 
-        ion-input,
-        ion-select {
+        ion-label {
+          --color: #{$subtext1};
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 500;
+        }
+
+        ion-input, ion-select {
           --color: #{$text};
-          --placeholder-color: #{$overlay1};
+          --placeholder-color: #{$overlay0};
+          font-family: 'Space Grotesk', sans-serif;
+        }
+
+        ion-select::part(text) {
+          color: $text;
+        }
+
+        ion-select::part(icon) {
+          color: $mauve;
         }
       }
     }
-
-    .payment-notice {
-      font-size: 14px;
-      color: $overlay1;
-      background-color: $surface0;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
   }
 
-  /* This class ensures the PayPal button area is visible and has some spacing. */
-  .paypal-button-container {
-    margin-top: 15px;
+  .payment-info {
+    margin-bottom: 2rem;
+
+    .payment-notice {
+      background-color: rgba($surface1, 0.6);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      border-left: 4px solid $mauve;
+      font-size: 0.9rem;
+      color: $subtext0;
+    }
+
+    .paypal-button-container {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background-color: rgba($surface1, 0.6);
+      border-radius: 8px;
+    }
   }
 
   .checkout-actions {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 30px;
-    margin-bottom: 50px;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
 
     .continue-shopping-btn {
       --background: transparent;
+      --background-hover: #{$surface1};
+      --background-activated: #{$surface1};
+      --background-focused: #{$surface1};
       --color: #{$text};
       --border-color: #{$surface1};
+      --border-style: solid;
+      --border-width: 2px;
+      --border-radius: 8px;
+      --padding-top: 1rem;
+      --padding-bottom: 1rem;
+      flex: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      min-height: 50px;
+
+      @media (min-width: 768px) {
+        max-width: 200px;
+      }
     }
 
     .place-order-btn {
       --background: #{$mauve};
+      --background-hover: #{$pink};
+      --background-activated: #{$pink};
+      --background-focused: #{$pink};
       --color: #{$base};
+      --border-radius: 8px;
+      --padding-top: 1rem;
+      --padding-bottom: 1rem;
+      flex: 2;
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      min-height: 50px;
 
       &:disabled {
-        --background: #{$surface1};
-        --color: #{$overlay1};
-        opacity: 0.7;
+        --background: #{$overlay0};
+        --color: #{$overlay2};
       }
     }
   }
 
   .order-confirmation {
-    background-color: $surface0;
+    background-color: rgba($surface0, 0.7);
+    border: 2px solid $surface1;
     border-radius: 8px;
-    padding: 30px;
+    padding: 2rem;
     text-align: center;
-    margin: 40px 0;
+    backdrop-filter: blur(8px);
+    margin: 2rem auto;
+    max-width: 600px;
+    position: relative;
+    overflow: hidden;
+
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, $green, transparent);
+      left: 0;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
 
     h2 {
+      font-family: 'VT323', monospace;
+      font-size: 2.2rem;
       color: $green;
-      border-bottom: none;
-      margin-bottom: 20px;
-      font-size: 22px;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 8px rgba($green, 0.4);
     }
 
     .order-number {
-      font-size: 18px;
-      font-weight: 500;
-      color: $text;
-      margin-bottom: 20px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $yellow;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
     }
 
     p {
       color: $subtext1;
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
     }
 
     .continue-shopping-btn {
-      --background: #{$mauve};
+      --background: #{$green};
+      --background-hover: #{$teal};
+      --background-activated: #{$teal};
+      --background-focused: #{$teal};
       --color: #{$base};
+      --border-radius: 8px;
+      max-width: 300px;
+      margin: 0 auto;
+      --padding-top: 1rem;
+      --padding-bottom: 1rem;
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      font-size: 0.9rem;
     }
   }
+}
+
+/* Custom styling for PayPal buttons to match theme */
+.paypal-button-container {
+  margin-top: 1.5rem;
+  position: relative;
+  background-color: rgba($surface1, 0.6);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba($blue, 0.3);
+
+  &::before {
+    content: 'Complete your order with PayPal';
+    display: block;
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: $blue;
+    margin-bottom: 1rem;
+    text-align: center;
+    text-shadow: 0 0 5px rgba($blue, 0.5);
+  }
+
+  .paypal-info {
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    background-color: rgba($blue, 0.1);
+    border-radius: 4px;
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: $subtext1;
+      text-align: center;
+    }
+  }
+
+  .paypal-checkout-wrapper {
+    position: relative;
+
+    .paypal-processing {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba($base, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+      border-radius: 8px;
+
+      ion-spinner {
+        --color: #{$blue};
+        margin-bottom: 0.5rem;
+      }
+
+      span {
+        font-size: 0.9rem;
+        color: $text;
+      }
+    }
+
+    .paypal-status {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+
+      ion-icon {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+      }
+
+      &.success {
+        background-color: rgba($green, 0.2);
+        border: 1px solid rgba($green, 0.4);
+
+        ion-icon {
+          color: $green;
+        }
+
+        ion-text {
+          color: $subtext1;
+        }
+      }
+
+      &.error {
+        background-color: rgba($red, 0.2);
+        border: 1px solid rgba($red, 0.4);
+
+        ion-icon {
+          color: $red;
+        }
+
+        ion-text {
+          color: $subtext1;
+        }
+      }
+    }
+  }
+
+  // Add a subtle glow effect to PayPal buttons
+  div[data-funding-source] {
+    box-shadow: 0 0 10px rgba($blue, 0.2);
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+
+    &:hover {
+      box-shadow: 0 0 15px rgba($blue, 0.4);
+    }
+  }
+}
+
+/* Styling specific to toast notifications */
+ion-toast {
+  --background: #{$surface0};
+  --color: #{$text};
+  --border-color: #{$red};
+  --border-style: solid;
+  --border-width: 1px 0 0 0;
+  --border-radius: 0;
+  --button-color: #{$mauve};
+  --box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Space Grotesk', sans-serif;
+
+  &.success-toast {
+    --border-color: #{$green};
+  }
+}
+
+/* Styling for loading indicator */
+ion-loading {
+  --background: rgba(#{$base}, 0.8);
+  --spinner-color: #{$mauve};
+  --backdrop-opacity: 0.6;
+
+  .loading-wrapper {
+    border: 1px solid $surface1;
+    border-radius: 12px;
+  }
+}
+
+/* Cyberpunk grid pattern background for the entire checkout page */
+ion-content {
+  --background: #{$base} radial-gradient(circle, rgba($crust, 0.4) 1px, transparent 1px) 0 0 / 22px 22px;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+            linear-gradient(90deg, rgba($pink, 0.03) 1px, transparent 1px) 0 0 / 40px 40px,
+            linear-gradient(0deg, rgba($blue, 0.03) 1px, transparent 1px) 0 0 / 40px 40px;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+/* Modern scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $surface0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $overlay0;
+  border-radius: 4px;
+
+  &:hover {
+    background: $overlay1;
+  }
+}
+
+/* Retro-modern form styling */
+ion-input.retro-input,
+ion-select.retro-select {
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --background: rgba(#{$surface1}, 0.5);
+  --color: #{$text};
+  --placeholder-color: #{$overlay0};
+  border: 1px solid $surface2;
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+
+  &:focus, &:active {
+    border-color: $mauve;
+    box-shadow: 0 0 0 1px rgba($mauve, 0.4);
+  }
+}
+
+/* Select dropdown styling */
+.alert-radio-label {
+  color: $text !important;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.alert-tappable.alert-radio {
+  background-color: $surface0 !important;
+
+  &[aria-checked="true"] .alert-radio-icon {
+    border-color: $mauve !important;
+  }
+
+  &[aria-checked="true"] .alert-radio-inner {
+    background-color: $mauve !important;
+  }
+}
+
+.alert-wrapper {
+  background-color: $base !important;
+  border: 1px solid $surface1 !important;
+}
+
+.alert-title, .alert-sub-title {
+  color: $text !important;
+  font-family: 'VT323', monospace !important;
 }
