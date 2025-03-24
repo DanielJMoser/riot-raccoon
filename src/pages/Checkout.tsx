@@ -325,12 +325,12 @@ const Checkout: React.FC = () => {
                                                                 onIonChange={(e) => handleInputChange('country', e.detail.value)}
                                                                 className="retro-select"
                                                             >
-                                                                <IonSelectOption value="FR">France</IonSelectOption>
+                                                                <IonSelectOption value="AT">Austria</IonSelectOption>
                                                                 <IonSelectOption value="DE">Germany</IonSelectOption>
                                                                 <IonSelectOption value="IT">Italy</IonSelectOption>
                                                                 <IonSelectOption value="ES">Spain</IonSelectOption>
-                                                                <IonSelectOption value="UK">United Kingdom</IonSelectOption>
-                                                                <IonSelectOption value="US">United States</IonSelectOption>
+                                                                <IonSelectOption value="FR">France</IonSelectOption>
+
                                                             </IonSelect>
                                                         </IonItem>
                                                     </IonCol>
