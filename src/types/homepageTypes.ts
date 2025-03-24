@@ -128,3 +128,75 @@ export interface Cart {
     totalPrice: number;
     metadata?: CartMetadata;
 }
+
+// Order Types
+
+export interface CustomerInfo {
+    email: string;
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    phone?: string;
+    paymentMethod: string;
+    paypalOrderId?: string;
+    paypalPayerId?: string;
+}
+
+export interface OrderItemOption {
+    key: string;
+    value: string;
+}
+
+export interface OrderItem {
+    productId: string;
+    variantId?: string;
+    name: string;
+    price: number;
+    quantity: number;
+    options?: {
+        fields: OrderItemOption[];
+    };
+    sku?: string;
+}
+
+export interface OrderShipping {
+    method: string;
+    price: number;
+    trackingNumber?: string;
+    carrier?: string;
+    estimatedDelivery?: string;
+}
+
+export interface OrderPayment {
+    method: 'creditCard' | 'paypal' | 'bankTransfer';
+    cardLast4?: string;
+    subtotal: number;
+    shipping: number;
+    tax: number;
+    total: number;
+    discountCode?: string;
+    discountAmount?: number;
+}
+
+export interface Order {
+    _id?: string;
+    orderNumber: string;
+    customerInfo: CustomerInfo;
+    items: OrderItem[];
+    shipping: OrderShipping;
+    payment: OrderPayment;
+    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+    notes?: string;
+    createdAt: string;
+    updatedAt?: string;
+}
+
+export interface OrderCreateResponse {
+    orderId: string;
+    orderNumber: string;
+}
+

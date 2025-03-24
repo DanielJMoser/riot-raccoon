@@ -19,6 +19,7 @@ import {
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useCart } from '../context/CartContext';
 import { createOrderFromCart } from '../services/api';
+import { CustomerInfo } from '../types/homepageTypes';
 import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';
 import PayPalCheckoutButton from '../components/cart/PayPalCheckoutButton';
@@ -40,7 +41,7 @@ const Checkout: React.FC = () => {
     const [orderNumber, setOrderNumber] = useState('');
 
     // Form state
-    const [customerInfo, setCustomerInfo] = useState({
+    const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
         email: '',
         firstName: '',
         lastName: '',
@@ -49,11 +50,20 @@ const Checkout: React.FC = () => {
         state: '',
         postalCode: '',
         country: 'FR',
-        phone: ''
+        phone: '',
+        paymentMethod: 'creditCard'
     });
 
     // Payment method
     const [paymentMethod, setPaymentMethod] = useState('creditCard');
+
+    // Update customerInfo when payment method changes
+    useEffect(() => {
+        setCustomerInfo(prev => ({
+            ...prev,
+            paymentMethod
+        }));
+    }, [paymentMethod]);
 
     // Calculate order totals
     const subtotal = cart.totalPrice;
@@ -125,8 +135,8 @@ const Checkout: React.FC = () => {
         try {
             setLoading(true);
 
-            // Add payment method to customer info
-            const customerData = {
+            // Ensure payment method is set in customer info
+            const customerData: CustomerInfo = {
                 ...customerInfo,
                 paymentMethod
             };
@@ -162,6 +172,19 @@ const Checkout: React.FC = () => {
             minute: '2-digit'
         });
         return `${date} ${time}`;
+    };
+
+    // Handle successful PayPal payment
+    const handlePayPalSuccess = (details: any) => {
+        setOrderNumber(`PP-${Math.floor(100000 + Math.random() * 900000)}`);
+        setOrderPlaced(true);
+    };
+
+    // Handle PayPal error
+    const handlePayPalError = (error: any) => {
+        console.error('PayPal payment error:', error);
+        setToastMessage('Payment failed. Please try again.');
+        setShowToast(true);
     };
 
     return (
@@ -370,30 +393,9 @@ const Checkout: React.FC = () => {
                                                     </div>
                                                     <PayPalCheckoutButton
                                                         amount={total}
-                                                        onSuccess={(details) => {
-                                                            // Handle successful payment
-                                                            const customerData = {
-                                                                ...customerInfo,
-                                                                paymentMethod: 'paypal',
-                                                                paypalOrderId: details.id,
-                                                                paypalPayerId: details.payer?.payer_id
-                                                            };
-
-                                                            // We would normally create the order here,
-                                                            // but for now, simulate order creation
-                                                            setTimeout(() => {
-                                                                // Generate random order number
-                                                                const orderNum = `PP-${Math.floor(100000 + Math.random() * 900000)}`;
-                                                                setOrderNumber(orderNum);
-                                                                setOrderPlaced(true);
-                                                                clearCart();
-                                                            }, 1500);
-                                                        }}
-                                                        onError={(error) => {
-                                                            console.error('PayPal payment error:', error);
-                                                            setToastMessage('Payment failed. Please try again.');
-                                                            setShowToast(true);
-                                                        }}
+                                                        customerInfo={customerInfo}
+                                                        onSuccess={handlePayPalSuccess}
+                                                        onError={handlePayPalError}
                                                     />
                                                 </div>
                                             )}
@@ -467,15 +469,17 @@ const Checkout: React.FC = () => {
                                                 Continue Shopping
                                             </IonButton>
 
-                                            <IonButton
-                                                expand="block"
-                                                onClick={handlePlaceOrder}
-                                                className="place-order-btn"
-                                                disabled={cart.items.length === 0}
-                                            >
-                                                <IonIcon icon={checkmarkCircleOutline} slot="start" />
-                                                Place Order ({formatCurrency(total)})
-                                            </IonButton>
+                                            {paymentMethod !== 'paypal' && (
+                                                <IonButton
+                                                    expand="block"
+                                                    onClick={handlePlaceOrder}
+                                                    className="place-order-btn"
+                                                    disabled={cart.items.length === 0}
+                                                >
+                                                    <IonIcon icon={checkmarkCircleOutline} slot="start" />
+                                                    Place Order ({formatCurrency(total)})
+                                                </IonButton>
+                                            )}
                                         </div>
                                     </IonCol>
                                 </IonRow>
