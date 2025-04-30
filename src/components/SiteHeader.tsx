@@ -71,6 +71,7 @@ const SiteHeader: React.FC<HeaderProps> = ({ loading = false }) => {
                         <IonRouterLink routerLink="/shop" className="nav-link">Shop</IonRouterLink>
                         <IonRouterLink routerLink="/collections" className="nav-link">Collections</IonRouterLink>
                         <IonRouterLink routerLink="/about" className="nav-link">About</IonRouterLink>
+                        <IonRouterLink routerLink="/pfandgehoertdaneben" className="nav-link">pgd</IonRouterLink>
                     </div>
                 </div>
 

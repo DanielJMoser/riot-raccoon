@@ -42,6 +42,7 @@ import Checkout from "./pages/Checkout";
 import About from "./pages/About";
 import CollectionDetails from "./pages/CollectionDetails";
 import Collections from "./pages/Collections";
+import PfandGehoertDaneben from "./pages/PfandGehoertDaneben";
 
 // Import placeholder pages
 // These will be replaced with actual implementations later
@@ -94,9 +95,9 @@ const App: React.FC = () => (
                       <ProductDetails />
                   </Route>
 
-                  {/* News section */}
-                  <Route exact path="/news">
-                      <PlaceholderPage title="News" />
+                  {/* Pfand Gehoert Daneben section */}
+                  <Route exact path="/pfandgehoertdaneben">
+                      <PfandGehoertDaneben />
                   </Route>
 
                   {/* Collection previews */}

@@ -1,0 +1,538 @@
+/* src/scss/PfandGehoertDaneben.scss */
+/* Catppuccin Mocha Color Palette */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+.pfand-page.retro-modern {
+  font-family: 'Space Grotesk', sans-serif;
+
+  .pfand-container {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+      padding: 3rem 2rem;
+    }
+  }
+
+  /* HERO SECTION */
+  .pfand-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .pfand-title {
+      font-family: 'VT323', monospace;
+      font-size: 3rem;
+      color: $pink;
+      text-shadow: 0 0 10px rgba($pink, 0.5);
+      margin-bottom: 1rem;
+
+      @media (min-width: 768px) {
+        font-size: 4rem;
+      }
+    }
+
+    .pfand-subtitle {
+      font-size: 1.2rem;
+      color: $text;
+      margin-top: 1rem;
+    }
+
+    .retro-line {
+      height: 3px;
+      background: linear-gradient(to right, transparent, $mauve, transparent);
+      width: 80%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+
+  /* STORY SECTION */
+  .pfand-story-section {
+    margin-bottom: 2rem;
+  }
+
+  .impact-section {
+    margin-bottom: 2rem;
+
+    h2 {
+      font-family: 'VT323', monospace;
+      font-size: 2rem;
+      color: $mauve;
+      margin-bottom: 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, $mauve, transparent);
+      }
+
+      ion-icon {
+        color: $mauve;
+        font-size: 1.5rem;
+      }
+    }
+
+    p {
+      color: $text;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  .pfand-image-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .pfand-image {
+      position: relative;
+      width: 100%;
+      padding-bottom: 75%; /* 4:3 Aspect Ratio */
+      border: 3px solid $blue;
+      border-radius: 8px;
+      overflow: hidden;
+
+      &.placeholder-image {
+        background-color: $surface1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        .retro-grid {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image:
+                  linear-gradient(to right, rgba($blue, 0.2) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba($blue, 0.2) 1px, transparent 1px);
+          background-size: 20px 20px;
+        }
+      }
+
+      .image-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to top, rgba($base, 0.8), transparent);
+        padding: 2rem 1rem 1rem;
+        color: $text;
+        text-align: center;
+        font-family: 'VT323', monospace;
+        font-size: 1.2rem;
+      }
+    }
+
+    .retro-card {
+      background-color: $surface0;
+      border: 2px solid $green;
+      border-radius: 8px;
+      box-shadow: 5px 5px 0 rgba($green, 0.3);
+      margin: 0;
+
+      ion-card-header {
+        padding-bottom: 0.5rem;
+      }
+
+      ion-card-title {
+        font-family: 'VT323', monospace;
+        font-size: 1.8rem;
+        color: $green;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .card-icon {
+          font-size: 1.5rem;
+        }
+      }
+
+      ion-card-content {
+        padding: 0.5rem 1rem 1.5rem;
+      }
+
+      .impact-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 1rem;
+
+          .impact-icon {
+            color: $green;
+            font-size: 1.2rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+          }
+
+          .impact-text {
+            color: $subtext1;
+
+            strong {
+              color: $text;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* FACTS SECTION */
+  .pfand-facts-section {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    h2 {
+      font-family: 'VT323', monospace;
+      font-size: 2.5rem;
+      color: $mauve;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+
+      ion-icon {
+        font-size: 2rem;
+      }
+    }
+
+    .facts-hint {
+      text-align: center;
+      color: $subtext0;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    /* Flip Card Styles */
+    .flip-card {
+      perspective: 1000px;
+      height: 100%;
+      min-height: 280px;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+
+      &:hover {
+        .flip-card-front .fact-card {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-hint {
+          opacity: 1;
+        }
+      }
+
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+      }
+
+      &.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 8px;
+      }
+
+      .flip-card-front {
+        z-index: 2;
+      }
+
+      .flip-card-back {
+        transform: rotateY(180deg);
+        z-index: 1;
+      }
+
+      .flip-hint {
+        position: absolute;
+        bottom: 15px;
+        width: 100%;
+        text-align: center;
+        font-size: 0.85rem;
+        color: $overlay0;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+
+        ion-icon {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .fact-card {
+      background-color: $surface0;
+      border: 2px solid $blue;
+      border-radius: 8px;
+      padding: 1.5rem;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      &.back-card {
+        background-color: $surface1;
+        border-color: $pink;
+      }
+
+      /* Front card specific styling */
+      &.front-card {
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 3.5rem; /* Space for hint */
+
+        .fact-icon-container {
+          margin-bottom: 1.5rem;
+          width: 80px;
+          height: 80px;
+        }
+
+        h3 {
+          font-size: 2rem;
+          margin-bottom: 0;
+        }
+      }
+
+      .fact-icon-container {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: rgba($blue, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+      }
+
+      .fact-icon {
+        font-size: 2rem;
+        color: $blue;
+      }
+
+      h3 {
+        font-family: 'VT323', monospace;
+        font-size: 1.6rem;
+        color: $text;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        color: $subtext0;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+
+        &:last-of-type {
+          flex-grow: 1;
+          margin-bottom: 2.5rem; /* Space for hint */
+        }
+      }
+    }
+  }
+
+  /* CTA SECTION */
+  .pfand-cta-section {
+    padding: 2rem;
+    background-color: $surface0;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+
+    /* Dotted background pattern from home page */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+              radial-gradient($surface2 1px, transparent 1px),
+              radial-gradient($surface2 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    h2 {
+      font-family: 'VT323', monospace;
+      font-size: 2.2rem;
+      color: $pink;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: $text;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .learn-more-btn {
+      --background: #{$mauve};
+      --background-hover: #{$pink};
+      --color: #{$base};
+      --border-radius: 25px;
+      font-family: 'VT323', monospace;
+      letter-spacing: 1px;
+      font-size: 1.2rem;
+      --padding-top: 12px;
+      --padding-bottom: 12px;
+      --padding-start: 24px;
+      --padding-end: 24px;
+
+      ion-icon {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  /* SOURCES SECTION */
+  .pfand-sources-section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: $surface0;
+    border-radius: 8px;
+    border-left: 3px solid $mauve;
+
+    h4 {
+      font-family: 'VT323', monospace;
+      font-size: 1.4rem;
+      color: $mauve;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    .sources-list {
+      margin: 0;
+      padding-left: 1.5rem;
+      color: $subtext0;
+
+      li {
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        padding: 0.3rem 0.2rem;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        a {
+          color: $blue;
+          text-decoration: none;
+          transition: color 0.2s ease, text-decoration 0.2s ease;
+
+          &:hover {
+            color: $mauve;
+            text-decoration: underline;
+          }
+        }
+
+        &.highlight-source {
+          background-color: rgba($mauve, 0.2);
+          animation: pulse 2s ease-in-out;
+        }
+      }
+    }
+  }
+
+  /* SOURCE LINKS */
+  .source-link {
+    color: $blue;
+    font-size: 0.8rem;
+    text-decoration: none;
+    cursor: pointer;
+    vertical-align: super;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $mauve;
+      text-decoration: underline;
+    }
+  }
+
+  /* Animation for source highlight */
+  @keyframes pulse {
+    0% { background-color: rgba($mauve, 0.1); }
+    50% { background-color: rgba($mauve, 0.3); }
+    100% { background-color: rgba($mauve, 0.1); }
+  }
+}
