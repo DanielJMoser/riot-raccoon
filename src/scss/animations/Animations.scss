@@ -1,0 +1,435 @@
+// src/animations/Animations.scss
+/* Catppuccin Mocha Color Palette */
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/* Animation Overlay Base */
+.animation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+
+  &.animating {
+    pointer-events: all;
+  }
+
+  &.completed {
+    animation-direction: reverse;
+  }
+}
+
+/* Retro Fade Animation */
+.animation-retro-fade {
+  background-color: $crust;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  &.animating {
+    opacity: 1;
+  }
+
+  .retro-fade-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    .retro-fade-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+              linear-gradient($mauve 1px, transparent 1px),
+              linear-gradient(90deg, $mauve 1px, transparent 1px);
+      background-size: 20px 20px;
+      background-position: -1px -1px;
+      opacity: 0.15;
+      animation: gridFade 0.7s ease-in-out forwards;
+    }
+  }
+}
+
+@keyframes gridFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+}
+
+/* Pixel Slide Animation */
+.animation-pixel-slide {
+  background-color: transparent;
+  overflow: hidden;
+
+  .pixel-slide-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .pixel-row {
+      height: 10vh;
+      background-color: $crust;
+      transform: translateX(-100%);
+      animation: pixelSlide 0.6s ease-in-out forwards;
+
+      &:nth-child(even) {
+        animation-name: pixelSlideReverse;
+      }
+    }
+  }
+
+  &.completed {
+    .pixel-row {
+      animation-direction: reverse;
+    }
+  }
+}
+
+@keyframes pixelSlide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pixelSlideReverse {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Glitch Animation */
+.animation-glitch {
+  background-color: $base;
+
+  .glitch-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .glitch-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $crust;
+      animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      opacity: 0.8;
+
+      &::before, &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: $crust;
+        opacity: 0.8;
+      }
+
+      &::before {
+        animation: glitchTop 0.7s ease-in-out infinite;
+        clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        transform: translate(-5px);
+        background-color: $pink;
+      }
+
+      &::after {
+        animation: glitchBottom 0.7s ease-in-out infinite;
+        clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+        transform: translate(5px);
+        background-color: $blue;
+      }
+    }
+
+    .glitch-scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0.6;
+      animation: scanlines 0.5s linear infinite;
+      background: repeating-linear-gradient(
+                      to bottom,
+                      transparent 0%,
+                      rgba($mauve, 0.05) 0.5%,
+                      transparent 1%
+      );
+      background-size: 100% 4px;
+    }
+  }
+
+  &.completed {
+    animation: glitchFadeOut 0.3s forwards;
+  }
+}
+
+@keyframes glitch {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  20%, 40%, 60%, 80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glitchTop {
+  0%, 100% {
+    transform: translate(0);
+    opacity: 0.5;
+  }
+  25%, 75% {
+    transform: translate(-2px, 3px);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(3px, 1px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes glitchBottom {
+  0%, 100% {
+    transform: translate(0);
+    opacity: 0.5;
+  }
+  25%, 75% {
+    transform: translate(2px, -3px);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(-3px, 1px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes glitchFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* CRT Off Animation */
+.animation-crt-off {
+  background-color: transparent;
+
+  .crt-off-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: $crust;
+
+    .crt-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: $mauve;
+      transform: translateY(-50%);
+      animation: crtOff 0.7s ease forwards;
+      box-shadow: 0 0 10px 5px rgba($mauve, 0.7);
+    }
+  }
+
+  &.completed {
+    animation: fadeOut 0.3s forwards;
+  }
+}
+
+@keyframes crtOff {
+  0% {
+    height: 2px;
+    top: 50%;
+  }
+  20% {
+    height: 4px;
+  }
+  50% {
+    height: 50vh;
+    top: 25%;
+  }
+  80% {
+    height: 2px;
+    top: 50%;
+  }
+  100% {
+    height: 0;
+    top: 50%;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Utility for fade out */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Page Transitions - add these to your page components */
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms, transform 400ms;
+  transition-delay: 300ms; /* Delay to allow animation overlay to work first */
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* Custom animation modifiers */
+/* You can add these classes to elements within your pages for finer-grained control */
+.pixelate-in {
+  animation: pixelateIn 0.5s ease-out forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.glitch-in {
+  animation: glitchTextIn 0.8s ease-out forwards;
+}
+
+@keyframes pixelateIn {
+  0% {
+    filter: blur(10px) brightness(0);
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0) brightness(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glitchTextIn {
+  0% {
+    clip-path: inset(100% 0 0 0);
+    transform: translateX(-10px);
+  }
+  20% {
+    clip-path: inset(45% 0 61% 0);
+    transform: translateX(10px);
+  }
+  40% {
+    clip-path: inset(82% 0 41% 0);
+    transform: translateX(-10px);
+  }
+  60% {
+    clip-path: inset(24% 0 34% 0);
+    transform: translateX(10px);
+  }
+  80% {
+    clip-path: inset(3% 0 71% 0);
+    transform: translateX(-10px);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(0);
+  }
+}
