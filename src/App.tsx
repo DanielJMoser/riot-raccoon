@@ -44,22 +44,9 @@ import CollectionDetails from "./pages/CollectionDetails";
 import Collections from "./pages/Collections";
 import PfandGehoertDaneben from "./pages/PfandGehoertDaneben";
 
-// Import Animation System
-import { RouteTransition, withPageTransition } from './animations/RouteTransition';
-import './scss/animations/Animations.scss';
-import './scss/animations/AnimationUtils.scss';
-
-// Wrap page components with animations
-const AnimatedHome = withPageTransition(Home, { animationClass: 'pixelate-in', animationDelay: 300 });
-const AnimatedProductList = withPageTransition(ProductList, { animationClass: 'pixelate-in', animationDelay: 300 });
-const AnimatedProductDetails = withPageTransition(ProductDetails, { animationClass: 'fade-in-up', animationDelay: 300 });
-const AnimatedCollections = withPageTransition(Collections, { animationClass: 'pixelate-in', animationDelay: 300 });
-const AnimatedCollectionDetails = withPageTransition(CollectionDetails, { animationClass: 'fade-in-up', animationDelay: 300 });
-const AnimatedAbout = withPageTransition(About, { animationClass: 'pixelate-in', animationDelay: 300 });
-const AnimatedCheckout = withPageTransition(Checkout, { animationClass: 'glitch', animationDelay: 300 });
-
-// Wrap placeholder component with animation
-const AnimatedPlaceholderPage = withPageTransition(({ title }: { title: string }) => (
+// Import placeholder pages
+// These will be replaced with actual implementations later
+const PlaceholderPage: React.FC<{ title: string }> = ({ title }) => (
     <div style={{
         padding: '20px',
         display: 'flex',
@@ -83,96 +70,87 @@ const AnimatedPlaceholderPage = withPageTransition(({ title }: { title: string }
             Return to Home
         </a>
     </div>
-), { animationClass: 'crt-in', animationDelay: 300 });
+);
 
-setupIonicReact({
-    // Add animation effect to Ionic's own transitions
-    animated: true,
-});
+setupIonicReact();
 
 const App: React.FC = () => (
     <IonApp>
         <CartProvider>
             <IonReactRouter>
-                <RouteTransition>
-                    <IonRouterOutlet>
-                        {/* Main routes */}
-                        <Route exact path="/">
-                            <AnimatedHome />
-                        </Route>
-                        <Route exact path="/home">
-                            <Redirect to="/" />
-                        </Route>
+                <IonRouterOutlet>
+                    {/* Main routes */}
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+                    <Route exact path="/home">
+                        <Redirect to="/" />
+                    </Route>
 
-                        {/* Shop section */}
-                        <Route exact path="/shop">
-                            <AnimatedProductList />
-                        </Route>
-                        <Route exact path="/product/:slug">
-                            <AnimatedProductDetails />
-                        </Route>
+                    {/* Shop section */}
+                    <Route exact path="/shop">
+                        <ProductList />
+                    </Route>
+                    <Route exact path="/product/:slug">
+                        <ProductDetails />
+                    </Route>
 
-                  {/* Pfand Gehoert Daneben section */}
-                  <Route exact path="/pfandgehoertdaneben">
-                      <PfandGehoertDaneben />
-                  </Route>
-                        {/* News section */}
-                        <Route exact path="/news">
-                            <AnimatedPlaceholderPage title="News" />
-                        </Route>
+                    {/* Pfand Gehoert Daneben section */}
+                    <Route exact path="/pfandgehoertdaneben">
+                        <PfandGehoertDaneben />
+                    </Route>
 
-                        {/* Collection previews */}
-                        <Route exact path="/collections">
-                            <AnimatedCollections />
-                        </Route>
-                        <Route exact path="/collection/:slug">
-                            <AnimatedCollectionDetails />
-                        </Route>
+                    {/* Collection previews */}
+                    <Route exact path="/collections">
+                        <Collections />
+                    </Route>
+                    <Route exact path="/collection/:slug">
+                        <CollectionDetails />
+                    </Route>
 
-                        {/* Lookbook */}
-                        <Route exact path="/lookbook">
-                            <AnimatedPlaceholderPage title="Lookbook" />
-                        </Route>
+                    {/* Lookbook */}
+                    <Route exact path="/lookbook">
+                        <PlaceholderPage title="Lookbook" />
+                    </Route>
 
-                        {/* Information pages */}
-                        <Route exact path="/random">
-                            <AnimatedPlaceholderPage title="Random" />
-                        </Route>
-                        <Route exact path="/about">
-                            <AnimatedAbout />
-                        </Route>
-                        <Route exact path="/contact">
-                            <AnimatedPlaceholderPage title="Contact" />
-                        </Route>
+                    {/* Information pages */}
+                    <Route exact path="/random">
+                        <PlaceholderPage title="Random" />
+                    </Route>
+                    <Route exact path="/about">
+                        <About />
+                    </Route>
+                    <Route exact path="/contact">
+                        <PlaceholderPage title="Contact" />
+                    </Route>
 
-                        {/* Support pages */}
-                        <Route exact path="/faq">
-                            <AnimatedPlaceholderPage title="FAQ" />
-                        </Route>
-                        <Route exact path="/sizing">
-                            <AnimatedPlaceholderPage title="Sizing" />
-                        </Route>
-                        <Route exact path="/terms">
-                            <AnimatedPlaceholderPage title="Terms" />
-                        </Route>
-                        <Route exact path="/privacy">
-                            <AnimatedPlaceholderPage title="Privacy" />
-                        </Route>
-                        <Route exact path="/shipping">
-                            <AnimatedPlaceholderPage title="Shipping" />
-                        </Route>
+                    {/* Support pages */}
+                    <Route exact path="/faq">
+                        <PlaceholderPage title="FAQ" />
+                    </Route>
+                    <Route exact path="/sizing">
+                        <PlaceholderPage title="Sizing" />
+                    </Route>
+                    <Route exact path="/terms">
+                        <PlaceholderPage title="Terms" />
+                    </Route>
+                    <Route exact path="/privacy">
+                        <PlaceholderPage title="Privacy" />
+                    </Route>
+                    <Route exact path="/shipping">
+                        <PlaceholderPage title="Shipping" />
+                    </Route>
 
-                        {/* Checkout page */}
-                        <Route exact path="/checkout">
-                            <AnimatedCheckout />
-                        </Route>
+                    {/* Checkout page */}
+                    <Route exact path="/checkout">
+                        <Checkout />
+                    </Route>
 
-                        {/* Catch all undefined routes */}
-                        <Route>
-                            <Redirect to="/" />
-                        </Route>
-                    </IonRouterOutlet>
-                </RouteTransition>
+                    {/* Catch all undefined routes */}
+                    <Route>
+                        <Redirect to="/" />
+                    </Route>
+                </IonRouterOutlet>
             </IonReactRouter>
         </CartProvider>
     </IonApp>
