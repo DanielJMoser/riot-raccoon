@@ -20,6 +20,7 @@ import '../scss/Home.scss';
 import SiteHeader from "../components/SiteHeader";
 import { chevronForward, arrowDown, sparkles, flash, star } from 'ionicons/icons';
 import ProductCard from '../components/ProductCard';
+import AsciiLogoAnimation from "../components/animation/AsciiAnimation";
 
 const Home: React.FC = () => {
     const [homeData, setHomeData] = useState<HomepageData | null>(null);
@@ -237,6 +238,8 @@ const Home: React.FC = () => {
                             )}
                         </div>
                     </div>
+
+                    <AsciiLogoAnimation containerClassName="AFA" />
 
                     {/* Featured Products Section */}
                     {homeData?.featuredProducts && homeData.featuredProducts.length > 0 && !loading && (
