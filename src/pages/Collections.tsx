@@ -154,6 +154,7 @@ const Collections: React.FC = () => {
                                                 </div>
                                             </IonCol>
                                         ))}
+
                                     </IonRow>
                                 </IonGrid>
                             </div>
