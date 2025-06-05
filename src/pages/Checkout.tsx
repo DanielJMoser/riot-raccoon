@@ -20,6 +20,7 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useCart } from '../context/CartContext';
 import { createOrderFromCart } from '../services/api';
 import { CustomerInfo } from '../types/homepageTypes';
+import { getEnvironmentConfig } from '../config/env';
 import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';
 import PayPalCheckoutButton from '../components/cart/PayPalCheckoutButton';
@@ -190,7 +191,7 @@ const Checkout: React.FC = () => {
     return (
         <PayPalScriptProvider
             options={{
-                clientId: 'AZftd9zH5gCk6ucDk8LGTShn-tgr_W2IOKUxontLcYs8o2-d2YPbNc3fHbBcqb0opkv7uezihcedizVQ',
+                clientId: getEnvironmentConfig().VITE_PAYPAL_CLIENT_ID,
                 currency: 'EUR'
             }}
         >
