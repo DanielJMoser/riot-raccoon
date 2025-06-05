@@ -2,15 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 
-// Catppuccin Mocha theme colors
-const CATPPUCCIN_MOCHA = {
-    mauve: 0xcba6f7,
-    pink: 0xf5c2e7,
-    blue: 0x89b4fa,
-    base: 0x1e1e2e,
-    text: 0xcdd6f4,
-    red: 0xf38ba8,
-};
 
 // SVG logo data (new antifascist symbol)
 const LOGO_SVG = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>

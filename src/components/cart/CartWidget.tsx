@@ -9,8 +9,7 @@ import {
     IonItem,
     IonThumbnail,
     IonLabel,
-    IonNote,
-    IonRouterLink
+    IonNote
 } from '@ionic/react';
 import { cartOutline, closeCircleOutline } from 'ionicons/icons';
 import { useCart } from '../../context/CartContext';
@@ -31,6 +30,7 @@ const CartWidget: React.FC = () => {
             }, 1000);
             return () => clearTimeout(timer);
         }
+        return undefined;
     }, [cart.totalItems]);
 
     // Handle remove item

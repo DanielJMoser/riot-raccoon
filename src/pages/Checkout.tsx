@@ -34,7 +34,7 @@ import {
 } from 'ionicons/icons';
 
 const Checkout: React.FC = () => {
-    const { cart, clearCart } = useCart();
+    const { cart, clearCart, loading: cartLoading } = useCart();
     const [loading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -77,12 +77,13 @@ const Checkout: React.FC = () => {
 
     // Check if cart is empty on initial load and redirect if needed
     useEffect(() => {
-        if (cart.items.length === 0 && !orderPlaced) {
+        // Only show empty cart message if cart is not loading and is actually empty
+        if (!cartLoading && cart.items.length === 0 && !orderPlaced) {
             // This could be replaced with a redirect, for now we'll just show a message
             setToastMessage('Your cart is empty');
             setShowToast(true);
         }
-    }, [cart.items.length, orderPlaced]);
+    }, [cart.items.length, orderPlaced, cartLoading]);
 
     const handleInputChange = (field: string, value: string) => {
         setCustomerInfo((prev) => ({
@@ -176,7 +177,7 @@ const Checkout: React.FC = () => {
     };
 
     // Handle successful PayPal payment
-    const handlePayPalSuccess = (details: any) => {
+    const handlePayPalSuccess = (_details: any) => {
         setOrderNumber(`PP-${Math.floor(100000 + Math.random() * 900000)}`);
         setOrderPlaced(true);
     };
@@ -341,7 +342,7 @@ const Checkout: React.FC = () => {
                                                     <IonLabel position="floating">Phone</IonLabel>
                                                     <IonInput
                                                         type="tel"
-                                                        value={customerInfo.phone}
+                                                        value={customerInfo.phone || ''}
                                                         onIonChange={(e) =>
                                                             handleInputChange('phone', e.detail.value || '')
                                                         }

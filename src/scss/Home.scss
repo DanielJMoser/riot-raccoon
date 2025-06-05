@@ -1,57 +1,19 @@
-/* Catppuccin Mocha Color Palette */
-$rosewater: #f5e0dc;
-$flamingo: #f2cdcd;
-$pink: #f5c2e7;
-$mauve: #cba6f7;
-$red: #f38ba8;
-$maroon: #eba0ac;
-$peach: #fab387;
-$yellow: #f9e2af;
-$green: #a6e3a1;
-$teal: #94e2d5;
-$sky: #89dceb;
-$sapphire: #74c7ec;
-$blue: #89b4fa;
-$lavender: #b4befe;
-$text: #cdd6f4;
-$subtext1: #bac2de;
-$subtext0: #a6adc8;
-$overlay2: #9399b2;
-$overlay1: #7f849c;
-$overlay0: #6c7086;
-$surface2: #585b70;
-$surface1: #45475a;
-$surface0: #313244;
-$base: #1e1e2e;
-$mantle: #181825;
-$crust: #11111b;
+/* ==========================================================================
+   HOME PAGE STYLES
+   ========================================================================== */
 
-/* Typography */
-@import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@use 'variables' as *;
+@use 'mixins' as *;
 
-/* Mixins */
-@mixin retro-card {
-  background-color: $surface0;
-  border: 2px solid $mauve;
-  border-radius: 8px;
-  box-shadow: 6px 6px 0 rgba($mauve, 0.5);
-  transition: all 0.2s ease;
+/* ==========================================================================
+   HOME PAGE SPECIFIC MIXINS
+   ========================================================================== */
 
-  &:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0 rgba($mauve, 0.5);
-  }
-}
-
-@mixin retro-text-glow($color) {
-  text-shadow: 0 0 5px rgba($color, 0.8);
-}
-
-@mixin retro-button {
+@mixin home-retro-button {
   background-color: $mauve;
   color: $base;
   border: 2px solid $pink;
-  font-family: 'VT323', monospace;
+  font-family: $font-mono;
   letter-spacing: 0.5px;
   font-size: 1.2rem;
   padding: 0.5rem 1.5rem;
@@ -167,6 +129,41 @@ $crust: #11111b;
 
       @media (max-width: 768px) {
         font-size: 3.5rem;
+      }
+
+      /* Glitch effect */
+      &.glitch {
+        position: relative;
+        animation: glitch-skew 0.5s ease-out;
+
+        &::before,
+        &::after {
+          content: attr(data-text);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          text-transform: uppercase;
+          font-size: inherit;
+          font-family: inherit;
+          font-weight: inherit;
+          text-shadow: none;
+        }
+
+        &::before {
+          animation: glitch-red 0.5s ease-out;
+          color: $red;
+          z-index: -1;
+          mix-blend-mode: multiply;
+        }
+
+        &::after {
+          animation: glitch-blue 0.5s ease-out;
+          color: $blue;
+          z-index: -2;
+          mix-blend-mode: multiply;
+        }
       }
     }
 
@@ -957,4 +954,141 @@ $crust: #11111b;
   border-radius: 8px;
   margin: 2rem auto;
   max-width: 600px;
+}
+
+/* ==========================================================================
+   GLITCH EFFECT ANIMATIONS
+   ========================================================================== */
+
+/* Main glitch skew animation */
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+  10% {
+    transform: skew(-5deg) scale(1.02);
+  }
+  20% {
+    transform: skew(3deg) scale(0.98);
+  }
+  30% {
+    transform: skew(-4deg) scale(1.01);
+  }
+  40% {
+    transform: skew(6deg) scale(0.99);
+  }
+  50% {
+    transform: skew(-3deg) scale(1.03);
+  }
+  60% {
+    transform: skew(2deg) scale(0.97);
+  }
+  70% {
+    transform: skew(4deg) scale(1.01);
+  }
+  80% {
+    transform: skew(-6deg) scale(0.98);
+  }
+  90% {
+    transform: skew(3deg) scale(1.02);
+  }
+  100% {
+    transform: skew(0deg) scale(1);
+  }
+}
+
+/* Red layer glitch animation */
+@keyframes glitch-red {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    transform: translate(-6px, -3px);
+    opacity: 0.9;
+  }
+  20% {
+    transform: translate(4px, 5px);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translate(-5px, -4px);
+    opacity: 0.9;
+  }
+  40% {
+    transform: translate(7px, 3px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-6px, 6px);
+    opacity: 0.8;
+  }
+  60% {
+    transform: translate(3px, -4px);
+    opacity: 0.7;
+  }
+  70% {
+    transform: translate(-4px, 5px);
+    opacity: 0.9;
+  }
+  80% {
+    transform: translate(6px, -6px);
+    opacity: 0.5;
+  }
+  90% {
+    transform: translate(-3px, 4px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+/* Blue layer glitch animation */
+@keyframes glitch-blue {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    transform: translate(5px, 4px);
+    opacity: 0.8;
+  }
+  20% {
+    transform: translate(-4px, -5px);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translate(6px, 3px);
+    opacity: 0.9;
+  }
+  40% {
+    transform: translate(-7px, -2px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(5px, -6px);
+    opacity: 0.7;
+  }
+  60% {
+    transform: translate(-3px, 4px);
+    opacity: 0.8;
+  }
+  70% {
+    transform: translate(4px, -3px);
+    opacity: 0.6;
+  }
+  80% {
+    transform: translate(-6px, 5px);
+    opacity: 0.9;
+  }
+  90% {
+    transform: translate(3px, -4px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
 }

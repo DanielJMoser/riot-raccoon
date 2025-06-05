@@ -1,87 +1,70 @@
-/* src/scss/components/SiteHeader.scss */
-/* Catppuccin Mocha Color Palette */
-$rosewater: #f5e0dc;
-$flamingo: #f2cdcd;
-$pink: #f5c2e7;
-$mauve: #cba6f7;
-$red: #f38ba8;
-$maroon: #eba0ac;
-$peach: #fab387;
-$yellow: #f9e2af;
-$green: #a6e3a1;
-$teal: #94e2d5;
-$sky: #89dceb;
-$sapphire: #74c7ec;
-$blue: #89b4fa;
-$lavender: #b4befe;
-$text: #cdd6f4;
-$subtext1: #bac2de;
-$subtext0: #a6adc8;
-$overlay2: #9399b2;
-$overlay1: #7f849c;
-$overlay0: #6c7086;
-$surface2: #585b70;
-$surface1: #45475a;
-$surface0: #313244;
-$base: #1e1e2e;
-$mantle: #181825;
-$crust: #11111b;
+/* ==========================================================================
+   SITE HEADER COMPONENT
+   Responsive navigation with mobile bottom bar
+   ========================================================================== */
 
-/* Typography */
+@use '../variables' as *;
+@use '../mixins' as *;
+
+/* ==========================================================================
+   TYPOGRAPHY IMPORTS (centralized here to avoid conflicts)
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================================================
+   MAIN HEADER (Desktop/Tablet)
+   ========================================================================== */
 
 .site-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
-  transition: all 0.3s ease;
+  z-index: $z-index-fixed;
+  transition: all $transition-medium;
   backdrop-filter: blur(8px);
+  
+  /* Hide on mobile - will use bottom nav instead */
+  @include mobile-only {
+    display: none;
+  }
 
   &.retro-modern {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: $font-primary;
 
     &.scrolled {
       background-color: rgba($mantle, 0.95);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: $shadow-lg;
     }
 
     .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.5rem;
-      height: auto;
-      min-height: 60px;
-
-      @media (max-width: 768px) {
-        padding: 0.5rem 1rem;
-      }
+      @include flex-between;
+      @include container;
+      height: $header-height-desktop;
+      min-height: $header-height-desktop;
+      padding-top: $spacing-sm;
+      padding-bottom: $spacing-sm;
     }
 
     .header-left {
-      display: flex;
-      align-items: center;
-
-      @media (max-width: 768px) {
-        display: none;
-      }
+      @include flex-center;
+      gap: $spacing-lg;
     }
 
     .header-nav {
       display: flex;
-      margin-left: 1.5rem;
+      gap: $spacing-lg;
 
       .nav-link {
-        font-family: 'VT323', monospace;
-        font-size: 1.2rem;
+        @include focus-visible;
+        font-family: $font-mono;
+        font-size: $font-size-lg;
         text-transform: uppercase;
-        margin: 0 0.75rem;
         color: $text;
         text-decoration: none;
         position: relative;
         letter-spacing: 1px;
+        transition: color $transition-medium;
 
         &::after {
           content: '';
@@ -93,15 +76,25 @@ $crust: #11111b;
           background-color: $mauve;
           transform: scaleX(0);
           transform-origin: right;
-          transition: transform 0.3s ease;
+          transition: transform $transition-medium;
         }
 
-        &:hover, &:focus {
+        &:hover, 
+        &:focus {
           color: $mauve;
 
           &::after {
             transform: scaleX(1);
             transform-origin: left;
+          }
+        }
+
+        /* Active/current page state */
+        &.router-link-active {
+          color: $mauve;
+          
+          &::after {
+            transform: scaleX(1);
           }
         }
       }
@@ -114,33 +107,42 @@ $crust: #11111b;
 
       .logo-link {
         text-decoration: none;
+        @include focus-visible;
 
         .logo {
-          font-family: 'VT323', monospace;
-          font-size: 1.8rem;
+          font-family: $font-mono;
+          font-size: $font-size-2xl;
           letter-spacing: 1px;
           color: $pink;
-          text-shadow: 0 0 5px rgba($pink, 0.5);
+          @include retro-text-glow($pink);
           text-transform: uppercase;
+          transition: all $transition-medium;
 
-          @media (max-width: 768px) {
-            font-size: 1.5rem;
+          &:hover {
+            color: $mauve;
+            @include retro-text-glow($mauve);
+          }
+
+          @include respond-below($breakpoint-lg) {
+            font-size: $font-size-xl;
           }
         }
       }
     }
 
     .header-actions {
-      display: flex;
-      align-items: center;
+      @include flex-center;
+      gap: $spacing-sm;
 
-      .search-button, .account-button {
+      .search-button, 
+      .account-button {
+        @include focus-visible;
         --color: #{$text};
         --color-hover: #{$mauve};
-        margin: 0 0.3rem;
+        transition: transform $transition-fast;
 
-        @media (max-width: 768px) {
-          display: none;
+        &:hover {
+          transform: translateY(-1px);
         }
 
         ion-icon {
@@ -149,33 +151,37 @@ $crust: #11111b;
       }
 
       .date-time {
-        margin-left: 1rem;
+        margin-left: $spacing-md;
         border-left: 2px solid $surface1;
-        padding-left: 1rem;
-
-        @media (max-width: 768px) {
-          display: none;
-        }
+        padding-left: $spacing-md;
 
         h2 {
           margin: 0;
-          font-size: 0.8rem;
+          font-size: $font-size-xs;
           color: $overlay1;
           font-weight: 400;
-          font-family: 'Space Grotesk', sans-serif;
+          font-family: $font-primary;
         }
       }
     }
 
     .nav-back {
       .caret-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 26px;
-        height: 26px;
+        @include flex-center;
+        @include focus-visible;
+        width: 32px;
+        height: 32px;
         background-color: $surface0;
-        border-radius: 50%;
+        border: 2px solid $surface1;
+        border-radius: $border-radius-full;
+        transition: all $transition-medium;
+        text-decoration: none;
+
+        &:hover {
+          background-color: $surface1;
+          border-color: $mauve;
+          transform: translateY(-1px);
+        }
 
         .caret-icon {
           color: $mauve;
@@ -185,86 +191,231 @@ $crust: #11111b;
       }
     }
   }
+}
 
-  /* Mobile Navigation */
-  .mobile-nav {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    background-color: rgba($mantle, 0.95);
-    backdrop-filter: blur(8px);
-    border-top: 2px solid $surface1;
-    padding: 0 1rem;
-    z-index: 1001;
-    justify-content: space-between;
-    align-items: center;
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION
+   ========================================================================== */
 
-    @media (max-width: 768px) {
-      display: flex;
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $mobile-nav-height;
+  background-color: rgba($mantle, 0.98);
+  backdrop-filter: blur(12px);
+  border-top: 2px solid $surface1;
+  z-index: $z-index-fixed + 1;
+  box-shadow: 0 -4px 20px rgba($crust, 0.3);
+
+  /* Show only on mobile */
+  @include mobile-only {
+    display: flex;
+  }
+
+  /* Safe area support for devices with notches */
+  padding-bottom: env(safe-area-inset-bottom);
+
+  /* Navigation items container */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  padding: $spacing-xs $spacing-sm;
+
+  .mobile-nav-item {
+    @include flex-center;
+    @include focus-visible;
+    flex-direction: column;
+    color: $overlay1;
+    text-decoration: none;
+    flex: 1;
+    max-width: 80px;
+    padding: $spacing-xs;
+    transition: all $transition-medium;
+    border-radius: $border-radius-sm;
+
+    &:hover, 
+    &:focus {
+      color: $mauve;
+      background-color: rgba($surface0, 0.5);
     }
 
-    .mobile-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: $overlay1;
-      text-decoration: none;
-      flex: 1;
-      padding: 0.5rem;
-      font-size: 1.1rem;
-
-      &:hover, &:focus {
-        color: $mauve;
-      }
-
+    /* Active state */
+    &.router-link-active {
+      color: $mauve;
+      
       .mobile-nav-label {
-        font-size: 0.7rem;
-        margin-top: 0.2rem;
-        font-family: 'Space Grotesk', sans-serif;
-      }
-
-      ion-icon {
-        font-size: 1.3rem;
-      }
-
-      &.home-icon {
-        .home-icon-shape {
-          width: 30px;
-          height: 30px;
-          background-color: $mauve;
-          color: $mantle;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1rem;
-          margin-bottom: 0.2rem;
-        }
+        color: $mauve;
+        font-weight: 600;
       }
     }
 
-    .cart-button-container {
+    .mobile-nav-label {
+      font-size: $font-size-xs;
+      margin-top: $spacing-xs;
+      font-family: $font-primary;
+      font-weight: 500;
+      transition: color $transition-medium;
+      text-align: center;
+    }
+
+    ion-icon {
+      font-size: 1.4rem;
+      transition: transform $transition-medium;
+    }
+
+    /* Special styling for home button */
+    &.home-icon {
+      .home-icon-shape {
+        @include flex-center;
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, $mauve, $pink);
+        color: $base;
+        border-radius: $border-radius-full;
+        font-size: 1.1rem;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba($mauve, 0.3);
+        transition: all $transition-medium;
+      }
+
+      &:hover .home-icon-shape,
+      &:focus .home-icon-shape {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba($mauve, 0.4);
+      }
+
+      &:active .home-icon-shape {
+        transform: scale(0.95);
+      }
+    }
+
+    /* Cart button special styling */
+    &.cart-button-container {
       position: relative;
 
       .cart-widget-button {
         --padding-start: 0;
         --padding-end: 0;
         margin: 0;
-        height: 1.3rem;
+        
+        ion-icon {
+          font-size: 1.4rem;
+        }
+      }
+
+      /* Cart badge positioning for mobile */
+      .cart-badge {
+        position: absolute;
+        top: -2px;
+        right: 8px;
+        min-width: 18px;
+        height: 18px;
+        border-radius: $border-radius-full;
+        background-color: $red;
+        color: $base;
+        font-size: $font-size-xs;
+        font-weight: bold;
+        @include flex-center;
+        border: 2px solid $mantle;
+        z-index: 1;
       }
     }
   }
+}
 
-  /* Adjust main content padding to account for fixed header and mobile nav */
-  & + ion-content {
-    --padding-top: 60px;
+/* ==========================================================================
+   CONTENT SPACING ADJUSTMENTS
+   Ensure content doesn't hide behind fixed navigation
+   ========================================================================== */
 
-    @media (max-width: 768px) {
-      --padding-bottom: 60px;
+/* Adjust main content for desktop header */
+.site-header + ion-content,
+.site-header ~ ion-content {
+  --padding-top: #{$header-height-desktop};
+
+  @include mobile-only {
+    --padding-top: 0;
+    --padding-bottom: #{$mobile-nav-height + 10px};
+  }
+}
+
+/* For pages that don't use ion-content */
+.site-header ~ .page-content {
+  padding-top: $header-height-desktop;
+
+  @include mobile-only {
+    padding-top: 0;
+    padding-bottom: $mobile-nav-height + 10px;
+  }
+}
+
+/* ==========================================================================
+   ANIMATION CLASSES
+   ========================================================================== */
+
+.mobile-nav-item {
+  &.nav-item-bounce {
+    animation: bounce 0.6s ease;
+  }
+
+  &.nav-item-pulse {
+    animation: pulse 1s infinite;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY IMPROVEMENTS
+   ========================================================================== */
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  @include sr-only;
+  
+  &:focus {
+    position: fixed;
+    top: $spacing-sm;
+    left: $spacing-sm;
+    background-color: $mauve;
+    color: $base;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius-sm;
+    text-decoration: none;
+    font-weight: bold;
+    z-index: $z-index-modal;
+    width: auto;
+    height: auto;
+    clip: auto;
+    overflow: visible;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .site-header {
+    &.retro-modern {
+      .nav-link,
+      .mobile-nav-item {
+        border: 1px solid transparent;
+        
+        &:focus {
+          border-color: currentColor;
+        }
+      }
     }
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .mobile-nav,
+  .nav-link,
+  .mobile-nav-item {
+    transition: none;
+    animation: none;
   }
 }

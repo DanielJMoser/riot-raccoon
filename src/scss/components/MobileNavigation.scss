@@ -1,0 +1,283 @@
+/* ==========================================================================
+   MOBILE NAVIGATION COMPONENT
+   Bottom navigation bar for mobile devices
+   ========================================================================== */
+
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $mobile-nav-height;
+  background-color: rgba($mantle, 0.98);
+  backdrop-filter: blur(12px);
+  border-top: 2px solid $surface1;
+  z-index: $z-index-fixed + 1;
+  box-shadow: 0 -4px 20px rgba($crust, 0.3);
+
+  /* Show only on mobile */
+  @include mobile-only {
+    display: flex;
+  }
+
+  /* Safe area support for devices with notches */
+  padding-bottom: env(safe-area-inset-bottom);
+
+  /* Navigation items container */
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding: $spacing-xs;
+
+  .mobile-nav-item {
+    @include flex-center;
+    @include focus-visible;
+    color: $overlay1;
+    text-decoration: none;
+    flex: 1;
+    height: 100%;
+    padding: $spacing-sm;
+    transition: all $transition-medium;
+    border-radius: $border-radius-sm;
+    position: relative;
+
+    &:hover, 
+    &:focus {
+      color: $mauve;
+      background-color: rgba($surface0, 0.5);
+    }
+
+    /* Active state */
+    &.router-link-active {
+      color: $mauve;
+
+      ion-icon {
+        color: $mauve;
+      }
+    }
+
+    ion-icon {
+      font-size: 1.5rem;
+      transition: all $transition-medium;
+    }
+
+    /* Tap feedback animation */
+    &:active {
+      transform: scale(0.95);
+    }
+
+    /* Special styling for home button */
+    &.home-icon {
+      .home-icon-shape {
+        @include flex-center;
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, $mauve, $pink);
+        color: $base;
+        border-radius: $border-radius-full;
+        box-shadow: 0 2px 8px rgba($mauve, 0.3);
+        transition: all $transition-medium;
+
+        ion-icon {
+          font-size: 1.4rem;
+          color: $base;
+        }
+      }
+
+      &:hover .home-icon-shape,
+      &:focus .home-icon-shape {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba($mauve, 0.4);
+      }
+
+      &:active .home-icon-shape {
+        transform: scale(0.95);
+      }
+    }
+
+    /* Cart button special styling */
+    &.cart-button-container {
+      /* Remove any special background treatment - cart should look like other icons */
+      
+      .cart-icon-wrapper {
+        position: relative;
+        @include flex-center;
+
+        /* Cart icon matches other icons exactly */
+        ion-icon {
+          font-size: 1.5rem;
+          color: inherit;
+          transition: all $transition-medium;
+        }
+
+        /* Cart badge positioning for mobile */
+        .cart-badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          min-width: 18px;
+          height: 18px;
+          border-radius: $border-radius-full;
+          background-color: $red;
+          color: $base;
+          font-size: $font-size-xs;
+          font-weight: bold;
+          @include flex-center;
+          border: 2px solid $mantle;
+          z-index: 2;
+          box-shadow: 0 1px 3px rgba($crust, 0.3);
+          
+          /* Subtle pulse animation when items in cart */
+          animation: cartPulse 2s ease-in-out infinite;
+        }
+      }
+    }
+  }
+
+  /* Ripple effect for better touch feedback */
+  .mobile-nav-item {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background-color: rgba($mauve, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    &:active::after {
+      width: 120px;
+      height: 120px;
+    }
+  }
+}
+
+/* ==========================================================================
+   CONTENT SPACING ADJUSTMENTS
+   Ensure content doesn't hide behind mobile navigation
+   ========================================================================== */
+
+/* Adjust content padding for mobile navigation */
+@include mobile-only {
+  ion-content {
+    --padding-bottom: #{$mobile-nav-height + 10px};
+  }
+
+  .page-content {
+    padding-bottom: $mobile-nav-height + 10px;
+  }
+
+  /* Special handling for pages with bottom content */
+  .checkout-page,
+  .product-details-page {
+    ion-content {
+      --padding-bottom: #{$mobile-nav-height + 20px};
+    }
+  }
+}
+
+/* ==========================================================================
+   ANIMATION CLASSES
+   ========================================================================== */
+
+.mobile-nav-item {
+  &.nav-item-bounce {
+    animation: bounce 0.6s ease;
+  }
+
+  &.nav-item-pulse {
+    animation: pulse 1s infinite;
+  }
+
+  &.nav-item-new-item {
+    animation: bounceIn 0.8s ease;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cartPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST AND ACCESSIBILITY
+   ========================================================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .mobile-nav {
+    border-top-width: 3px;
+    
+    .mobile-nav-item {
+      border: 1px solid transparent;
+      
+      &:focus {
+        border-color: currentColor;
+        background-color: rgba($mauve, 0.2);
+      }
+    }
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav,
+  .mobile-nav-item,
+  .home-icon-shape,
+  .cart-badge {
+    transition: none;
+    animation: none;
+  }
+
+  .mobile-nav-item::after {
+    display: none;
+  }
+}
+
+/* Large text support */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav {
+    .mobile-nav-label {
+      font-size: $font-size-sm;
+    }
+    
+    ion-icon {
+      font-size: 1.6rem;
+    }
+  }
+}

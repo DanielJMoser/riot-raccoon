@@ -15,7 +15,6 @@ import {
     IonNote,
     IonIcon,
     IonFooter,
-    IonRouterLink,
     IonGrid,
     IonRow,
     IonCol,

@@ -43,6 +43,8 @@ import About from "./pages/About";
 import CollectionDetails from "./pages/CollectionDetails";
 import Collections from "./pages/Collections";
 import PfandGehoertDaneben from "./pages/PfandGehoertDaneben";
+import ErrorBoundary from "./components/ErrorBoundary";
+import MobileNavigation from "./components/MobileNavigation";
 
 // Import placeholder pages
 // These will be replaced with actual implementations later
@@ -76,9 +78,10 @@ setupIonicReact();
 
 const App: React.FC = () => (
     <IonApp>
-        <CartProvider>
-            <IonReactRouter>
-                <IonRouterOutlet>
+        <ErrorBoundary>
+            <CartProvider>
+                <IonReactRouter>
+                    <IonRouterOutlet>
                     {/* Main routes */}
                     <Route exact path="/">
                         <Home />
@@ -150,9 +153,13 @@ const App: React.FC = () => (
                     <Route>
                         <Redirect to="/" />
                     </Route>
-                </IonRouterOutlet>
-            </IonReactRouter>
-        </CartProvider>
+                    </IonRouterOutlet>
+                </IonReactRouter>
+                
+                {/* Mobile Navigation - shows only on mobile */}
+                <MobileNavigation />
+            </CartProvider>
+        </ErrorBoundary>
     </IonApp>
 );
 

@@ -104,31 +104,6 @@ const SiteHeader: React.FC<HeaderProps> = ({ loading = false }) => {
                 </div>
             </div>
 
-            {/* Mobile Bottom Navigation (visible on small screens) */}
-            <div className="mobile-nav">
-                <IonRouterLink routerLink="/shop" className="mobile-nav-item">
-                    <span className="mobile-nav-label">Shop</span>
-                </IonRouterLink>
-
-                <IonRouterLink routerLink="/search" className="mobile-nav-item">
-                    <IonIcon icon={searchOutline} />
-                    <span className="mobile-nav-label">Search</span>
-                </IonRouterLink>
-
-                <IonRouterLink routerLink="/" className="mobile-nav-item home-icon">
-                    <span className="home-icon-shape">▲</span>
-                </IonRouterLink>
-
-                <IonRouterLink routerLink="/account" className="mobile-nav-item">
-                    <IonIcon icon={personOutline} />
-                    <span className="mobile-nav-label">Account</span>
-                </IonRouterLink>
-
-                <div className="mobile-nav-item cart-button-container">
-                    <CartWidget />
-                    <span className="mobile-nav-label">Cart</span>
-                </div>
-            </div>
         </IonHeader>
     );
 };

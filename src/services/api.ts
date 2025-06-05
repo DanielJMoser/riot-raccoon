@@ -1,5 +1,5 @@
 
-import {HomepageData, Product, Collection, CartOption} from '../types/homepageTypes';
+import {Product, Collection, CartOption} from '../types/homepageTypes';
 import sanityClient from '../../backend/services/sanityClient';
 import {Cart, CartItem} from "../context/CartContext";
 import client from "../../backend/services/sanityClient";
