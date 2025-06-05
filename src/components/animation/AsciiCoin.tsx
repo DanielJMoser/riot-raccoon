@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { AsciiEffect } from 'three/examples/jsm/effects/AsciiEffect.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 
 // Catppuccin Mocha theme colors
@@ -11,85 +9,266 @@ const CATPPUCCIN_MOCHA = {
     blue: 0x89b4fa,
     base: 0x1e1e2e,
     text: 0xcdd6f4,
+    red: 0xf38ba8,
 };
 
-// SVG logo data (from original component)
-const LOGO_SVG = `<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <g id="Inner_Circle">
-    <circle fill="#FFFFFF" cx="256" cy="256" r="191"/>
+// SVG logo data (new antifascist symbol)
+const LOGO_SVG = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="682.97003"
+   height="682.97003"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.45.1"
+   sodipodi:docbase="/home/illusionfades/Pictures/to svg"
+   sodipodi:docname="antifasistische.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="504.29543"
+     inkscape:cy="383.54357"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1152"
+     inkscape:window-height="791"
+     inkscape:window-x="0"
+     inkscape:window-y="24" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-19.463524,-41.438909)">
+    <path
+       sodipodi:type="arc"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.70000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2225"
+       sodipodi:cx="442.44681"
+       sodipodi:cy="274.03964"
+       sodipodi:rx="138.89598"
+       sodipodi:ry="138.89598"
+       d="M 581.34279 274.03964 A 138.89598 138.89598 0 1 1  303.55083,274.03964 A 138.89598 138.89598 0 1 1  581.34279 274.03964 z"
+       transform="matrix(2.4585665,0,0,2.4585665,-726.83637,-290.82077)" />
+    <path
+       transform="matrix(1.8949216,0,0,1.8949216,-477.45348,-136.35972)"
+       d="M 581.34279 274.03964 A 138.89598 138.89598 0 1 1  303.55083,274.03964 A 138.89598 138.89598 0 1 1  581.34279 274.03964 z"
+       sodipodi:ry="138.89598"
+       sodipodi:rx="138.89598"
+       sodipodi:cy="274.03964"
+       sodipodi:cx="442.44681"
+       id="path2227"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.70000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:type="arc" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 341.96428,57.897902 C 323.46202,49.328367 305.50135,68.528698 309.02603,85.829282 C 311.14264,104.30212 330.86484,115.86504 347.85714,104.86219 C 347.85714,104.86219 346.49066,95.061941 346.25,93.076473 C 332.09998,106.19239 320.38035,95.661216 319.35268,84.013973 C 318.32501,72.36673 328.16787,59.960558 343.21428,69.326473 C 342.9899,67.339099 341.96428,57.897902 341.96428,57.897902 z "
+       id="path2174"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       id="path3147"
+       d="M 606.79491,170.88407 C 602.85245,150.87837 576.76204,147.63356 564.83733,160.65411 C 551.13661,173.22456 553.37444,195.97666 572.26374,203.2564 C 572.26374,203.2564 579.38911,196.39045 580.85393,195.02872 C 561.92576,191.29047 563.55704,175.61903 572.37581,167.94154 C 581.19458,160.26406 597.01686,160.93493 598.28374,178.61287 C 599.75966,177.2632 606.79491,170.88407 606.79491,170.88407 z "
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccccccccccccc"
+       id="path4140"
+       d="M 604.77522,254.33361 L 650.96098,233.71981 L 661.44586,257.19913 L 653.97734,260.60292 L 647.49629,246.12184 L 637.11036,250.73615 L 643.34474,264.78752 L 635.3446,268.37585 L 629.11783,254.30556 L 617.06473,259.76192 L 623.44899,274.16026 L 615.19246,277.7936 L 604.77522,254.33361 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccccccccccc"
+       id="path4142"
+       d="M 206.67211,154.35679 L 179.08704,111.96436 L 200.63709,97.935577 L 205.16732,104.77968 L 191.87837,113.44628 L 198.0606,122.9825 L 209.82572,115.11976 L 214.62137,122.52255 L 202.83636,130.31825 L 215.10942,148.90784 L 206.67211,154.35679 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 471.72861,80.355526 C 471.72861,80.355526 465.01109,85.393661 465.01109,85.393661 C 461.30495,76.525541 454.9614,79.029185 453.52061,79.736807 C 453.19736,80.438557 447.26526,83.949987 457.94003,91.846011 C 460.48486,94.54684 470.26287,101.47037 459.88458,116.32958 C 455.60133,121.8724 448.75425,121.19355 444.15145,121.01416 C 438.58215,120.0267 432.66973,115.87462 430.45125,105.89975 L 438.75976,101.92228 C 438.70142,105.30341 442.47939,115.67548 450.86896,110.67273 C 456.08276,104.2634 453.07979,102.04088 445.65405,94.924438 C 436.79055,87.778695 442.11968,76.803861 443.97467,75.052225 C 450.46685,66.610585 465.34949,67.679965 471.72861,80.355526 z "
+       id="path4144"
+       sodipodi:nodetypes="cccccccccccc" />
+    <path
+       sodipodi:nodetypes="cccccccccccc"
+       id="path4146"
+       d="M 290.524,67.889803 C 290.524,67.889803 287.91107,75.869813 287.91107,75.869813 C 279.78865,70.731228 276.02835,76.420605 275.25398,77.826658 C 275.39172,78.586904 272.54647,84.865816 285.81971,85.211063 C 289.45346,85.963797 301.43431,86.026784 301.45579,104.15147 C 301.1264,111.14866 295.12822,114.51991 291.25495,117.01301 C 286.12644,119.39856 278.90173,119.3886 271.36311,112.49012 L 275.88766,104.46643 C 277.77921,107.26953 286.82311,113.59888 290.826,104.68882 C 291.42065,96.448078 287.686,96.349928 277.52134,94.77971 C 266.16215,94.010156 264.23262,81.963434 264.74744,79.4646 C 265.2236,68.825852 278.02811,61.165504 290.524,67.889803 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 567.69305,135.96047 C 567.69305,135.96047 559.70124,138.53711 559.70124,138.53711 C 559.0842,128.94553 552.27117,129.24751 550.67848,129.44752 C 550.14437,130.00578 543.39227,131.3946 550.91475,142.33581 C 552.44162,145.71801 559.43285,155.44774 544.78229,166.11855 C 538.92783,169.9649 532.67479,167.09385 528.38118,165.42571 C 523.43677,162.67888 519.19828,156.82809 520.34815,146.67439 L 529.49894,145.61862 C 528.34299,148.79657 528.53832,159.83352 538.09954,157.83471 C 545.11596,153.47201 543.00018,150.39291 538.29589,141.24659 C 532.24173,131.60448 540.85357,122.96256 543.17777,121.91029 C 552.06457,116.04221 565.78824,121.89865 567.69305,135.96047 z "
+       id="path4148"
+       sodipodi:nodetypes="cccccccccccc" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 375.67533,659.66284 L 385.9495,659.46972 L 386.54038,710.11232 L 376.23285,710.18702 L 375.67533,659.66284 z "
+       id="path4162"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ff0202;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 181.0625,200.59375 C 136.46108,244.51747 109.98597,300.85429 105.625,365.09375 C 170.45742,422.81213 240.44179,443.4408 322.84375,426.28125 C 392.9248,403.44093 404.78667,402.17088 491.0625,457.375 L 435.625,626.84375 C 446.08654,623.61708 456.28342,619.73718 466.125,615.25 L 590,270.21875 C 586.01085,268.0912 582.09118,265.93576 578.5625,263.0625 C 504.99748,187.75559 472.70967,190.12065 391.4375,230.9375 C 315.82742,258.75576 221.01395,248.78397 181.0625,200.59375 z "
+       id="path2229"
+       sodipodi:nodetypes="cccccccccc" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       id="path4164"
+       d="M 523.49051,99.75905 L 532.42856,104.82928 L 507.12626,148.70199 L 498.21986,143.51291 L 523.49051,99.75905 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 157.85978,127.1631 L 165.90904,120.77521 L 197.10872,160.67012 L 188.96106,166.98412 L 157.85978,127.1631 z "
+       id="path4166"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 417.10054,61.177974 L 427.23368,62.885424 L 418.46264,112.76619 L 408.31859,110.93621 L 417.10054,61.177974 z "
+       id="path4168"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       sodipodi:nodetypes="ccccccccc"
+       id="path4190"
+       d="M 359.28229,659.94107 L 328.65986,656.81679 L 327.68802,665.76424 L 337.91296,666.8389 L 333.54066,708.13938 L 343.79342,709.24841 L 348.1068,667.91033 L 358.30065,668.98174 L 359.28229,659.94107 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 147.48742,135.10548 L 125.41035,156.55535 L 131.63979,163.05113 L 139.03551,155.90918 L 167.86306,185.80595 L 175.30296,178.66477 L 146.40874,148.78891 L 153.78198,141.66868 L 147.48742,135.10548 z "
+       id="path4192"
+       sodipodi:nodetypes="ccccccccc" />
+    <path
+       sodipodi:nodetypes="ccccccccc"
+       id="path4194"
+       d="M 512.47711,92.727692 L 484.31892,80.293473 L 480.62975,88.50267 L 490.02211,92.684432 L 473.10131,130.6124 L 482.50953,134.83541 L 499.38598,96.853481 L 508.74979,101.02253 L 512.47711,92.727692 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 372.6116,56.112063 L 362.35103,55.457227 L 358.82614,105.86538 L 369.11134,106.61592 L 370.64598,84.669513 L 388.57532,85.860601 L 387.0385,107.83819 L 397.32371,108.58872 L 400.82395,58.084862 L 390.56338,57.430027 L 389.17479,77.287786 L 371.21646,76.063343 L 372.6116,56.112063 z "
+       id="path4218" />
+    <path
+       id="path4225"
+       d="M 627.07021,193.54158 L 621.56896,184.85569 L 578.71604,211.63318 L 584.15433,220.39524 L 602.81138,208.73702 L 612.38638,223.94225 L 593.7028,235.61703 L 599.14112,244.37911 L 642.05699,217.52543 L 636.55573,208.83956 L 619.67429,219.38826 L 610.10924,204.13995 L 627.07021,193.54158 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 151.63004,204.46501 L 155.78557,198.82477 L 115.46639,167.33965 L 109.34274,175.32176 L 135.30398,195.7413 L 92.05472,195.00055 L 87.556071,200.85772 L 128.09338,232.75093 L 134.24887,224.86072 L 107.93756,204.48022 L 151.63004,204.46501 z "
+       id="path4227"
+       sodipodi:nodetypes="ccccccccccc" />
+    <path
+       sodipodi:nodetypes="ccccccccccc"
+       id="path4229"
+       d="M 515.41272,674.40676 L 521.56258,671.05118 L 498.32719,625.47635 L 489.40388,630.12263 L 504.30308,659.60072 L 465.419,640.65143 L 458.86649,644.05861 L 482.12712,690.09549 L 491.04044,685.54594 L 475.80745,655.9553 L 515.41272,674.40676 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path4231"
+       d="M 289.0726,648.38824 L 279.04079,646.13635 L 267.67373,695.37248 L 277.53811,697.72275 L 282.48704,675.93305 L 292.93204,701.20406 L 305.62487,703.90787 L 292.12344,673.14181 L 316.09867,654.57335 L 303.94554,651.79114 L 284.22002,668.58273 L 289.0726,648.38824 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cccccccccccc" />
+    <path
+       id="path4248"
+       d="M 230.20695,82.131862 L 223.18092,85.328456 L 226.16487,140.57228 L 235.83962,136.33324 L 234.99883,125.16565 L 251.08089,117.80021 L 258.79367,126.19146 L 268.47466,121.81278 L 230.20695,82.131862 z M 232.33506,98.188402 L 244.5589,111.57929 L 234.1515,116.24718 L 232.33506,98.188402 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="ccccccccccccc" />
+    <path
+       sodipodi:nodetypes="ccccccccccccc"
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 69.819258,232.69331 L 66.370705,239.59918 L 103.4558,280.6538 L 108.30681,271.27095 L 100.6253,263.12121 L 108.48829,247.27642 L 119.76299,248.94383 L 124.53098,239.44855 L 69.819258,232.69331 z M 81.577823,243.83232 L 99.504692,246.54629 L 94.354211,256.7235 L 81.577823,243.83232 z "
+       id="path4250" />
+    <path
+       id="path4252"
+       d="M 249.35764,632.86006 L 242.22803,629.90167 L 203.86033,669.7602 L 213.55872,673.94488 L 221.15277,665.7136 L 237.50747,672.45213 L 236.63058,683.81568 L 246.43535,687.90974 L 249.35764,632.86006 z M 239.066,645.36701 L 237.60916,663.43952 L 227.09743,659.01148 L 239.066,645.36701 z "
+       style="opacity:1;fill:#ffffff;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="ccccccccccccc" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.70000005;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 429.5,652.5 C 416.55562,652.51254 403.69029,662.33237 404.375,679.25 C 404.90533,694.72654 414.89884,704.79591 429.5,706 C 445.15904,705.78963 454.32415,694.72656 455.03125,679.25 C 453.08671,664.48055 444.83117,653.9142 429.5,652.5 z M 428.46875,662.59375 C 437.35142,662.96875 443.40625,670.18264 444.03125,679.0625 C 443.28123,688.69236 439.13266,695.5625 430.25,695.9375 C 422.49231,694.93752 415.71875,688.75485 414.71875,679.25 C 414.71874,669.12015 419.96107,663.46874 428.46875,662.59375 z "
+       id="path4256" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 106.21875,376.375 C 113.25162,461.72762 191.30101,508.12908 263.46875,510.28125 C 297.27302,511.28764 318.55207,495.04165 361.90625,522.625 C 361.90625,522.625 324.5,634.09375 324.5,634.09375 C 323.33929,637.72741 346.98715,637.75864 350.8125,637.9375 C 378.43161,560.6504 424.40625,432.0625 424.40625,432.0625 C 386.77937,411.51278 357.20713,425.08143 322.28125,436.71875 C 235.66691,455.32977 170.69736,430.6388 106.21875,376.375 z "
+       id="path2231"
+       sodipodi:nodetypes="cccccccc" />
   </g>
-  <g id="Flags">
-    <path fill="#000000" d="M125.667,122.917c0,0,28,33.083,89.25,34.333c61.251,1.25,95.917-37.917,130.917-33.333s63,43.333,77.75,50.167L333,425.75c0,0-1.833,1.334-11,4.667s-11.333,4.333-11.333,4.333l40.25-122.917c0,0-38.75-32.687-73.75-35c-35.001-2.313-50.917,23.75-110.083,13.75C107.917,280.583,69.5,243.5,69.5,243.5s-1.415-21.067,14.5-59.833C99.914,144.902,125.667,122.917,125.667,122.917z"/>
-    <path fill="#FF0000" d="M69.917,251.25c0,0,41.084,38.416,102.417,46.083c61.332,7.667,67.039-14.491,100.916-14.25c21.548,0.153,29.334,9.584,29.334,9.584l-53.506,149.67c0,0-4.18-0.044-10.092-0.692c-5.911-0.648-9.541-1.294-9.541-1.294L257,357.5c0,0-13.584-8.707-27.25-10.5c-13.668-1.793-21.042,3-46.5,2.5c-24.073-0.473-71.25-12.75-93.333-45.75S69.917,251.25,69.917,251.25z"/>
-  </g>
-</svg>`;
+</svg>
+`;
 
-// Create materials with Catppuccin colors
+// Create materials with enhanced visibility for ASCII effect
 const createCoinMaterials = () => {
+    // White areas - bright and highly emissive
     const whiteMaterial = new THREE.MeshStandardMaterial({
-        color: CATPPUCCIN_MOCHA.text,
-        metalness: 0.2,
-        roughness: 0.3,
-        emissive: CATPPUCCIN_MOCHA.text,
-        emissiveIntensity: 0.05
+        color: 0xffffff, // Pure white
+        metalness: 0.0,  // No metalness for clean colors
+        roughness: 1.0,  // Full roughness for matte finish
+        emissive: 0xffffff,
+        emissiveIntensity: 0.4 // High emissive for ASCII visibility
     });
 
+    // Black areas - very dark but with slight emissive
     const blackMaterial = new THREE.MeshStandardMaterial({
-        color: CATPPUCCIN_MOCHA.base,
-        metalness: 0.8,
-        roughness: 0.2,
-        emissive: CATPPUCCIN_MOCHA.mauve,
-        emissiveIntensity: 0.1
+        color: 0x000000, // Pure black
+        metalness: 0.0,
+        roughness: 1.0,
+        emissive: 0x222222, // Slight gray emissive to ensure visibility
+        emissiveIntensity: 0.3
     });
 
+    // Red flag area - bright red with high emissive
     const redMaterial = new THREE.MeshStandardMaterial({
-        color: CATPPUCCIN_MOCHA.pink,
-        metalness: 0.6,
-        roughness: 0.2,
-        emissive: CATPPUCCIN_MOCHA.pink,
-        emissiveIntensity: 0.15
+        color: 0xff0202, // Exact SVG red
+        metalness: 0.0,
+        roughness: 1.0,
+        emissive: 0xff0202,
+        emissiveIntensity: 0.6 // Very high emissive for ASCII color visibility
     });
 
     return { whiteMaterial, blackMaterial, redMaterial };
 };
 
-interface AsciiCoinProps {
-    maxRotationDegrees?: number;
+interface CoinProps {
     containerClassName?: string;
     width?: number;
     height?: number;
 }
 
-const AsciiCoin: React.FC<AsciiCoinProps> = ({
-                                                 maxRotationDegrees = 20,
-                                                 containerClassName = "ascii-coin-container",
-                                                 width = 400,
-                                                 height = 400
-                                             }) => {
+const Coin: React.FC<CoinProps> = ({
+                                       containerClassName = "coin-container",
+                                       width = 400,
+                                       height = 400
+                                   }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const sceneRef = useRef<THREE.Scene | null>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-    const controlsRef = useRef<OrbitControls | null>(null);
-    const asciiEffectRef = useRef<AsciiEffect | null>(null);
     const animationFrameRef = useRef<number | null>(null);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const coinGroupRef = useRef<THREE.Group | null>(null);
-    const initialRotationRef = useRef<THREE.Euler>(new THREE.Euler(0, 0, 0));
-    const maxRotationRadians = (maxRotationDegrees * Math.PI) / 180;
-    const isUserInteractingRef = useRef<boolean>(false);
-    const springBackRef = useRef<{
-        isAnimating: boolean;
-        startPolar: number;
-        startAzimuth: number;
-        targetPolar: number;
-        targetAzimuth: number;
-        startTime: number;
-        duration: number;
-    } | null>(null);
 
     // Create coin from SVG data
     const createCoinFromSVG = async (scene: THREE.Scene): Promise<void> => {
@@ -110,26 +289,33 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
                 const shapes = SVGLoader.createShapes(path);
 
                 shapes.forEach((shape) => {
-                    // Create extruded geometry for coin thickness
+                    // Create extruded geometry for flatter coin
                     const geometry = new THREE.ExtrudeGeometry(shape, {
-                        depth: 2, // Much flatter coin thickness
+                        depth: 2, // Much flatter - reduced from 6
                         bevelEnabled: true,
-                        bevelThickness: 0.3, // Reduced bevel thickness
-                        bevelSize: 0.2, // Reduced bevel size
+                        bevelThickness: 0.3, // Reduced from 1
+                        bevelSize: 0.2, // Reduced from 0.5
                         bevelOffset: 0,
-                        bevelSegments: 2 // Fewer segments for less rounded appearance
+                        bevelSegments: 2 // Reduced from 3 for sharper edges
                     });
 
-                    // Select material based on SVG fill color
+                    // Select material based on SVG fill color - updated for new SVG
                     let material;
                     const pathColor = path.color.getHex();
+                    const pathColorHex = `#${pathColor.toString(16).padStart(6, '0')}`;
 
-                    if (pathColor === 0xff0000) {
+                    if (pathColor === 0xff0202) { // Red flag elements (#ff0202)
                         material = redMaterial;
-                    } else if (pathColor === 0x000000) {
+                        console.log(`Red material applied for color: ${pathColorHex}`);
+                    } else if (pathColor === 0x000000) { // Black elements (outer circle, etc.)
                         material = blackMaterial;
+                        console.log(`Black material applied for color: ${pathColorHex}`);
+                    } else if (pathColor === 0xffffff) { // White elements (text, inner circle)
+                        material = whiteMaterial;
+                        console.log(`White material applied for color: ${pathColorHex}`);
                     } else {
-                        material = whiteMaterial; // Default for white and unknown colors
+                        material = whiteMaterial; // Default fallback
+                        console.log(`Default white material applied for unknown color: ${pathColorHex}`);
                     }
 
                     // Create mesh
@@ -149,9 +335,9 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
             // Move to origin first
             coinGroup.position.set(-center.x, -center.y, -center.z);
 
-            // Scale to much larger size for ASCII visibility
+            // Scale to appropriate size for good visibility
             const maxDim = Math.max(size.x, size.y, size.z);
-            const targetSize = 120; // Much larger for ASCII visibility
+            const targetSize = 100; // Optimal size for ASCII visibility and field of view
             if (maxDim > 0) {
                 const scale = targetSize / maxDim;
                 coinGroup.scale.setScalar(scale);
@@ -162,9 +348,12 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
             const finalBox = new THREE.Box3().setFromObject(coinGroup);
             const finalCenter = finalBox.getCenter(new THREE.Vector3());
             coinGroup.position.sub(finalCenter);
+            
+            // Move the coin up along Y-axis to ensure it's in the field of view
+            coinGroup.position.y += 105; // Move up by 105 units total
 
-            // Set initial rotation (face forward)
-            coinGroup.rotation.set(0, 0, 0);
+            // Set initial rotation to face forward and right-side up
+            coinGroup.rotation.set(Math.PI, 0, 0); // Flip 180 degrees around X-axis to fix upside-down issue
 
             console.log("Coin created successfully", {
                 meshCount: coinGroup.children.length,
@@ -178,159 +367,14 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
         }
     };
 
-    // Setup interaction listeners for spring-back animation
-    const setupInteractionListeners = (controls: OrbitControls): void => {
-        if (!controls.domElement) return;
-
-        const startInteraction = (): void => {
-            isUserInteractingRef.current = true;
-            springBackRef.current = null; // Cancel any ongoing spring-back
-        };
-
-        const endInteraction = (): void => {
-            isUserInteractingRef.current = false;
-            // Start spring-back animation after a short delay
-            setTimeout(() => {
-                if (!isUserInteractingRef.current && controlsRef.current) {
-                    startSpringBackAnimation();
-                }
-            }, 150); // Small delay to avoid immediate spring-back
-        };
-
-        // Listen for interaction events
-        controls.domElement.addEventListener('mousedown', startInteraction);
-        controls.domElement.addEventListener('mouseup', endInteraction);
-        controls.domElement.addEventListener('touchstart', startInteraction);
-        controls.domElement.addEventListener('touchend', endInteraction);
-
-        // Also listen for when mouse leaves the element
-        controls.domElement.addEventListener('mouseleave', endInteraction);
-    };
-
-    // Start spring-back animation to return to original position
-    const startSpringBackAnimation = (): void => {
-        if (!controlsRef.current) return;
-
-        const controls = controlsRef.current;
-        const currentPolar = controls.getPolarAngle();
-        const currentAzimuth = controls.getAzimuthalAngle();
-
-        // Target is the center position (original rotation)
-        const targetPolar = Math.PI / 2; // 90 degrees - front facing
-        const targetAzimuth = 0; // 0 degrees - centered
-
-        // Only animate if we're not already at target
-        const polarDiff = Math.abs(currentPolar - targetPolar);
-        const azimuthDiff = Math.abs(currentAzimuth - targetAzimuth);
-
-        if (polarDiff < 0.01 && azimuthDiff < 0.01) {
-            return; // Already at target
-        }
-
-        springBackRef.current = {
-            isAnimating: true,
-            startPolar: currentPolar,
-            startAzimuth: currentAzimuth,
-            targetPolar,
-            targetAzimuth,
-            startTime: performance.now(),
-            duration: 800 // 800ms for smooth spring-back
-        };
-
-        console.log("Spring-back animation started");
-    };
-
-    // Easing function for spring-like animation
-    const easeOutElastic = (t: number): number => {
-        const p = 0.3;
-        return Math.pow(2, -10 * t) * Math.sin((t - p / 4) * (2 * Math.PI) / p) + 1;
-    };
-
-    // Update spring-back animation
-    const updateSpringBackAnimation = (): void => {
-        if (!springBackRef.current || !controlsRef.current) return;
-
-        const spring = springBackRef.current;
-        const controls = controlsRef.current;
-        const elapsed = performance.now() - spring.startTime;
-        const progress = Math.min(elapsed / spring.duration, 1);
-
-        if (progress >= 1) {
-            // Animation complete
-            controls.object.position.setFromSphericalCoords(
-                controls.getDistance(),
-                spring.targetPolar,
-                spring.targetAzimuth
-            );
-            controls.update();
-            springBackRef.current = null;
-            console.log("Spring-back animation completed");
-            return;
-        }
-
-        // Apply easing
-        const easedProgress = easeOutElastic(progress);
-
-        // Interpolate angles
-        const currentPolar = spring.startPolar + (spring.targetPolar - spring.startPolar) * easedProgress;
-        const currentAzimuth = spring.startAzimuth + (spring.targetAzimuth - spring.startAzimuth) * easedProgress;
-
-        // Update camera position
-        controls.object.position.setFromSphericalCoords(
-            controls.getDistance(),
-            currentPolar,
-            currentAzimuth
-        );
-        controls.update();
-    };
-
-    // Setup camera controls with rotation limits
-    const setupControls = (camera: THREE.PerspectiveCamera, asciiEffect: AsciiEffect): void => {
-        const controls = new OrbitControls(camera, asciiEffect.domElement);
-
-        // Configure control limitations
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = false;
-
-        // Disable zoom and pan
-        controls.enableZoom = false;
-        controls.enablePan = false;
-
-        // Set rotation limits
-        controls.minPolarAngle = Math.PI / 2 - maxRotationRadians;
-        controls.maxPolarAngle = Math.PI / 2 + maxRotationRadians;
-        controls.minAzimuthAngle = -maxRotationRadians;
-        controls.maxAzimuthAngle = maxRotationRadians;
-
-        // Store initial camera position
-        controls.target.set(0, 0, 0);
-        controls.update();
-
-        controlsRef.current = controls;
-        console.log(`Controls set up with ${maxRotationDegrees}° rotation limit`);
-
-        // Add interaction event listeners for spring-back behavior
-        setupInteractionListeners(controls);
-    };
 
     // Render loop
-    const startRenderLoop = (scene: THREE.Scene, camera: THREE.PerspectiveCamera, asciiEffect: AsciiEffect): void => {
+    const startRenderLoop = (scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer): void => {
         const animate = (): void => {
             animationFrameRef.current = requestAnimationFrame(animate);
 
-            // Update spring-back animation if active
-            if (springBackRef.current && !isUserInteractingRef.current) {
-                updateSpringBackAnimation();
-            }
-
-            // Update controls
-            if (controlsRef.current) {
-                controlsRef.current.update();
-            }
-
-            // Render with ASCII effect
-            asciiEffect.render(scene, camera);
+            // Render normally
+            renderer.render(scene, camera);
         };
 
         animate();
@@ -342,7 +386,7 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
 
         const initializeScene = async () => {
             try {
-                console.log("Initializing AsciiCoin...");
+                console.log("Initializing Coin...");
 
                 // Scene setup with transparent background
                 const scene = new THREE.Scene();
@@ -354,7 +398,7 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
                 camera.position.set(0, 0, 150); // Closer to the coin
                 cameraRef.current = camera;
 
-                // Renderer setup with alpha for transparency and willReadFrequently fix
+                // Renderer setup with alpha for transparency
                 const renderer = new THREE.WebGLRenderer({
                     antialias: true,
                     alpha: true, // Enable transparency
@@ -364,62 +408,36 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
                 renderer.setSize(width, height);
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 renderer.setClearColor(0x000000, 0); // Transparent background
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                 rendererRef.current = renderer;
 
-                // ASCII effect with transparency and Catppuccin styling
-                const asciiEffect = new AsciiEffect(renderer, ' .:-+*=#%@', {
-                    invert: false,
-                    resolution: 0.15 // Much lower for bigger, more visible characters
-                });
-                asciiEffect.setSize(width, height);
-
-                // Style the ASCII effect with Catppuccin colors
-                const asciiElement = asciiEffect.domElement;
-                asciiElement.style.color = '#f5c2e7'; // Pink for better visibility
-                asciiElement.style.backgroundColor = 'transparent';
-                asciiElement.style.fontSize = '12px'; // Much larger for visibility
-                asciiElement.style.letterSpacing = '0px';
-                asciiElement.style.lineHeight = '10px'; // Slightly condensed
-                asciiElement.style.fontFamily = 'monospace';
-                asciiElement.style.fontWeight = 'bold'; // Bold for better visibility
-                asciiElement.style.width = '100%';
-                asciiElement.style.height = '100%';
-                asciiElement.style.textShadow = '0 0 3px #f5c2e7'; // Glow effect
-
-                // Fix Canvas2D willReadFrequently warning
-                const canvas = asciiElement.querySelector('canvas');
-                if (canvas) {
-                    const context = canvas.getContext('2d', { willReadFrequently: true });
-                }
-
-                asciiEffectRef.current = asciiEffect;
-
-                // Add ASCII effect to container
+                // Add renderer to container
                 if (containerRef.current && containerRef.current.childElementCount === 0) {
-                    containerRef.current.appendChild(asciiEffect.domElement);
+                    containerRef.current.appendChild(renderer.domElement);
                 }
 
-                // Basic lighting setup - enhanced for visibility
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Brighter ambient
+                // Enhanced lighting setup for better 3D visibility
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); // Moderate ambient
                 scene.add(ambientLight);
 
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2); // Much brighter
-                directionalLight.position.set(0, 50, 100);
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8); // Strong directional
+                directionalLight.position.set(0, 30, 80);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.mapSize.width = 2048;
+                directionalLight.shadow.mapSize.height = 2048;
                 scene.add(directionalLight);
 
-                // Add additional front light for ASCII visibility
-                const frontLight = new THREE.DirectionalLight(0xffffff, 0.8);
-                frontLight.position.set(0, 0, 50);
-                scene.add(frontLight);
+                // Additional lights for better 3D appearance
+                const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+                fillLight.position.set(-30, -20, 50);
+                scene.add(fillLight);
 
                 // Create the 3D coin from SVG
                 await createCoinFromSVG(scene);
 
-                // Set up controls with rotation limits
-                setupControls(camera, asciiEffect);
-
                 // Start render loop
-                startRenderLoop(scene, camera, asciiEffect);
+                startRenderLoop(scene, camera, renderer);
 
                 setLoading(false);
                 console.log("Scene initialization complete");
@@ -435,7 +453,7 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
 
         // Handle window resize
         const handleResize = (): void => {
-            if (!containerRef.current || !rendererRef.current || !asciiEffectRef.current || !cameraRef.current) return;
+            if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
 
             const rect = containerRef.current.getBoundingClientRect();
             const newWidth = rect.width || width;
@@ -445,9 +463,8 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
             cameraRef.current.aspect = newWidth / newHeight;
             cameraRef.current.updateProjectionMatrix();
 
-            // Update renderer and ASCII effect
+            // Update renderer
             rendererRef.current.setSize(newWidth, newHeight);
-            asciiEffectRef.current.setSize(newWidth, newHeight);
         };
 
         // Add resize listener
@@ -465,10 +482,10 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
             // Remove resize listener
             window.removeEventListener('resize', handleResize);
 
-            if (containerRef.current && asciiEffectRef.current) {
-                const asciiElement = asciiEffectRef.current.domElement;
-                if (containerRef.current.contains(asciiElement)) {
-                    containerRef.current.removeChild(asciiElement);
+            if (containerRef.current && rendererRef.current) {
+                const rendererElement = rendererRef.current.domElement;
+                if (containerRef.current.contains(rendererElement)) {
+                    containerRef.current.removeChild(rendererElement);
                 }
             }
 
@@ -491,11 +508,8 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
             if (rendererRef.current) {
                 rendererRef.current.dispose();
             }
-            if (controlsRef.current) {
-                controlsRef.current.dispose();
-            }
         };
-    }, [width, height, maxRotationDegrees]);
+    }, [width, height]);
 
     if (error) {
         return (
@@ -534,18 +548,6 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
                 border: 'none',
                 margin: '2rem auto', // Added margin for spacing
                 padding: '2rem', // Added padding
-                cursor: 'grab', // Indicate interactivity
-            }}
-            onMouseDown={(e) => {
-                if (e.currentTarget.style.cursor === 'grab') {
-                    e.currentTarget.style.cursor = 'grabbing';
-                }
-            }}
-            onMouseUp={(e) => {
-                e.currentTarget.style.cursor = 'grab';
-            }}
-            onMouseLeave={(e) => {
-                e.currentTarget.style.cursor = 'grab';
             }}
         >
             {loading && (
@@ -563,5 +565,4 @@ const AsciiCoin: React.FC<AsciiCoinProps> = ({
     );
 };
 
-
-export default AsciiCoin;
+export default Coin;

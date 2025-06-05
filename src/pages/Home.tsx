@@ -21,7 +21,7 @@ import SiteHeader from "../components/SiteHeader";
 import { chevronForward, arrowDown, sparkles, flash, star } from 'ionicons/icons';
 import ProductCard from '../components/ProductCard';
 import AsciiLogoAnimation from "../components/animation/AsciiAnimation";
-import AsciiCoin from "../components/animation/AsciiCoin";
+import Coin from "../components/animation/AsciiCoin";
 
 const Home: React.FC = () => {
     const [homeData, setHomeData] = useState<HomepageData | null>(null);
@@ -240,7 +240,8 @@ const Home: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* ASCII Coin Section */}
+{/*
+                     ASCII Coin Section
                     <div className="ascii-coin-section">
                         <div className="container">
                             <div className="section-header">
@@ -250,15 +251,15 @@ const Home: React.FC = () => {
                             </div>
 
                             <div className="ascii-coin-container-wrapper">
-                                <AsciiCoin
+                                <Coin
                                     width={600}
                                     height={400}
-                                    maxRotationDegrees={20}
                                     containerClassName="ascii-coin-display"
                                 />
                             </div>
                         </div>
                     </div>
+*/}
 
                     {/* Featured Products Section */}
                     {homeData?.featuredProducts && homeData.featuredProducts.length > 0 && !loading && (
