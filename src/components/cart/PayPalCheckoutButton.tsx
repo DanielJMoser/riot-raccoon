@@ -26,7 +26,7 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({
                 shape: 'pill',
                 color: 'blue'
             }}
-            createOrder={(data, actions) => {
+            createOrder={(_data, actions) => {
                 if (!actions.order) {
                     return Promise.reject(new Error('actions.order is undefined'));
                 }
@@ -45,7 +45,7 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({
                 });
             }}
             // Enhanced version focusing on the key part
-            onApprove={async (data, actions) => {
+            onApprove={async (_data, actions) => {
                 try {
                     if (!actions || !actions.order) {
                         throw new Error('actions.order is undefined');

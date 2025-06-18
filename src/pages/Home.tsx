@@ -14,14 +14,12 @@ import {
     IonIcon
 } from '@ionic/react';
 import { getHomepageContent } from '../services/api';
-import { Collection, HomepageData, Product } from "../types/homepageTypes";
+import { Collection, HomepageData, } from "../types/homepageTypes";
 import { urlFor } from '../../backend/services/sanityClient';
 import '../scss/Home.scss';
 import SiteHeader from "../components/SiteHeader";
-import { chevronForward, arrowDown, sparkles, flash, star } from 'ionicons/icons';
+import { chevronForward, arrowDown,} from 'ionicons/icons';
 import ProductCard from '../components/ProductCard';
-import AsciiLogoAnimation from "../components/animation/AsciiAnimation";
-import Coin from "../components/animation/AsciiCoin";
 
 const Home: React.FC = () => {
     const [homeData, setHomeData] = useState<HomepageData | null>(null);

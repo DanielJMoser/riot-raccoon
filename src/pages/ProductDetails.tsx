@@ -34,7 +34,7 @@ const ProductDetails: React.FC = () => {
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
     const [quantity, setQuantity] = useState<number>(1);
     const [mainImage, setMainImage] = useState<any | null>(null);
-    const { addToCart, isInCart } = useCart();
+    const { addToCart, } = useCart();
 
     useEffect(() => {
         const fetchProductData = async () => {
@@ -169,12 +169,12 @@ const ProductDetails: React.FC = () => {
     };
 
     // Extract color option for the main color display
-    const getSelectedColor = () => {
+/*    const getSelectedColor = () => {
         if (selectedOptions['Color']) {
             return selectedOptions['Color'];
         }
         return null;
-    };
+    };*/
 
     // Get variant image for a specific color
     const getVariantImageForColor = (color: string) => {
