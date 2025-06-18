@@ -90,18 +90,13 @@ const Home: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Glitch effect timer - triggers every 5 seconds
-    useEffect(() => {
-        const glitchInterval = setInterval(() => {
-            setIsGlitching(true);
-            // Turn off glitch effect after 500ms
-            setTimeout(() => {
-                setIsGlitching(false);
-            }, 500);
-        }, 5000);
-
-        return () => clearInterval(glitchInterval);
-    }, []);
+    // Handle glitch effect on user interaction
+    const handleGlitchEffect = () => {
+        setIsGlitching(true);
+        setTimeout(() => {
+            setIsGlitching(false);
+        }, 500);
+    };
 
     // Determine which menu items to show (from Sanity or defaults)
     const menuItems = homeData?.mainMenuItems || defaultMenuItems;
@@ -162,7 +157,15 @@ const Home: React.FC = () => {
                     {/* Hero Section */}
                     <div className="hero-section">
                         <div className="hero-content">
-                            <h1 className={`hero-title ${isGlitching ? 'glitch' : ''}`} data-text={brandTitle}>{brandTitle}</h1>
+                            <h1 
+                                className={`hero-title ${isGlitching ? 'glitch' : ''}`} 
+                                data-text={brandTitle}
+                                onClick={handleGlitchEffect}
+                                onMouseEnter={handleGlitchEffect}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                {brandTitle}
+                            </h1>
                             {homeData?.subtitle && (
                                 <p className="hero-subtitle">{homeData.subtitle}</p>
                             )}
