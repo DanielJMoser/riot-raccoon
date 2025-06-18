@@ -71,6 +71,11 @@ This is an Ionic React e-commerce application with Sanity CMS backend:
 - API calls should go through `src/services/api.ts`
 - Image handling uses Sanity's image URL builder via `urlFor()`
 
+### SCSS Guidelines
+- Place all property declarations before nested rules and media queries
+- When using mixins that contain media queries (like `@include mobile-only`), ensure all direct properties are declared first
+- For Sass mixed-decls warnings, either move declarations above nested rules or wrap them in `& {}`
+
 ## Clean Code Principles (Robert C. Martin Guidelines)
 
 ### Core Principles
