@@ -297,16 +297,16 @@ const Coin: React.FC<CoinProps> = ({
 
                     if (pathColor === 0xff0202) { // Red flag elements (#ff0202)
                         material = redMaterial;
-                        console.log(`Red material applied for color: ${pathColorHex}`);
+                        // Red material applied
                     } else if (pathColor === 0x000000) { // Black elements (outer circle, etc.)
                         material = blackMaterial;
-                        console.log(`Black material applied for color: ${pathColorHex}`);
+                        // Black material applied
                     } else if (pathColor === 0xffffff) { // White elements (text, inner circle)
                         material = whiteMaterial;
-                        console.log(`White material applied for color: ${pathColorHex}`);
+                        // White material applied
                     } else {
                         material = whiteMaterial; // Default fallback
-                        console.log(`Default white material applied for unknown color: ${pathColorHex}`);
+                        // Default white material applied
                     }
 
                     // Create mesh
@@ -346,11 +346,7 @@ const Coin: React.FC<CoinProps> = ({
             // Set initial rotation to face forward and right-side up
             coinGroup.rotation.set(Math.PI, 0, 0); // Flip 180 degrees around X-axis to fix upside-down issue
 
-            console.log("Coin created successfully", {
-                meshCount: coinGroup.children.length,
-                boundingBox: box,
-                scale: coinGroup.scale,
-                position: coinGroup.position
+            // Coin created successfully with meshes and positioning
             });
         } catch (err) {
             console.error("Error creating coin:", err);
@@ -369,7 +365,7 @@ const Coin: React.FC<CoinProps> = ({
         };
 
         animate();
-        console.log("Render loop started");
+        // Render loop started
     };
 
     useEffect(() => {
@@ -377,7 +373,7 @@ const Coin: React.FC<CoinProps> = ({
 
         const initializeScene = async () => {
             try {
-                console.log("Initializing Coin...");
+                // Initializing 3D coin animation
 
                 // Scene setup with transparent background
                 const scene = new THREE.Scene();
@@ -431,7 +427,7 @@ const Coin: React.FC<CoinProps> = ({
                 startRenderLoop(scene, camera, renderer);
 
                 setLoading(false);
-                console.log("Scene initialization complete");
+                // 3D scene initialization complete
 
             } catch (err) {
                 console.error("Error initializing AsciiCoin:", err);

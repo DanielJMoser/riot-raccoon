@@ -3,7 +3,6 @@ import {
     IonContent,
     IonPage,
     IonRouterLink,
-    IonSpinner,
     IonText,
     IonGrid,
     IonRow,
@@ -20,6 +19,10 @@ import '../scss/Home.scss';
 import SiteHeader from "../components/SiteHeader";
 import { chevronForward, arrowDown,} from 'ionicons/icons';
 import ProductCard from '../components/ProductCard';
+import LoadingSkeleton from '../components/ui/LoadingSkeleton';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import animations from '../utils/animations';
 
 const Home: React.FC = () => {
     const [homeData, setHomeData] = useState<HomepageData | null>(null);
@@ -29,13 +32,15 @@ const Home: React.FC = () => {
     const [showScrollIndicator, setShowScrollIndicator] = useState<boolean>(true);
     const [isGlitching, setIsGlitching] = useState<boolean>(false);
 
+    // Register GSAP plugins
+    gsap.registerPlugin(ScrollTrigger);
+
     // Default menu items and social links as fallback if Sanity data fails to load
     const defaultMenuItems = [
         { _id: '1', title: 'news', url: '/news' },
         { _id: '2', title: 'new collection', url: '/previews/newcollection' },
         { _id: '3', title: 'lookbook', url: '/lookbook' },
         { _id: '4', title: 'shop', url: '/shop' },
-        { _id: '5', title: 'random', url: '/random' },
         { _id: '6', title: 'about', url: '/about' },
         { _id: '7', title: 'contact', url: '/contact' }
     ];
@@ -59,7 +64,7 @@ const Home: React.FC = () => {
                 setError('Failed to load content. Using default values.');
                 // Set default data structure if Sanity fetch fails
                 setHomeData({
-                    title: 'BRAND',
+                    title: 'RIOT RACCOON',
                     mainMenuItems: defaultMenuItems,
                     socialLinks: defaultSocialLinks
                 });
@@ -90,18 +95,114 @@ const Home: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Initialize GSAP animations after loading
+    useEffect(() => {
+        if (!loading && homeData) {
+            initializeAnimations();
+        }
+    }, [loading, homeData]);
+
+    const initializeAnimations = () => {
+        // Timeline for entrance animations
+        const tl = gsap.timeline();
+
+        // Hero title entrance with cyberpunk timing
+        tl.fromTo('.hero-title', 
+            { 
+                y: 50, 
+                opacity: 0, 
+                scale: 0.9,
+                skewX: 2 
+            },
+            { 
+                y: 0, 
+                opacity: 1, 
+                scale: 1,
+                skewX: 0,
+                duration: animations.durations.medium,
+                ease: animations.easings.circuit
+            }
+        );
+
+        // Menu items staggered entrance
+        tl.fromTo('.main-menu .menu-item',
+            {
+                x: -30,
+                opacity: 0
+            },
+            {
+                x: 0,
+                opacity: 1,
+                duration: animations.durations.standard,
+                ease: animations.easings.sharp,
+                stagger: animations.stagger.standard.amount
+            }, 
+            '-=0.3'
+        );
+
+        // Scroll-triggered animations for sections
+        gsap.fromTo('.section-collections',
+            {
+                y: 60,
+                opacity: 0
+            },
+            {
+                y: 0,
+                opacity: 1,
+                duration: animations.durations.medium,
+                ease: animations.easings.circuit,
+                scrollTrigger: {
+                    trigger: '.section-collections',
+                    ...animations.scroll
+                }
+            }
+        );
+
+        // Banner image with parallax-like effect
+        gsap.fromTo('.hero-banner img',
+            {
+                scale: 1.1,
+                opacity: 0
+            },
+            {
+                scale: 1,
+                opacity: 1,
+                duration: animations.durations.slow,
+                ease: animations.easings.circuit
+            }
+        );
+
+        // Floating animation for scroll indicator
+        if (showScrollIndicator) {
+            gsap.to('.scroll-indicator .scroll-icon', {
+                y: 10,
+                duration: animations.durations.medium,
+                ease: animations.easings.pulse,
+                repeat: -1,
+                yoyo: true
+            });
+        }
+    };
+
     // Handle glitch effect on user interaction
     const handleGlitchEffect = () => {
         setIsGlitching(true);
-        setTimeout(() => {
-            setIsGlitching(false);
-        }, 500);
+        
+        // Apply GSAP glitch animation
+        const glitchSequence = animations.utils.glitchEffect('.hero-title');
+        const tl = gsap.timeline({
+            onComplete: () => setIsGlitching(false)
+        });
+        
+        glitchSequence.forEach((animation, index) => {
+            tl.to('.hero-title', animation, index * animations.durations.instant);
+        });
     };
 
     // Determine which menu items to show (from Sanity or defaults)
     const menuItems = homeData?.mainMenuItems || defaultMenuItems;
     const socialLinks = homeData?.socialLinks || defaultSocialLinks;
-    const brandTitle = homeData?.title || 'BRAND';
+    const brandTitle = homeData?.title || 'RIOT RACCOON';
 
     // Helper function to get collection URL
     const getCollectionUrl = (collection: Collection) => {
@@ -150,6 +251,22 @@ const Home: React.FC = () => {
             <SiteHeader loading={loading} />
 
             <IonContent fullscreen>
+                {/* Cyberpunk Background Elements */}
+                <div className="retro-grid-bg"></div>
+                <div className="particles">
+                    {Array.from({ length: 15 }).map((_, i) => (
+                        <div 
+                            key={i}
+                            className="particle"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                animationDelay: `${Math.random() * 5}s`,
+                                animationDuration: `${3 + Math.random() * 4}s`
+                            }}
+                        ></div>
+                    ))}
+                </div>
+                
                 <main id="MainContent">
                     {/* Accessibility skip link */}
                     <a href="#MainContent" className="skip-to-content">Skip to content</a>
@@ -187,8 +304,12 @@ const Home: React.FC = () => {
                             <div className="hero-banner">
                                 <img
                                     src={urlFor(homeData.mainBanner).width(1200).url()}
-                                    alt={homeData.title || 'Brand Banner'}
+                                    alt={homeData.title || 'RIOT RACCOON'}
                                 />
+                            </div>
+                        ) : loading ? (
+                            <div className="hero-banner">
+                                <LoadingSkeleton variant="hero" />
                             </div>
                         ) : (
                             <div className="hero-banner placeholder-banner">
@@ -216,7 +337,7 @@ const Home: React.FC = () => {
 
                             {loading ? (
                                 <div className="loading-container">
-                                    <IonSpinner name="dots" />
+                                    <LoadingSkeleton variant="text" count={6} />
                                 </div>
                             ) : (
                                 <div className="menu-container">
@@ -455,7 +576,7 @@ const Home: React.FC = () => {
 
                             <div className="footer-bottom">
                                 <p className="copyright">&copy; {new Date().getFullYear()} {brandTitle}. All rights reserved.</p>
-                                <p className="credits">Design with ♥ by Your Studio</p>
+                                <p className="credits">Design with ♥ by ourselves</p>
                             </div>
                         </div>
                     </footer>

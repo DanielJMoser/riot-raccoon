@@ -18,6 +18,7 @@ import { Product, Category } from '../types/homepageTypes';
 import '../scss/ProductList.scss';
 import SiteHeader from '../components/SiteHeader';
 import ProductCard from '../components/ProductCard';
+import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -204,8 +205,7 @@ const ProductList: React.FC = () => {
                         {/* Loading State */}
                         {loading && (
                             <div className="loading-container">
-                                <IonSpinner name="dots" />
-                                <p>Loading products...</p>
+                                <LoadingSkeleton variant="product" count={8} />
                             </div>
                         )}
 

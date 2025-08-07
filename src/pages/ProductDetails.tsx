@@ -19,6 +19,7 @@ import '../scss/ProductDetails.scss';
 import {Category, Product} from "../types/homepageTypes";
 import { useCart } from "../context/CartContext";
 import SiteHeader from '../components/SiteHeader';
+import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 import { chevronBack } from 'ionicons/icons';
 
 interface ProductDetailParams {
@@ -210,7 +211,7 @@ const ProductDetails: React.FC = () => {
                     {/* Loading state */}
                     {loading && (
                         <div className="loading-container">
-                            <IonSpinner name="dots" />
+                            <LoadingSkeleton variant="hero" />
                             <p>Loading product details...</p>
                         </div>
                     )}

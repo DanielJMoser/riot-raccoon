@@ -1,0 +1,284 @@
+// src/scss/NotFound.scss
+@import 'mixins';
+
+.not-found-page {
+  .not-found-content {
+    @include cyberpunk-background(true, 20);
+  }
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  // Background styles handled by cyberpunk-background mixin
+
+  // Main error display
+  .error-display {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  // Glitch effect for 404
+  .glitch-text {
+    margin-bottom: 2rem;
+
+    .error-code {
+      font-family: var(--retro-font);
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: bold;
+      color: var(--primary-color);
+      position: relative;
+      display: inline-block;
+      text-shadow: 
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color),
+        0 0 40px var(--primary-color);
+      
+      &::before,
+      &::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      &::before {
+        animation: glitch1 2s infinite;
+        color: #ff0040;
+        z-index: -1;
+      }
+
+      &::after {
+        animation: glitch2 2s infinite;
+        color: #00ff80;
+        z-index: -2;
+      }
+    }
+  }
+
+  @keyframes glitch1 {
+    0%, 90%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+  }
+
+  @keyframes glitch2 {
+    0%, 90%, 100% { transform: translate(0); }
+    10% { transform: translate(2px, -2px); }
+    30% { transform: translate(-2px, 2px); }
+    50% { transform: translate(2px, 2px); }
+    70% { transform: translate(-2px, -2px); }
+  }
+
+  // ASCII Art styling
+  .ascii-art {
+    margin: 3rem 0;
+    
+    .ascii-text {
+      font-family: var(--retro-font);
+      font-size: clamp(0.5rem, 2vw, 1rem);
+      color: var(--accent-color);
+      line-height: 1.2;
+      text-shadow: 0 0 10px currentColor;
+      white-space: pre;
+      overflow-x: auto;
+      animation: asciiGlow 3s ease-in-out infinite alternate;
+      
+      @include mobile-only {
+        font-size: 0.4rem;
+        line-height: 1;
+      }
+    }
+  }
+
+  @keyframes asciiGlow {
+    0% { 
+      opacity: 0.8;
+      text-shadow: 0 0 10px currentColor;
+    }
+    100% { 
+      opacity: 1;
+      text-shadow: 
+        0 0 20px currentColor,
+        0 0 30px currentColor;
+    }
+  }
+
+  // Error message styling
+  .error-message {
+    margin: 2rem 0;
+    
+    .message-text {
+      font-family: var(--body-font);
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: var(--text-light);
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+      
+      &.typewriter::after {
+        content: '|';
+        animation: blink 1s infinite;
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  // Action buttons
+  .error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin: 3rem 0;
+
+    @include mobile-only {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cta-button {
+      --border-radius: 8px;
+      --padding-start: 1.5rem;
+      --padding-end: 1.5rem;
+      --padding-top: 0.8rem;
+      --padding-bottom: 0.8rem;
+      font-family: var(--retro-font);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      &:hover::before {
+        left: 100%;
+      }
+
+      &.home-btn {
+        --color: var(--primary-color);
+        --border-color: var(--primary-color);
+        
+        &:hover {
+          --background: var(--primary-color);
+          --color: var(--background-dark);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.3);
+        }
+      }
+
+      &.back-btn {
+        --background: var(--accent-color);
+        --color: var(--background-dark);
+        
+        &:hover {
+          --background: var(--accent-bright);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(var(--accent-rgb), 0.3);
+        }
+      }
+
+      &.random-btn {
+        --color: var(--text-light);
+        
+        &:hover {
+          --color: var(--accent-color);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+
+  // Terminal-style help
+  .terminal-help {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 3rem;
+    max-width: 500px;
+    width: 100%;
+    font-family: var(--retro-font);
+    font-size: 0.9rem;
+    box-shadow: 
+      0 0 20px rgba(var(--primary-rgb), 0.2),
+      inset 0 0 20px rgba(var(--primary-rgb), 0.1);
+    
+    .terminal-line {
+      margin-bottom: 0.5rem;
+      
+      .prompt {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+      
+      .command {
+        color: var(--primary-color);
+        margin-left: 0.5rem;
+      }
+    }
+
+    .terminal-output {
+      color: var(--text-light);
+      margin-top: 1rem;
+      
+      p {
+        margin: 0.3rem 0;
+        
+        &:first-child {
+          color: var(--accent-color);
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+
+  // Particle effects handled by cyberpunk-background mixin
+
+  // Responsive adjustments
+  @include mobile-only {
+    .error-container {
+      padding: 1rem 0.5rem;
+    }
+
+    .terminal-help {
+      font-size: 0.8rem;
+      padding: 1rem;
+    }
+
+    .ascii-art .ascii-text {
+      font-size: 0.3rem;
+    }
+  }
+
+  // Scanline effects handled by cyberpunk-background mixin
+}

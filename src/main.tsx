@@ -2,6 +2,10 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { validateEnvironment } from './config/env';
+import { initializeSecurity } from './middleware/security';
+
+// Initialize security measures first
+initializeSecurity();
 
 // Validate environment variables before starting the app
 try {

@@ -1,0 +1,222 @@
+// src/components/ui/LoadingSkeleton.scss
+@import '../../scss/mixins';
+
+.loading-skeleton {
+  width: 100%;
+
+  .skeleton-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    ion-skeleton-text {
+      --background: rgba(255, 255, 255, 0.1);
+      --background-rgb: 255, 255, 255;
+      border-radius: 4px;
+    }
+  }
+
+  .skeleton-card {
+    display: grid;
+    gap: 1.5rem;
+    
+    @include mobile-only {
+      grid-template-columns: 1fr;
+    }
+    
+    @include tablet-up {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @include desktop-up {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .skeleton-card-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      ion-skeleton-text {
+        --background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+      }
+
+      .skeleton-card-content {
+        padding-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  .skeleton-product {
+    display: grid;
+    gap: 1.5rem;
+    
+    @include mobile-only {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @include tablet-up {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    @include desktop-up {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .skeleton-product-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+
+      .skeleton-product-image {
+        width: 100%;
+        aspect-ratio: 1;
+        
+        ion-skeleton-text {
+          --background: rgba(255, 255, 255, 0.08);
+        }
+      }
+
+      .skeleton-product-info {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        ion-skeleton-text {
+          --background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+
+  .skeleton-hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: 400px;
+
+    @include mobile-only {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .skeleton-hero-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      ion-skeleton-text {
+        --background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+      }
+    }
+
+    .skeleton-hero-image {
+      flex: 1;
+      min-height: 300px;
+
+      @include mobile-only {
+        width: 100%;
+      }
+
+      ion-skeleton-text {
+        --background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+      }
+    }
+  }
+
+  .skeleton-avatar {
+    display: flex;
+    align-items: center;
+
+    ion-skeleton-text {
+      --background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  // Dark theme compatibility
+  @media (prefers-color-scheme: dark) {
+    ion-skeleton-text {
+      --background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  // Animation customization for vaporwave aesthetic
+  ion-skeleton-text {
+    --animation-duration: 2s;
+    --animation-direction: alternate;
+    --animation-iteration-count: infinite;
+    
+    &::before {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+    }
+  }
+
+  // Cyberpunk glow effect
+  .skeleton-card-item,
+  .skeleton-product-item {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(var(--ion-color-primary-rgb), 0.1),
+        transparent
+      );
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0;
+      animation: skeletonGlow 3s ease-in-out infinite;
+    }
+  }
+
+  @keyframes skeletonGlow {
+    0%, 100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
+// Retro CRT scanline effect for skeletons
+.loading-skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 1;
+}

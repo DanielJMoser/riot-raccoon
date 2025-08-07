@@ -52,6 +52,11 @@
 /* General Styles */
 .retro-modern {
   font-family: 'Space Grotesk', sans-serif;
+  
+  // Add cyberpunk background effects to home page
+  ion-content {
+    @include cyberpunk-background(true, 15);
+  }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'VT323', monospace;

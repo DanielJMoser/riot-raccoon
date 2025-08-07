@@ -21,6 +21,7 @@ import { PortableText } from '@portabletext/react';
 import '../scss/CollectionDetails.scss';
 import SiteHeader from '../components/SiteHeader';
 import ProductCard from '../components/ProductCard';
+import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 
 interface CollectionDetailsParams {
     slug: string;
@@ -82,7 +83,7 @@ const CollectionDetails: React.FC = () => {
                         {/* Loading state */}
                         {loading && (
                             <div className="loading-container">
-                                <IonSpinner name="dots" />
+                                <LoadingSkeleton variant="hero" />
                                 <p>Loading collection...</p>
                             </div>
                         )}

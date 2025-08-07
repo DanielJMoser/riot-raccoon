@@ -88,13 +88,6 @@ const SiteHeader: React.FC<HeaderProps> = ({ loading = false }) => {
                 </div>
 
                 <div className="header-actions">
-                    <IonButton fill="clear" className="search-button">
-                        <IonIcon icon={searchOutline} />
-                    </IonButton>
-
-                    <IonButton fill="clear" className="account-button" routerLink="/account">
-                        <IonIcon icon={personOutline} />
-                    </IonButton>
 
                     <CartWidget />
 

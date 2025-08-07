@@ -2,7 +2,49 @@
   command = "npm run build"
   publish = "dist"
 
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Content Security Policy
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypal.com https://www.paypalobjects.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https://cdn.sanity.io https://www.paypalobjects.com data: blob:; connect-src 'self' https://api.sanity.io https://*.api.sanity.io https://api.paypal.com https://api.sandbox.paypal.com wss: ws:; frame-src 'self' https://www.paypal.com https://js.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    
+    # XSS Protection
+    X-XSS-Protection = "1; mode=block"
+    
+    # Content Type Options
+    X-Content-Type-Options = "nosniff"
+    
+    # Frame Options
+    X-Frame-Options = "DENY"
+    
+    # Referrer Policy
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Permissions Policy
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    
+    # Cross-Origin Policies
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
+
+# HTTPS redirects
+[[redirects]]
+  from = "http://riot-raccoon.netlify.app/*"
+  to = "https://riot-raccoon.netlify.app/:splat"
+  status = 301
+  force = true
+
+# Main SPA redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Production security headers with HSTS
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # HTTP Strict Transport Security (production only)
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"

@@ -5,7 +5,7 @@ export default {
     fields: [
         {
             name: 'title',
-            title: 'Brand Title',
+            title: 'RIOT RACCOON title',
             type: 'string',
             description: 'The main brand title displayed in the logo',
             validation: Rule => Rule.required()

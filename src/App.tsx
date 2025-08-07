@@ -45,6 +45,7 @@ import Collections from "./pages/Collections";
 import PfandGehoertDaneben from "./pages/PfandGehoertDaneben";
 import ErrorBoundary from "./components/ErrorBoundary";
 import MobileNavigation from "./components/MobileNavigation";
+import NotFound from "./pages/NotFound";
 
 // Import placeholder pages
 // These will be replaced with actual implementations later
@@ -149,9 +150,14 @@ const App: React.FC = () => (
                         <Checkout />
                     </Route>
 
+                    {/* 404 Not Found - must be before catch-all */}
+                    <Route exact path="/404">
+                        <NotFound />
+                    </Route>
+
                     {/* Catch all undefined routes */}
                     <Route>
-                        <Redirect to="/" />
+                        <NotFound />
                     </Route>
                     </IonRouterOutlet>
                 </IonReactRouter>

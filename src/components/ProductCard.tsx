@@ -6,6 +6,8 @@ import { Product } from '../types/homepageTypes';
 import { useCart } from '../context/CartContext';
 import { getImageUrl } from '../utils/imageUtils';
 import '../scss/components/ProductCard.scss';
+import { gsap } from 'gsap';
+import animations from '../utils/animations';
 
 interface ProductCardProps {
     product: Product;
@@ -16,6 +18,37 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, variant = 'grid' }) 
     const [isHovered, setIsHovered] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const { addToCart } = useCart();
+    
+    // Enhanced hover effects with GSAP
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        gsap.to(`.product-card-${product._id}`, {
+            ...animations.transforms.scaleHover,
+            ...animations.presets.cardHover,
+            boxShadow: '0 20px 40px rgba(203, 166, 247, 0.2)'
+        });
+        
+        gsap.to(`.product-card-${product._id} .product-image`, {
+            scale: 1.1,
+            duration: animations.durations.medium,
+            ease: animations.easings.circuit
+        });
+    };
+    
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+        gsap.to(`.product-card-${product._id}`, {
+            scale: 1,
+            boxShadow: 'none',
+            ...animations.presets.cardHover
+        });
+        
+        gsap.to(`.product-card-${product._id} .product-image`, {
+            scale: 1,
+            duration: animations.durations.medium,
+            ease: animations.easings.circuit
+        });
+    };
 
     // Format currency
     const formatCurrency = (amount: number) => {
@@ -73,9 +106,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, variant = 'grid' }) 
 
     return (
         <div
-            className={`product-card ${variant} ${isHovered ? 'hovered' : ''}`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            className={`product-card product-card-${product._id} ${variant} ${isHovered ? 'hovered' : ''}`}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <IonRouterLink routerLink={getProductUrl()}>
                 {/* Product Image */}

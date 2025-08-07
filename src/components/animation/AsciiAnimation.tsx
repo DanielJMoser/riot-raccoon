@@ -65,7 +65,7 @@ const AsciiAnimation: React.FC<AsciiAnimationProps> = ({
         if (!containerRef.current) return;
 
         setLoading(true);
-        console.log("Initializing ASCII animation...");
+        // Initializing ASCII animation
 
         // Ensure container has non-zero dimensions
         const updateDimensions = () => {
@@ -364,7 +364,7 @@ const AsciiAnimation: React.FC<AsciiAnimationProps> = ({
         setTimeout(() => {
             animate();
             setLoading(false);
-            console.log("Animation started");
+            // Animation started
         }, 500);
 
         // Cleanup

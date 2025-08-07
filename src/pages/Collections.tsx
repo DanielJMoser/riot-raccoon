@@ -16,6 +16,7 @@ import { Collection } from '../types/homepageTypes';
 import { urlFor } from '../../backend/services/sanityClient';
 import '../scss/Collections.scss';
 import SiteHeader from '../components/SiteHeader';
+import LoadingSkeleton from '../components/ui/LoadingSkeleton';
 
 const Collections: React.FC = () => {
     const [collections, setCollections] = useState<Collection[]>([]);
@@ -73,7 +74,7 @@ const Collections: React.FC = () => {
                         {/* Loading state */}
                         {loading && (
                             <div className="loading-container">
-                                <IonSpinner name="dots" />
+                                <LoadingSkeleton variant="card" count={6} />
                                 <p>Loading collections...</p>
                             </div>
                         )}

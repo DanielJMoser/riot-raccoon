@@ -21,6 +21,8 @@ import { useCart } from '../context/CartContext';
 import { createOrderFromCart } from '../services/api';
 import { CustomerInfo } from '../types/homepageTypes';
 import { getEnvironmentConfig } from '../config/env';
+import { CheckoutSecurityHandler } from '../middleware/security';
+import { sanitizeInput, validateEmail, validateName, validateAddress, validatePostalCode, validatePhone } from '../utils/security';
 import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';
 import PayPalCheckoutButton from '../components/cart/PayPalCheckoutButton';
@@ -86,47 +88,83 @@ const Checkout: React.FC = () => {
     }, [cart.items.length, orderPlaced, cartLoading]);
 
     const handleInputChange = (field: string, value: string) => {
+        // Basic sanitization for real-time input
+        const sanitizedValue = value.trim();
         setCustomerInfo((prev) => ({
             ...prev,
-            [field]: value
+            [field]: sanitizedValue
         }));
     };
 
-    const validateForm = () => {
-        const requiredFields = [
-            'email',
-            'firstName',
-            'lastName',
-            'address',
-            'city',
-            'state',
-            'postalCode',
-            'country'
-        ];
+    const validateForm = (): { isValid: boolean; errors: string[] } => {
+        const errors: string[] = [];
 
+        // Basic required field validation
+        const requiredFields = ['email', 'firstName', 'lastName', 'address', 'city', 'state', 'postalCode', 'country'];
         for (const field of requiredFields) {
-            if (!customerInfo[field as keyof typeof customerInfo]) {
-                setToastMessage(
-                    `Please fill in the required field: ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`
-                );
-                setShowToast(true);
-                return false;
+            const value = customerInfo[field as keyof typeof customerInfo];
+            if (!value || typeof value !== 'string' || value.trim() === '') {
+                errors.push(`Please fill in the required field: ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
             }
         }
 
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(customerInfo.email)) {
-            setToastMessage('Please enter a valid email address');
-            setShowToast(true);
-            return false;
+        // If required fields are missing, return early
+        if (errors.length > 0) {
+            return { isValid: false, errors };
         }
 
-        return true;
+        // Secure validation using security utilities
+        if (!validateEmail(customerInfo.email)) {
+            errors.push('Please enter a valid email address');
+        }
+
+        if (!validateName(customerInfo.firstName)) {
+            errors.push('First name contains invalid characters');
+        }
+
+        if (!validateName(customerInfo.lastName)) {
+            errors.push('Last name contains invalid characters');
+        }
+
+        if (!validateAddress(customerInfo.address)) {
+            errors.push('Address contains invalid characters');
+        }
+
+        if (!validateName(customerInfo.city)) {
+            errors.push('City contains invalid characters');
+        }
+
+        if (!validateName(customerInfo.state)) {
+            errors.push('State/Province contains invalid characters');
+        }
+
+        if (!validatePostalCode(customerInfo.postalCode)) {
+            errors.push('Invalid postal code format');
+        }
+
+        if (!validateName(customerInfo.country)) {
+            errors.push('Country contains invalid characters');
+        }
+
+        // Optional phone validation
+        if (customerInfo.phone && !validatePhone(customerInfo.phone)) {
+            errors.push('Invalid phone number format');
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors
+        };
     };
 
     const handlePlaceOrder = async () => {
-        if (!validateForm()) return;
+        // Validate form with security utilities
+        const validation = validateForm();
+        if (!validation.isValid) {
+            setToastMessage(validation.errors[0]); // Show first error
+            setShowToast(true);
+            return;
+        }
 
         if (cart.items.length === 0) {
             setToastMessage('Your cart is empty');
@@ -137,13 +175,21 @@ const Checkout: React.FC = () => {
         try {
             setLoading(true);
 
-            // Ensure payment method is set in customer info
+            // Sanitize and prepare customer data
             const customerData: CustomerInfo = {
-                ...customerInfo,
+                email: sanitizeInput(customerInfo.email),
+                firstName: sanitizeInput(customerInfo.firstName),
+                lastName: sanitizeInput(customerInfo.lastName),
+                address: sanitizeInput(customerInfo.address),
+                city: sanitizeInput(customerInfo.city),
+                state: sanitizeInput(customerInfo.state),
+                postalCode: sanitizeInput(customerInfo.postalCode),
+                country: sanitizeInput(customerInfo.country),
+                phone: customerInfo.phone ? sanitizeInput(customerInfo.phone) : '',
                 paymentMethod
             };
 
-            // Create order in Sanity
+            // Create order in Sanity with sanitized data
             const order = await createOrderFromCart(cart, customerData);
 
             // Clear the cart

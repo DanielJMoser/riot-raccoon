@@ -53,7 +53,7 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({
 
                     // Capture the PayPal order
                     const details = await actions.order.capture();
-                    console.log('PayPal transaction completed', details);
+                    // PayPal transaction completed successfully
 
                     // IMPORTANT: Check if customerInfo exists
                     if (!customerInfo) {
@@ -74,15 +74,12 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({
                         paypalPayerId: details.payer?.payer_id || 'unknown'
                     };
 
-                    console.log('Creating order with data:', {
-                        cart,
-                        customerInfo: enhancedCustomerInfo
-                    });
+                    // Creating order in Sanity CMS
 
                     // Create the order in Sanity
                     try {
                         const orderResult = await createOrderFromCart(cart, enhancedCustomerInfo);
-                        console.log('Sanity order created successfully:', orderResult);
+                        // Sanity order created successfully
 
                         // Clear cart and call success callback
                         clearCart();
