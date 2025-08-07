@@ -4,6 +4,10 @@
 .not-found-page {
   .not-found-content {
     @include cyberpunk-background(true, 20);
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
   }
 
   .error-container {
@@ -11,10 +15,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: calc(100dvh - 80px); // Subtract header height
+    min-height: calc(100dvh - 80px); // Use dynamic viewport height for better mobile support
     padding: 2rem 1rem;
     position: relative;
     z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
 
   // Background styles handled by cyberpunk-background mixin
