@@ -347,7 +347,6 @@ const Coin: React.FC<CoinProps> = ({
             coinGroup.rotation.set(Math.PI, 0, 0); // Flip 180 degrees around X-axis to fix upside-down issue
 
             // Coin created successfully with meshes and positioning
-            });
         } catch (err) {
             console.error("Error creating coin:", err);
             throw new Error("Failed to create 3D coin");

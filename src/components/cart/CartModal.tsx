@@ -38,7 +38,6 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
         updateCartItem,
         removeFromCart,
         clearCart,
-        applyCoupon,
         addNote
     } = useCart();
     const [couponCode, setCouponCode] = React.useState('');
@@ -54,11 +53,9 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
         removeFromCart(productId, variantId);
     };
 
-    // Apply coupon
+    // Apply coupon (simplified - cart modal shouldn't handle coupons, use checkout page)
     const handleApplyCoupon = () => {
-        if (couponCode.trim()) {
-            applyCoupon(couponCode.trim());
-        }
+        // Coupon functionality moved to checkout page
     };
 
     // Add note
@@ -169,9 +166,9 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
                                                 />
                                                 <IonButton onClick={handleApplyCoupon}>Apply</IonButton>
                                             </div>
-                                            {cart.metadata?.couponCode && (
+                                            {cart.couponCode && (
                                                 <div className="active-coupon">
-                                                    Applied: {cart.metadata.couponCode}
+                                                    Applied: {cart.couponCode}
                                                 </div>
                                             )}
                                         </div>
