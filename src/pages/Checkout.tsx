@@ -26,6 +26,7 @@ import { sanitizeInput, validateEmail, validateName, validateAddress, validatePo
 import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';
 import PayPalCheckoutButton from '../components/cart/PayPalCheckoutButton';
+import CouponInput from '../components/cart/CouponInput';
 import {
     cardOutline,
     cashOutline,
@@ -36,7 +37,7 @@ import {
 } from 'ionicons/icons';
 
 const Checkout: React.FC = () => {
-    const { cart, clearCart, loading: cartLoading } = useCart();
+    const { cart, clearCart, applyCoupon, removeCoupon, loading: cartLoading } = useCart();
     const [loading, setLoading] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -70,9 +71,20 @@ const Checkout: React.FC = () => {
 
     // Calculate order totals
     const subtotal = cart.totalPrice;
-    const shipping = subtotal > 250 ? 0 : 10;
-    const tax = subtotal * 0.2; // 20% tax
-    const total = subtotal + shipping + tax;
+    const baseShipping = subtotal > 250 ? 0 : 10;
+    
+    // Apply free shipping if coupon provides it
+    const shipping = cart.couponCode === 'FREESHIP' ? 0 : baseShipping;
+    
+    // Calculate discount (already validated in coupon service)
+    const discount = cart.couponDiscount || 0;
+    
+    // Apply discount to subtotal for tax calculation
+    const discountedSubtotal = Math.max(0, subtotal - discount);
+    const tax = discountedSubtotal * 0.2; // 20% tax on discounted amount
+    
+    // Final total
+    const total = discountedSubtotal + shipping + tax;
 
     // Format currency
     const formatCurrency = (amount: number) => `€${amount.toFixed(2)}`;
@@ -475,10 +487,10 @@ const Checkout: React.FC = () => {
                                                     <span>Tax (20%):</span>
                                                     <span>{formatCurrency(tax)}</span>
                                                 </div>
-                                                {cart.metadata?.couponCode && (
+                                                {cart.couponCode && cart.couponDiscount !== undefined && cart.couponDiscount > 0 && (
                                                     <div className="summary-row discount">
-                                                        <span>Discount ({cart.metadata.couponCode}):</span>
-                                                        <span>-€0.00</span>
+                                                        <span>Discount ({cart.couponCode}):</span>
+                                                        <span className="discount-amount">-{formatCurrency(cart.couponDiscount)}</span>
                                                     </div>
                                                 )}
                                                 <div className="summary-row total">
@@ -486,6 +498,15 @@ const Checkout: React.FC = () => {
                                                     <span>{formatCurrency(total)}</span>
                                                 </div>
                                             </div>
+                                            
+                                            {/* Coupon Input */}
+                                            <CouponInput
+                                                subtotal={subtotal}
+                                                shippingCost={baseShipping}
+                                                onCouponApply={applyCoupon}
+                                                onCouponRemove={removeCoupon}
+                                                appliedCoupon={cart.couponCode}
+                                            />
                                         </div>
 
                                         {/* Order Items Summary */}

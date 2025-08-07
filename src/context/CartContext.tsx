@@ -19,8 +19,9 @@ export interface Cart {
     items: CartItem[];
     totalItems: number;
     totalPrice: number;
+    couponCode?: string;
+    couponDiscount?: number;
     metadata?: {
-        couponCode?: string;
         notes?: string;
     };
 }
@@ -33,7 +34,8 @@ interface CartContextType {
     clearCart: () => void;
     isInCart: (productId: string, variantId?: string) => boolean;
     findCartItem: (productId: string, variantId?: string) => CartItem | undefined;
-    applyCoupon: (couponCode: string) => void;
+    applyCoupon: (couponCode: string, discount: number) => void;
+    removeCoupon: () => void;
     addNote: (note: string) => void;
     loading: boolean;
 }
@@ -45,7 +47,6 @@ const defaultCart: Cart = {
     totalItems: 0,
     totalPrice: 0,
     metadata: {
-        couponCode: '',
         notes: ''
     }
 };
@@ -214,15 +215,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     // Apply coupon
-    const applyCoupon = (couponCode: string) => {
+    const applyCoupon = (couponCode: string, discount: number) => {
         setCart(prevCart => ({
             ...prevCart,
-            metadata: {
-                ...prevCart.metadata,
-                couponCode
-            }
+            couponCode,
+            couponDiscount: discount
         }));
-        // In a real application, you would validate the coupon and apply the discount here
+    };
+    
+    // Remove coupon
+    const removeCoupon = () => {
+        setCart(prevCart => {
+            const { couponCode, couponDiscount, ...rest } = prevCart;
+            return rest;
+        });
     };
 
     // Add note
@@ -247,6 +253,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 isInCart,
                 findCartItem,
                 applyCoupon,
+                removeCoupon,
                 addNote,
                 loading
             }}

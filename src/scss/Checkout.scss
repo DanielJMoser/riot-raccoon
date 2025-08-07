@@ -177,6 +177,15 @@ $crust: #11111b;
             color: $mauve;
           }
         }
+        
+        &.discount {
+          color: $green;
+          
+          .discount-amount {
+            color: $green;
+            font-weight: 600;
+          }
+        }
       }
     }
   }
