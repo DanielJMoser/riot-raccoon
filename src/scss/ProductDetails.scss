@@ -504,5 +504,38 @@ $crust: #11111b;
         }
       }
     }
+    
+    .product-stock-indicator {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba($surface0, 0.5);
+      border-radius: 8px;
+      border: 1px solid $surface1;
+      
+      .stock-indicator.detailed {
+        font-size: 1rem;
+        
+        &.low-stock {
+          background: rgba($peach, 0.1);
+          border-color: rgba($peach, 0.3);
+          border-radius: 6px;
+          padding: 0.5rem 1rem;
+        }
+        
+        &.out-of-stock {
+          background: rgba($red, 0.1);
+          border-color: rgba($red, 0.3);
+          border-radius: 6px;
+          padding: 0.5rem 1rem;
+        }
+        
+        &.in-stock {
+          background: rgba($green, 0.1);
+          border-color: rgba($green, 0.3);
+          border-radius: 6px;
+          padding: 0.5rem 1rem;
+        }
+      }
+    }
   }
 }

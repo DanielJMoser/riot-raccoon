@@ -8,6 +8,7 @@ import { getImageUrl } from '../utils/imageUtils';
 import '../scss/components/ProductCard.scss';
 import { gsap } from 'gsap';
 import animations from '../utils/animations';
+import StockIndicator from './ui/StockIndicator';
 
 interface ProductCardProps {
     product: Product;
@@ -217,6 +218,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, variant = 'grid' }) 
                             <span>{product.variants.length} options available</span>
                         </div>
                     )}
+                    
+                    {/* Stock Indicator */}
+                    <StockIndicator
+                        inStock={product.inStock}
+                        inventory={product.inventory || undefined}
+                        lowInventoryThreshold={product.lowInventoryThreshold || undefined}
+                        variant="badge"
+                        showIcon={true}
+                    />
                 </div>
 
                 {/* Quick add button (mobile) */}

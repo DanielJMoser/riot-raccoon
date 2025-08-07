@@ -20,6 +20,7 @@ import {Category, Product} from "../types/homepageTypes";
 import { useCart } from "../context/CartContext";
 import SiteHeader from '../components/SiteHeader';
 import LoadingSkeleton from '../components/ui/LoadingSkeleton';
+import StockIndicator from '../components/ui/StockIndicator';
 import { chevronBack } from 'ionicons/icons';
 
 interface ProductDetailParams {
@@ -42,6 +43,7 @@ const ProductDetails: React.FC = () => {
             try {
                 setLoading(true);
                 const data = await getProductBySlug(slug);
+                
                 setProduct(data);
                 setMainImage(data?.mainImage);
 
@@ -347,6 +349,17 @@ const ProductDetails: React.FC = () => {
                                                 ) : (
                                                     <span className="product-price">{formatCurrency(getCurrentPrice())}</span>
                                                 )}
+                                            </div>
+
+                                            {/* Stock Indicator */}
+                                            <div className="product-stock-indicator">
+                                                <StockIndicator
+                                                    inStock={isCurrentVariantInStock()}
+                                                    inventory={selectedVariant?.inventory || product.inventory}
+                                                    lowInventoryThreshold={selectedVariant?.lowInventoryThreshold || product.lowInventoryThreshold}
+                                                    variant="detailed"
+                                                    showIcon={true}
+                                                />
                                             </div>
 
                                             {/* Short description */}

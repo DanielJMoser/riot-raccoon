@@ -36,6 +36,8 @@ export const getHomepageContent = async () => {
         compareAtPrice,
         shortDescription,
         inStock,
+        inventory,
+        lowInventoryThreshold,
         featured,
         new,
         "categories": categories[] -> {
@@ -79,6 +81,8 @@ export const getProducts = async (): Promise<Product[]> => {
     compareAtPrice,
     shortDescription,
     inStock,
+    inventory,
+    lowInventoryThreshold,
     featured,
     new,
     "categories": categories[]-> {
@@ -127,6 +131,8 @@ export const getProductBySlug = async (slug: string): Promise<Product | null> =>
     description,
     shortDescription,
     inStock,
+    inventory,
+    lowInventoryThreshold,
     featured,
     new,
     "categories": categories[]-> {
@@ -141,7 +147,8 @@ export const getProductBySlug = async (slug: string): Promise<Product | null> =>
       options,
       price,
       inStock,
-      inventory
+      inventory,
+      lowInventoryThreshold
     },
     "relatedProducts": relatedProducts[]-> {
       _id,

@@ -1,0 +1,139 @@
+// src/components/ui/StockIndicator.scss
+@use '../../scss/variables' as *;
+@use '../../scss/mixins' as *;
+
+.stock-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: $font-mono;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    
+    ion-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    span {
+        white-space: nowrap;
+    }
+    
+    // Base styles for different states
+    &.in-stock {
+        color: $green;
+        
+        ion-icon {
+            color: $green;
+        }
+        
+        &.badge {
+            background: rgba($green, 0.15);
+            border: 1px solid rgba($green, 0.3);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+        }
+    }
+    
+    &.low-stock {
+        color: $peach;
+        animation: pulse-urgency 2s infinite;
+        
+        ion-icon {
+            color: $peach;
+            animation: flame-flicker 1.5s infinite alternate;
+        }
+        
+        &.badge {
+            background: rgba($peach, 0.15);
+            border: 1px solid rgba($peach, 0.4);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            box-shadow: 0 0 8px rgba($peach, 0.2);
+        }
+        
+        span {
+            text-shadow: 0 0 4px rgba($peach, 0.3);
+        }
+    }
+    
+    &.out-of-stock {
+        color: $red;
+        
+        ion-icon {
+            color: $red;
+        }
+        
+        &.badge {
+            background: rgba($red, 0.15);
+            border: 1px solid rgba($red, 0.3);
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+        }
+    }
+    
+    // Variant styles
+    &.inline {
+        font-size: 0.75rem;
+    }
+    
+    &.badge {
+        font-size: 0.7rem;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            transform: translateY(-1px);
+        }
+    }
+    
+    &.detailed {
+        font-size: 0.9rem;
+        padding: 0.5rem 0;
+        
+        ion-icon {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+// Urgency animations
+@keyframes pulse-urgency {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes flame-flicker {
+    0% {
+        transform: rotate(-2deg) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(2deg) scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: rotate(-1deg) scale(1.02);
+        opacity: 1;
+    }
+}
+
+// Responsive adjustments
+@include mobile-only {
+    .stock-indicator {
+        font-size: 0.7rem;
+        
+        &.detailed {
+            font-size: 0.8rem;
+        }
+        
+        ion-icon {
+            font-size: 0.9rem;
+        }
+    }
+}

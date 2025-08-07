@@ -48,6 +48,7 @@ export interface ProductVariant {
     compareAtPrice?: number;
     inStock: boolean;
     inventory?: number;
+    lowInventoryThreshold?: number; // When to show urgency for this variant (matches Sanity schema)
     image?: any;
 }
 
@@ -63,6 +64,8 @@ export interface Product {
     shortDescription?: string;
     description?: PortableTextBlock[]; // Portable Text content
     inStock: boolean;
+    inventory?: number; // Available stock quantity (matches Sanity schema)
+    lowInventoryThreshold?: number; // When to show "Only X left" message (matches Sanity schema)
     featured: boolean;
     new: boolean;
     categories?: Category[];

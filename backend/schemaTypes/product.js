@@ -131,6 +131,21 @@ export default {
             initialValue: true
         },
         {
+            name: 'inventory',
+            title: 'Inventory',
+            type: 'number',
+            description: 'Current inventory count',
+            validation: Rule => Rule.integer().min(0)
+        },
+        {
+            name: 'lowInventoryThreshold',
+            title: 'Low Inventory Threshold',
+            type: 'number',
+            description: 'Threshold for "low stock" warning',
+            validation: Rule => Rule.integer().positive(),
+            initialValue: 5
+        },
+        {
             name: 'featured',
             title: 'Featured',
             type: 'boolean',

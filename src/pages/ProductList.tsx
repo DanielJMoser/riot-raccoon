@@ -38,6 +38,7 @@ const ProductList: React.FC = () => {
             try {
                 setLoading(true);
                 const data = await getProducts();
+                
                 setProducts(data);
                 setFilteredProducts(data);
 
