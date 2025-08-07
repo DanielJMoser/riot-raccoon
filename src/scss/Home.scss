@@ -211,8 +211,7 @@
     }
 
     &.placeholder-banner {
-      background-color: $base;
-      @include grid-background(rgba($mauve, 0.2), 30px);
+      background-color: transparent;
 
       .retro-grid {
         position: absolute;
