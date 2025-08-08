@@ -8,7 +8,6 @@ import {
     IonCol,
     IonButton,
     IonIcon,
-    IonSpinner,
     IonText
 } from '@ionic/react';
 import { useParams } from 'react-router';

@@ -78,7 +78,7 @@ const PayPalCheckoutButton: React.FC<PayPalCheckoutButtonProps> = ({
 
                     // Create the order in Sanity
                     try {
-                        const orderResult = await createOrderFromCart(cart, enhancedCustomerInfo);
+                        await createOrderFromCart(cart, enhancedCustomerInfo);
                         // Sanity order created successfully
 
                         // Clear cart and call success callback

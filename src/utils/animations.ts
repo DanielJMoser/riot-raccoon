@@ -133,7 +133,7 @@ export const ANIMATION_PRESETS = {
   // Text Typing Effect
   typewriter: {
     duration: ANIMATION_DURATIONS.slow,
-    ease: CYBERPUNK_EASINGS.steps
+    ease: CYBERPUNK_EASINGS.glitch
   }
 } as const;
 
@@ -218,7 +218,7 @@ export const ANIMATION_UTILS = {
   /**
    * Create a consistent fade in animation
    */
-  fadeIn: (element: string | Element, delay: number = 0) => ({
+  fadeIn: (_element: string | Element, delay: number = 0) => ({
     from: { opacity: 0 },
     to: { opacity: 1 },
     duration: ANIMATION_DURATIONS.standard,
@@ -229,7 +229,7 @@ export const ANIMATION_UTILS = {
   /**
    * Create a slide up reveal animation
    */
-  slideUpReveal: (element: string | Element, delay: number = 0) => ({
+  slideUpReveal: (_element: string | Element, delay: number = 0) => ({
     from: { y: 50, opacity: 0 },
     to: { y: 0, opacity: 1 },
     duration: ANIMATION_DURATIONS.medium,
@@ -240,7 +240,7 @@ export const ANIMATION_UTILS = {
   /**
    * Create a scale entrance animation
    */
-  scaleEntrance: (element: string | Element, delay: number = 0) => ({
+  scaleEntrance: (_element: string | Element, delay: number = 0) => ({
     from: { scale: 0.8, opacity: 0 },
     to: { scale: 1, opacity: 1 },
     duration: ANIMATION_DURATIONS.standard,
@@ -251,7 +251,7 @@ export const ANIMATION_UTILS = {
   /**
    * Create a glitch effect animation
    */
-  glitchEffect: (element: string | Element) => [
+  glitchEffect: (_element: string | Element) => [
     {
       duration: ANIMATION_DURATIONS.instant,
       x: -2,
@@ -277,7 +277,7 @@ export const ANIMATION_UTILS = {
   /**
    * Create a neon pulse animation
    */
-  neonPulse: (element: string | Element) => ({
+  neonPulse: (_element: string | Element) => ({
     duration: ANIMATION_DURATIONS.ambient,
     repeat: -1,
     yoyo: true,

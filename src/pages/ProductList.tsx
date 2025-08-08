@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
     IonContent,
     IonPage,
-    IonSpinner,
     IonText,
     IonGrid,
     IonRow,

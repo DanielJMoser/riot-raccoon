@@ -5,7 +5,6 @@ import {
     IonContent,
     IonPage,
     IonRouterLink,
-    IonSpinner,
     IonText,
     IonGrid,
     IonRow,

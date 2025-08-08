@@ -46,7 +46,7 @@ export class SecureApiClient {
     // CSRF protection for state-changing operations
     if (options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method.toUpperCase())) {
       const csrfToken = this.generateCSRFToken();
-      secureHeaders['X-CSRF-Token'] = csrfToken;
+      (secureHeaders as any)['X-CSRF-Token'] = csrfToken;
       
       // Store token for validation if needed
       sessionStorage.setItem('csrf-token', csrfToken);
@@ -208,7 +208,7 @@ export class SecureFormHandler {
     
     Object.keys(sanitized).forEach(key => {
       if (typeof sanitized[key] === 'string') {
-        sanitized[key] = sanitizeInput(sanitized[key]);
+        (sanitized as any)[key] = sanitizeInput(sanitized[key]);
       }
     });
     

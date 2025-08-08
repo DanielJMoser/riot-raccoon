@@ -21,7 +21,6 @@ import { useCart } from '../context/CartContext';
 import { createOrderFromCart } from '../services/api';
 import { CustomerInfo } from '../types/homepageTypes';
 import { getEnvironmentConfig } from '../config/env';
-import { CheckoutSecurityHandler } from '../middleware/security';
 import { sanitizeInput, validateEmail, validateName, validateAddress, validatePostalCode, validatePhone } from '../utils/security';
 import '../scss/Checkout.scss';
 import SiteHeader from '../components/SiteHeader';

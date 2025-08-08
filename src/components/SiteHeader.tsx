@@ -3,11 +3,8 @@ import React, { useEffect, useState } from 'react';
 import {
     IonHeader,
     IonRouterLink,
-    IonIcon,
-    IonButton,
     IonSkeletonText
 } from '@ionic/react';
-import { searchOutline, personOutline } from 'ionicons/icons';
 import CartWidget from './cart/CartWidget';
 import '../scss/components/SiteHeader.scss';
 

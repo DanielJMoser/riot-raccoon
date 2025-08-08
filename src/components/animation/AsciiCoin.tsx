@@ -293,7 +293,6 @@ const Coin: React.FC<CoinProps> = ({
                     // Select material based on SVG fill color - updated for new SVG
                     let material;
                     const pathColor = path.color.getHex();
-                    const pathColorHex = `#${pathColor.toString(16).padStart(6, '0')}`;
 
                     if (pathColor === 0xff0202) { // Red flag elements (#ff0202)
                         material = redMaterial;
